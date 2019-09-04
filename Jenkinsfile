@@ -2,7 +2,7 @@ node {
   stage ('SCM Checkout') {
     git url: 'https://github.com/DmitriyLy/traveller'
   }
-  stage ('Compile-Package') {
+  stage ('Clean Install') {
     sh 'mvn clean install'
   }
 }
