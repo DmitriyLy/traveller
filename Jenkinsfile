@@ -3,6 +3,6 @@ node {
     git url: 'https://github.com/DmitriyLy/traveller'
   }
   stage ('Compile-Package') {
-    sh 'mvn package'
+    sh 'mvn clean install'
   }
 }
