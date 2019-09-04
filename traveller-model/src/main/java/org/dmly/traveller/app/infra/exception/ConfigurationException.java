@@ -10,4 +10,8 @@ public class ConfigurationException extends AppException {
     public ConfigurationException(String message) {
         super(message);
     }
+
+    public ConfigurationException(Throwable cause) {
+        super(cause);
+    }
 }
