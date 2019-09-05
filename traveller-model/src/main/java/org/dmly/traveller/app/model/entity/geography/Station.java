@@ -66,7 +66,6 @@ public class Station extends AbstractEntity {
         return Objects.equals(city, station.city) &&
                 Objects.equals(address, station.address) &&
                 Objects.equals(phone, station.phone) &&
-                Objects.equals(coordinate, station.coordinate) &&
                 transportType == station.transportType;
     }
 
