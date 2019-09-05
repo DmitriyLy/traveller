@@ -11,5 +11,13 @@
 
     <artifactId>traveller-persistence</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.dmly</groupId>
+            <artifactId>traveller-model</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
 
 </project>
