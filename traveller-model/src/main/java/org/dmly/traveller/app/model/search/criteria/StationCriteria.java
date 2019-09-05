@@ -26,6 +26,12 @@ public class StationCriteria {
         return new StationCriteria(name);
     }
 
+    public static StationCriteria byTransportType(final TransportType transportType) {
+        StationCriteria criteria = new StationCriteria();
+        criteria.setTransportType(transportType);
+        return criteria;
+    }
+
     public StationCriteria() {
     }
 
