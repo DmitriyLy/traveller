@@ -1,7 +1,9 @@
 package org.dmly.traveller.app.model.entity.geography;
 
+import org.apache.commons.lang3.StringUtils;
 import org.dmly.traveller.app.model.entity.base.AbstractEntity;
 import org.dmly.traveller.app.model.entity.transport.TransportType;
+import org.dmly.traveller.app.model.search.criteria.StationCriteria;
 
 import java.util.Objects;
 
@@ -57,20 +59,55 @@ public class Station extends AbstractEntity {
         this.transportType = transportType;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Station station = (Station) o;
-        return Objects.equals(city, station.city) &&
-                Objects.equals(address, station.address) &&
-                Objects.equals(phone, station.phone) &&
-                transportType == station.transportType;
+    public boolean match(final StationCriteria criteria) {
+        Objects.requireNonNull(criteria, "Station criteria in not initialized");
+
+        if (!StringUtils.isEmpty(criteria.getName())) {
+            if (!city.getName().equals(criteria.getName())) {
+                return false;
+            }
+        }
+
+        if (criteria.getTransportType() != null) {
+            if (transportType != criteria.getTransportType()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), city, address);
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((address == null) ? 0 : address.hashCode());
+        result = prime * result + ((city == null) ? 0 : city.hashCode());
+        result = prime * result + ((transportType == null) ? 0 : transportType.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!super.equals(obj))
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Station other = (Station) obj;
+        if (address == null) {
+            if (other.address != null)
+                return false;
+        } else if (!address.equals(other.address))
+            return false;
+        if (city == null) {
+            if (other.city != null)
+                return false;
+        } else if (!city.equals(other.city))
+            return false;
+        if (transportType != other.transportType)
+            return false;
+        return true;
     }
 }

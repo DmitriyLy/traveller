@@ -35,26 +35,12 @@ public class GeographicServiceImpl implements GeographicService {
 
     @Override
     public List<Station> searchStations(StationCriteria criteria, RangeCriteria rangeCriteria) {
-        Stream<City> stream = cities.stream().filter(
-                city -> StringUtils.isEmpty(criteria.getName()) || city.getName().equals(criteria.getName())
-        );
+       Set<Station> stations = new HashSet<>();
+       for (City city : cities) {
+           stations.addAll(city.getStations());
+       }
 
-        Optional<Set<Station>> stations = stream
-                .map(city -> city.getStations())
-                .reduce(((stations1, stations2) -> {
-                    Set<Station> newStation = new HashSet<>(stations2);
-                    newStation.addAll(stations1);
-                    return newStation;
-                }));
-
-        if (!stations.isPresent()) {
-            return Collections.emptyList();
-        }
-
-        return stations.get()
-                .stream()
-                .filter(station -> criteria.getTransportType() == null || station.getTransportType() == criteria.getTransportType())
-                .collect(Collectors.toList());
+       return stations.stream().filter(station -> station.match(criteria)).collect(Collectors.toList());
     }
 
     @Override
