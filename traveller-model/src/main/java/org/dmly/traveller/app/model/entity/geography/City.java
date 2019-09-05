@@ -16,6 +16,9 @@ public class City extends AbstractEntity {
     private String region;
     private Set<Station> stations;
 
+    public City() {
+    }
+
     public City(String name) {
         this.name = name;
     }
