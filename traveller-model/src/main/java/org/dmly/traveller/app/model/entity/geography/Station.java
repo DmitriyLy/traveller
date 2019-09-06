@@ -5,8 +5,12 @@ import org.dmly.traveller.app.model.entity.base.AbstractEntity;
 import org.dmly.traveller.app.model.entity.transport.TransportType;
 import org.dmly.traveller.app.model.search.criteria.StationCriteria;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Objects;
 
+@Table(name = "STATION")
+@Entity
 public class Station extends AbstractEntity {
     private City city;
     private Address address;

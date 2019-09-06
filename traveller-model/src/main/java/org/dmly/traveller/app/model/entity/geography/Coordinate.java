@@ -1,5 +1,8 @@
 package org.dmly.traveller.app.model.entity.geography;
 
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class Coordinate {
     private double x;
     private double y;

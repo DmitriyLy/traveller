@@ -2,11 +2,14 @@ package org.dmly.traveller.app.model.entity.geography;
 
 import org.dmly.traveller.app.model.entity.base.AbstractEntity;
 
+import javax.persistence.Embeddable;
+
 /**
  * Value type that stores address attributes
  * of the specific office or person
  *
  */
+@Embeddable
 public class Address extends AbstractEntity {
     private String zipCode;
     private String street;

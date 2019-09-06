@@ -2,12 +2,15 @@ package org.dmly.traveller.app.model.entity.base;
 
 import org.dmly.traveller.app.model.entity.person.Account;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
  * Base class for all business entities
  *
  */
+
+@MappedSuperclass
 public class AbstractEntity {
     private int id;
     private LocalDateTime createdAt;
@@ -15,6 +18,8 @@ public class AbstractEntity {
     private Account createdBy;
     private Account modifiedBy;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -23,6 +28,7 @@ public class AbstractEntity {
         this.id = id;
     }
 
+    @Column(name = "CREATED_AT", nullable = false, updatable = false)
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -31,6 +37,7 @@ public class AbstractEntity {
         this.createdAt = createdAt;
     }
 
+    @Column(name = "MODIFIED_AT", insertable = false)
     public LocalDateTime getModifiedAt() {
         return modifiedAt;
     }

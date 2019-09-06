@@ -4,12 +4,17 @@ import org.dmly.traveller.app.infra.util.CommonUtil;
 import org.dmly.traveller.app.model.entity.base.AbstractEntity;
 import org.dmly.traveller.app.model.entity.transport.TransportType;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.*;
 
 /**
  * Any locality that contains transport stations
  *
  */
+@Table(name = "CITY")
+@Entity
 public class City extends AbstractEntity {
     private String name;
     private String district;
@@ -23,6 +28,7 @@ public class City extends AbstractEntity {
         this.name = name;
     }
 
+    @Column(name = "NAME", nullable = false, length = 32)
     public String getName() {
         return name;
     }
@@ -39,6 +45,7 @@ public class City extends AbstractEntity {
         this.district = district;
     }
 
+    @Column(name = "REGION", nullable = false, length = 32)
     public String getRegion() {
         return region;
     }
