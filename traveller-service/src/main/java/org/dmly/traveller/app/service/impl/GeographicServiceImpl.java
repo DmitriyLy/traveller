@@ -6,6 +6,8 @@ import org.dmly.traveller.app.model.entity.geography.City;
 import org.dmly.traveller.app.model.entity.geography.Station;
 import org.dmly.traveller.app.model.search.criteria.StationCriteria;
 import org.dmly.traveller.app.model.search.criteria.range.RangeCriteria;
+import org.dmly.traveller.app.persistence.repository.CityRepository;
+import org.dmly.traveller.app.persistence.repository.inmemory.InMemoryCityRepository;
 import org.dmly.traveller.app.service.GeographicService;
 
 import java.util.*;
@@ -17,36 +19,31 @@ import java.util.stream.Stream;
  *
  */
 public class GeographicServiceImpl implements GeographicService {
-    private final List<City> cities;
+    private final CityRepository cityRepository;
 
     public GeographicServiceImpl() {
-        this.cities = new ArrayList<>();
+        cityRepository = new InMemoryCityRepository();
     }
 
     @Override
     public List<City> findCities() {
-        return CommonUtil.getSafeList(cities);
+        return cityRepository.findAll();
     }
 
     @Override
     public Optional<City> findCityById(int id) {
-        return cities.stream().filter(city -> city.getId() == id).findFirst();
+        return Optional.ofNullable(cityRepository.findById(id));
     }
 
     @Override
     public List<Station> searchStations(StationCriteria criteria, RangeCriteria rangeCriteria) {
        Set<Station> stations = new HashSet<>();
-       for (City city : cities) {
-           stations.addAll(city.getStations());
-       }
-
+       cityRepository.findAll().forEach(city -> stations.addAll(city.getStations()));
        return stations.stream().filter(station -> station.match(criteria)).collect(Collectors.toList());
     }
 
     @Override
     public void saveCity(City city) {
-        if(!cities.contains(city)) {
-            cities.add(city);
-        }
+        cityRepository.save(city);
     }
 }
