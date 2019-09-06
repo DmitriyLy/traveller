@@ -35,6 +35,7 @@ public class City extends AbstractEntity {
         this.name = name;
     }
 
+    @Column(name = "DISTRICT", nullable = false, length = 32)
     public String getDistrict() {
         return district;
     }
