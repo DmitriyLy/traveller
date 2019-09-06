@@ -5,8 +5,7 @@ import org.dmly.traveller.app.model.entity.base.AbstractEntity;
 import org.dmly.traveller.app.model.entity.transport.TransportType;
 import org.dmly.traveller.app.model.search.criteria.StationCriteria;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Table(name = "STATION")
@@ -23,6 +22,8 @@ public class Station extends AbstractEntity {
         this.transportType = Objects.requireNonNull(transportType);
     }
 
+    @ManyToOne(cascade = {}, fetch = FetchType.EAGER)
+    @JoinColumn(name = "CITY_ID")
     public City getCity() {
         return city;
     }
@@ -31,6 +32,7 @@ public class Station extends AbstractEntity {
         this.city = city;
     }
 
+    @Embedded
     public Address getAddress() {
         return address;
     }
@@ -47,6 +49,7 @@ public class Station extends AbstractEntity {
         this.phone = phone;
     }
 
+    @Embedded
     public Coordinate getCoordinate() {
         return coordinate;
     }
@@ -55,6 +58,8 @@ public class Station extends AbstractEntity {
         this.coordinate = coordinate;
     }
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, name = "TRANSPORT_TYPE")
     public TransportType getTransportType() {
         return transportType;
     }

@@ -46,6 +46,8 @@ public class AbstractEntity {
         this.modifiedAt = modifiedAt;
     }
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = {})
+    @JoinColumn(name = "CREATED_BY", updatable = false)
     public Account getCreatedBy() {
         return createdBy;
     }
@@ -54,6 +56,8 @@ public class AbstractEntity {
         this.createdBy = createdBy;
     }
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = {})
+    @JoinColumn(name = "MODIFIED_BY", insertable = false)
     public Account getModifiedBy() {
         return modifiedBy;
     }
