@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 
 @MappedSuperclass
 public class AbstractEntity {
+    public static final String FIELD_CREATED_AT = "createdAt";
+
     private int id;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;

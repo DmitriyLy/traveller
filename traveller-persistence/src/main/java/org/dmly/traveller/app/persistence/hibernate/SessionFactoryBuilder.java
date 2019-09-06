@@ -6,6 +6,7 @@ import org.dmly.traveller.app.model.entity.geography.City;
 import org.dmly.traveller.app.model.entity.geography.Coordinate;
 import org.dmly.traveller.app.model.entity.geography.Station;
 import org.dmly.traveller.app.model.entity.person.Account;
+import org.dmly.traveller.app.persistence.hibernate.interceptor.TimestampInterceptor;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -30,7 +31,10 @@ public class SessionFactoryBuilder {
         sources.addAnnotatedClass(Address.class);
         sources.addAnnotatedClass(Account.class);
 
-        sessionFactory = sources.buildMetadata().buildSessionFactory();
+        org.hibernate.boot.SessionFactoryBuilder builder = sources.getMetadataBuilder().build()
+                .getSessionFactoryBuilder().applyInterceptor(new TimestampInterceptor());
+
+        sessionFactory = builder.build();
     }
 
     public SessionFactory getSessionFactory() {
