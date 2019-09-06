@@ -10,6 +10,7 @@ import org.dmly.traveller.app.persistence.repository.CityRepository;
 import org.dmly.traveller.app.persistence.repository.inmemory.InMemoryCityRepository;
 import org.dmly.traveller.app.service.GeographicService;
 
+import javax.inject.Inject;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -21,8 +22,9 @@ import java.util.stream.Stream;
 public class GeographicServiceImpl implements GeographicService {
     private final CityRepository cityRepository;
 
-    public GeographicServiceImpl() {
-        cityRepository = new InMemoryCityRepository();
+    @Inject
+    public GeographicServiceImpl(CityRepository cityRepository) {
+        this.cityRepository = cityRepository;
     }
 
     @Override

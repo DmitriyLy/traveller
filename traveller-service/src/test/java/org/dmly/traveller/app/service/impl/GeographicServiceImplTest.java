@@ -5,6 +5,7 @@ import org.dmly.traveller.app.model.entity.geography.Station;
 import org.dmly.traveller.app.model.entity.transport.TransportType;
 import org.dmly.traveller.app.model.search.criteria.StationCriteria;
 import org.dmly.traveller.app.model.search.criteria.range.RangeCriteria;
+import org.dmly.traveller.app.persistence.repository.inmemory.InMemoryCityRepository;
 import org.dmly.traveller.app.service.GeographicService;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +22,7 @@ public class GeographicServiceImplTest {
 
     @Before
     public void setup() {
-        service = new GeographicServiceImpl();
+        service = new GeographicServiceImpl(new InMemoryCityRepository());
     }
 
     @Test

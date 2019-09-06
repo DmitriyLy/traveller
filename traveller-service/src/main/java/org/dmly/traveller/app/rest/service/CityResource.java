@@ -10,6 +10,7 @@ import org.dmly.traveller.app.service.impl.GeographicServiceImpl;
 import org.dmly.traveller.app.service.transform.Transformer;
 import org.dmly.traveller.app.service.transform.impl.SimpleDTOTransformer;
 
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -23,10 +24,10 @@ public class CityResource extends BaseResource {
     private final GeographicService service;
     private final Transformer transformer;
 
-
-    public CityResource() {
-        transformer = new SimpleDTOTransformer();
-        service = new GeographicServiceImpl();
+    @Inject
+    public CityResource(GeographicService service, Transformer transformer) {
+        this.service = service;
+        this.transformer = transformer;
 
         City city = new City("Odessa");
         city.setId(1);
