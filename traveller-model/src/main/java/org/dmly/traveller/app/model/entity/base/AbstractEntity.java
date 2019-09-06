@@ -74,6 +74,13 @@ public class AbstractEntity {
         return result;
     }
 
+    @PrePersist
+    public void prePersist() {
+        if (getId() == 0) {
+            setCreatedAt(LocalDateTime.now());
+        }
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

@@ -1,6 +1,8 @@
 package org.dmly.traveller.app.persistence.repository.hibernate;
 
+import org.dmly.traveller.app.model.entity.base.AbstractEntity;
 import org.dmly.traveller.app.model.entity.geography.City;
+import org.dmly.traveller.app.persistence.hibernate.SessionFactoryBuilder;
 import org.dmly.traveller.app.persistence.repository.CityRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,13 +14,17 @@ public class HibernateCityRepository implements CityRepository {
     private final SessionFactory sessionFactory;
 
     @Inject
-    public HibernateCityRepository(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+    public HibernateCityRepository(SessionFactoryBuilder builder) {
+        this.sessionFactory = builder.getSessionFactory();
     }
 
     @Override
     public void save(City city) {
         try (Session session = sessionFactory.openSession()) {
+            city.prePersist();
+            if (city.getStations() != null) {
+                city.getStations().forEach(AbstractEntity::prePersist);
+            }
             session.saveOrUpdate(city);
         }
     }

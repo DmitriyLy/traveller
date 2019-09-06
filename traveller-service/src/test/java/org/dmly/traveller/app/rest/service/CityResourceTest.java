@@ -59,6 +59,8 @@ public class CityResourceTest  extends JerseyTest {
     public void testSaveCitySuccess() {
         CityDTO cityDTO = new CityDTO();
         cityDTO.setName("Kiev");
+        cityDTO.setDistrict("Kiev");
+        cityDTO.setRegion("Kiev");
 
         Response response = target("cities").request().post(Entity.entity(cityDTO, MediaType.APPLICATION_JSON));
         assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());

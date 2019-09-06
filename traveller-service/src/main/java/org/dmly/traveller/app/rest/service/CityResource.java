@@ -30,8 +30,10 @@ public class CityResource extends BaseResource {
         this.transformer = transformer;
 
         City city = new City("Odessa");
-        city.setId(1);
         city.addStation(TransportType.AUTO);
+        city.setDistrict("Odessa");
+        city.setRegion("Odessa");
+
         service.saveCity(city);
     }
 
