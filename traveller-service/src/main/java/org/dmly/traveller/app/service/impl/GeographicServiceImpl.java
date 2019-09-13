@@ -1,19 +1,16 @@
 package org.dmly.traveller.app.service.impl;
 
-import org.apache.commons.lang3.StringUtils;
-import org.dmly.traveller.app.infra.util.CommonUtil;
 import org.dmly.traveller.app.model.entity.geography.City;
 import org.dmly.traveller.app.model.entity.geography.Station;
 import org.dmly.traveller.app.model.search.criteria.StationCriteria;
 import org.dmly.traveller.app.model.search.criteria.range.RangeCriteria;
 import org.dmly.traveller.app.persistence.repository.CityRepository;
-import org.dmly.traveller.app.persistence.repository.inmemory.InMemoryCityRepository;
+import org.dmly.traveller.app.persistence.repository.StationRepository;
 import org.dmly.traveller.app.service.GeographicService;
 
 import javax.inject.Inject;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Default implementation of the {@link GeographicService}
@@ -21,10 +18,12 @@ import java.util.stream.Stream;
  */
 public class GeographicServiceImpl implements GeographicService {
     private final CityRepository cityRepository;
+    private final StationRepository stationRepository;
 
     @Inject
-    public GeographicServiceImpl(CityRepository cityRepository) {
+    public GeographicServiceImpl(CityRepository cityRepository, StationRepository stationRepository) {
         this.cityRepository = cityRepository;
+        this.stationRepository = stationRepository;
     }
 
     @Override
@@ -39,9 +38,7 @@ public class GeographicServiceImpl implements GeographicService {
 
     @Override
     public List<Station> searchStations(StationCriteria criteria, RangeCriteria rangeCriteria) {
-       Set<Station> stations = new HashSet<>();
-       cityRepository.findAll().forEach(city -> stations.addAll(city.getStations()));
-       return stations.stream().filter(station -> station.match(criteria)).collect(Collectors.toList());
+       return stationRepository.findByCriteria(criteria);
     }
 
     @Override

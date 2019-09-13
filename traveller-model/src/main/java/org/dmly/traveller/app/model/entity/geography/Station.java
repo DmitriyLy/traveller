@@ -17,6 +17,9 @@ public class Station extends AbstractEntity {
     private Coordinate coordinate;
     private TransportType transportType;
 
+    public Station() {
+    }
+
     public Station(final City city, final TransportType transportType) {
         this.city = Objects.requireNonNull(city);
         this.transportType = Objects.requireNonNull(transportType);

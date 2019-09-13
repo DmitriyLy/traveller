@@ -13,6 +13,9 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 public class AbstractEntity {
     public static final String FIELD_CREATED_AT = "createdAt";
+    public static final String FIELD_CITY = "city";
+    public static final String FIELD_NAME = "name";
+    public static final String FIELD_TRANSPORT_TYPE = "transportType";
 
     private int id;
     private LocalDateTime createdAt;
