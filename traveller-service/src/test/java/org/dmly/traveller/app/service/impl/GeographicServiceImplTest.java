@@ -1,5 +1,6 @@
 package org.dmly.traveller.app.service.impl;
 
+import org.dmly.traveller.app.infra.exception.flow.ValidationException;
 import org.dmly.traveller.app.model.entity.geography.City;
 import org.dmly.traveller.app.model.entity.geography.Station;
 import org.dmly.traveller.app.model.entity.transport.TransportType;
@@ -204,6 +205,48 @@ public class GeographicServiceImplTest {
         }
 
         waitForFutures(futures);
+    }
+
+    @Test
+    public void testSaveCityMissingNameValidationExceptionThrown() {
+        try {
+            City city = new City();
+            city.setDistrict("Nikolaev");
+            city.setRegion("Nikolaev");
+            service.saveCity(city);
+
+            fail("City name validation failed");
+        } catch (ValidationException e) {
+            assertTrue(e.getMessage().contains("name:may not be null"));
+        }
+    }
+
+    @Test
+    public void testSaveCityNameTooShortValidationExceptionThrown() {
+        try {
+            City city = new City("N");
+            city.setDistrict("Nikolaev");
+            city.setRegion("Nikolaev");
+            service.saveCity(city);
+
+            fail("City name validation failed");
+        } catch (ValidationException ex) {
+            assertTrue(ex.getMessage().contains("name:size must be between 2 and 32"));
+        }
+    }
+
+    @Test
+    public void testSaveCityNameTooLongValidationExceptionThrown() {
+        try {
+            City city = new City("jkHJJJhj454346JHUujP{+OIHJOI5444JIJKJIJOJVYY");
+            city.setDistrict("Nikolaev");
+            city.setRegion("Nikolaev");
+            service.saveCity(city);
+
+            fail("City name validation failed");
+        } catch (ValidationException ex) {
+            assertTrue(ex.getMessage().contains("name:size must be between 2 and 32"));
+        }
     }
 
     private void waitForFutures(List<Future<?>> futures) {

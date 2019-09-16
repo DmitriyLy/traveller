@@ -22,6 +22,7 @@
         <log4j.version>2.5</log4j.version>
         <powermock.version>1.6.4</powermock.version>
         <hibernate.version>5.1.0.Final</hibernate.version>
+        <el.version>2.2.4</el.version>
     </properties>
 
     <dependencies>
