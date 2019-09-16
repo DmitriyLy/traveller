@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title>Traveller</title>
+    <script src="bower_components/angular/angular.js"></script>
+</head>
+<body>
+    <div ng-bind="'Traveller project'"></div>
+    <div ng-controller="CityCtrl"> Cities
+        <table style="width: 100%">
+            <tr>
+                <th>Name</th>
+                <th>District</th>
+                <th>Region</th>
+            </tr>
+            <tr ng-repeat="city in cities">
+                <td ng-bind="city.name"></td>
+                <td ng-bind="city.district"></td>
+                <td ng-bind="city.region"></td>
+            </tr>
+        </table>
+    </div>
+    <script src="app.js"></script>
+    <script src="factories.js"></script>
+    <script src="controllers.js"></script>
+</body>
+</html>

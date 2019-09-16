@@ -11,4 +11,5 @@ public interface CityRepository {
     void delete(int cityId);
     List<City> findAll();
     void deleteAll();
+    void saveAll(List<City> cities);
 }

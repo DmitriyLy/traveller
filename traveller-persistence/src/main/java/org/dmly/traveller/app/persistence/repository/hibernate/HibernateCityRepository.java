@@ -84,4 +84,30 @@ public class HibernateCityRepository implements CityRepository {
             }
         }
     }
+
+    @Override
+    public void saveAll(List<City> cities) {
+        int batchSize = sessionFactory.getSessionFactoryOptions().getJdbcBatchSize();
+        try (Session session = sessionFactory.openSession()) {
+            Transaction transaction = null;
+            try {
+                transaction = session.beginTransaction();
+
+                for (int i = 0; i < cities.size(); i++) {
+                    session.persist(cities.get(i));
+                    if (i % batchSize == 0 || i == cities.size() - 1) {
+                        session.flush();
+                        session.clear();
+                    }
+                }
+
+                transaction.commit();
+            } catch (Exception e) {
+                LOGGER.error(e.getMessage(), e);
+                if (transaction != null) {
+                    transaction.rollback();
+                }
+            }
+        }
+    }
 }
