@@ -23,4 +23,6 @@ public interface GeographicService {
     List<Station> searchStations(StationCriteria criteria, RangeCriteria rangeCriteria);
 
     void saveCity(City city);
+
+    void deleteCities();
 }

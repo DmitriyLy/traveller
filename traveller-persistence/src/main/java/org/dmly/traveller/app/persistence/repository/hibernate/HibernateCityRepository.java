@@ -3,6 +3,7 @@ package org.dmly.traveller.app.persistence.repository.hibernate;
 import org.dmly.traveller.app.model.entity.geography.City;
 import org.dmly.traveller.app.persistence.hibernate.SessionFactoryBuilder;
 import org.dmly.traveller.app.persistence.repository.CityRepository;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -58,6 +59,28 @@ public class HibernateCityRepository implements CityRepository {
     public List<City> findAll() {
         try (Session session = sessionFactory.openSession()) {
             return session.createCriteria(City.class).list();
+        }
+    }
+
+    @Override
+    public void deleteAll() {
+        try (Session session = sessionFactory.openSession()) {
+            Transaction transaction = null;
+
+            try {
+                transaction = session.beginTransaction();
+                Query stationQuery = session.createQuery("delete from Station");
+                stationQuery.executeUpdate();
+                Query cityQuery = session.createQuery("delete from City");
+                int deleted = cityQuery.executeUpdate();
+                LOGGER.debug("Deleted {} cities", deleted);
+                transaction.commit();
+            } catch (Exception e) {
+                LOGGER.error(e.getMessage(), e);
+                if (transaction != null) {
+                    transaction.rollback();
+                }
+            }
         }
     }
 }

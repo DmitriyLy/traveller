@@ -54,4 +54,9 @@ public class GeographicServiceImpl implements GeographicService {
         }
         cityRepository.save(city);
     }
+
+    @Override
+    public void deleteCities() {
+        cityRepository.deleteAll();
+    }
 }
