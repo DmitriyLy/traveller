@@ -2,7 +2,7 @@
   "name": "traveller",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "js/app.js",
   "dependencies": {},
   "devDependencies": {
     "jasmine-core": "^3.4.0",
