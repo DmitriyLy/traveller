@@ -10,7 +10,10 @@ import java.util.Objects;
 
 @Table(name = "STATION")
 @Entity
+@NamedQuery(name = Station.QUERY_DELETE_ALL, query = "delete from Station")
 public class Station extends AbstractEntity {
+    public static final String QUERY_DELETE_ALL = "deleteStations";
+
     private City city;
     private Address address;
     private String phone;

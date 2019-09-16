@@ -72,9 +72,9 @@ public class GeographicServiceImplTest {
         City city = createCity();
         service.saveCity(city);
 
-        Optional<City> foundCity = service.findCityById(DEFAULT_CITY_ID);
+        Optional<City> foundCity = service.findCityById(city.getId());
         assertTrue(foundCity.isPresent());
-        assertEquals(foundCity.get().getId(), DEFAULT_CITY_ID);
+        assertEquals(foundCity.get().getId(), city.getId());
     }
 
     @Test
@@ -130,10 +130,10 @@ public class GeographicServiceImplTest {
         City city = createCity();
         city.addStation(TransportType.AUTO);
         service.saveCity(city);
+        
         City city2 = new City("Kiev");
         city2.setDistrict("Kiev");
         city2.setRegion("Kiev");
-        city2.setId(2);
         city2.addStation(TransportType.RAILWAY);
         service.saveCity(city2);
 

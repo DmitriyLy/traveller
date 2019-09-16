@@ -15,7 +15,10 @@ import java.util.*;
  */
 @Table(name = "CITY")
 @Entity
+@NamedQuery(name = City.QUERY_DELETE_ALL, query = "delete from City")
 public class City extends AbstractEntity {
+    public static final String QUERY_DELETE_ALL = "deleteCities";
+
     private String name;
     private String district;
     private String region;
@@ -39,6 +42,8 @@ public class City extends AbstractEntity {
         this.name = name;
     }
 
+    @NotNull
+    @Size(min = 2, max = 32)
     @Column(name = "DISTRICT", nullable = false, length = 32)
     public String getDistrict() {
         return district;
@@ -48,6 +53,8 @@ public class City extends AbstractEntity {
         this.district = district;
     }
 
+    @NotNull
+    @Size(min = 2, max = 32)
     @Column(name = "REGION", nullable = false, length = 32)
     public String getRegion() {
         return region;
