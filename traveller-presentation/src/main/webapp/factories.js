@@ -1,19 +1,4 @@
-app.factory('cityService', [ function() {
-    var cities = [{
-        'name' : 'Odessa',
-        'district' : '',
-        'region' : 'Odessa'
-    },
-        {
-            'name' : 'Izmail',
-            'district' : 'Izmail',
-            'region' : 'Odessa'
-        }];
-
-    return {
-        'getCities' : function() {
-            return cities;
-        }
-    }
+app.factory('cityService', ['$resource', function($resource) {
+    return $resource('/api/cities');
 }
 ]);

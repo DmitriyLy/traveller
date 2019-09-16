@@ -2,6 +2,7 @@
 **/target/
 *.iml
 .flattened-pom.xml
+package-lock.json
 service.log
 **/.gradle/
 **/gradle/
