@@ -1,5 +1,6 @@
 package org.dmly.traveller.app.service.impl;
 
+import org.dmly.traveller.app.infa.cdi.DBSource;
 import org.dmly.traveller.app.model.entity.geography.City;
 import org.dmly.traveller.app.model.entity.geography.Station;
 import org.dmly.traveller.app.model.search.criteria.StationCriteria;
@@ -9,6 +10,7 @@ import org.dmly.traveller.app.persistence.repository.StationRepository;
 import org.dmly.traveller.app.service.GeographicService;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.validation.*;
 import java.util.*;
 import org.dmly.traveller.app.infra.exception.flow.ValidationException;
@@ -17,13 +19,14 @@ import org.dmly.traveller.app.infra.exception.flow.ValidationException;
  * Default implementation of the {@link GeographicService}
  *
  */
+@Named
 public class GeographicServiceImpl implements GeographicService {
     private final CityRepository cityRepository;
     private final StationRepository stationRepository;
     private final Validator validator;
 
     @Inject
-    public GeographicServiceImpl(CityRepository cityRepository, StationRepository stationRepository) {
+    public GeographicServiceImpl(@DBSource CityRepository cityRepository, @DBSource StationRepository stationRepository) {
         this.cityRepository = cityRepository;
         this.stationRepository = stationRepository;
 

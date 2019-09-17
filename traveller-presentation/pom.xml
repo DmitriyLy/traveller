@@ -16,7 +16,7 @@
 
         <dependency>
             <groupId>org.dmly</groupId>
-            <artifactId>traveller-service</artifactId>
+            <artifactId>traveller-rest</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 

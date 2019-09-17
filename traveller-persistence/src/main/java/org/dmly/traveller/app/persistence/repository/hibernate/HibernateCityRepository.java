@@ -1,5 +1,6 @@
 package org.dmly.traveller.app.persistence.repository.hibernate;
 
+import org.dmly.traveller.app.infa.cdi.DBSource;
 import org.dmly.traveller.app.model.entity.geography.City;
 import org.dmly.traveller.app.model.entity.geography.Station;
 import org.dmly.traveller.app.persistence.hibernate.SessionFactoryBuilder;
@@ -12,8 +13,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.List;
 
+@Named
+@DBSource
 public class HibernateCityRepository implements CityRepository {
     private static final Logger LOGGER = LoggerFactory.getLogger(HibernateCityRepository.class);
 

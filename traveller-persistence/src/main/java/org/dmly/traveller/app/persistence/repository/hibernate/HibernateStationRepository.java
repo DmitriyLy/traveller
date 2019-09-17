@@ -1,6 +1,7 @@
 package org.dmly.traveller.app.persistence.repository.hibernate;
 
 import org.apache.commons.lang3.StringUtils;
+import org.dmly.traveller.app.infa.cdi.DBSource;
 import org.dmly.traveller.app.model.entity.geography.City;
 import org.dmly.traveller.app.model.entity.geography.Station;
 import org.dmly.traveller.app.model.search.criteria.StationCriteria;
@@ -12,8 +13,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.List;
 
+@Named
+@DBSource
 public class HibernateStationRepository implements StationRepository {
     private final SessionFactory sessionFactory;
 

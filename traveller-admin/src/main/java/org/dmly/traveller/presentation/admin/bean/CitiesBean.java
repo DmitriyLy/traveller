@@ -1,25 +1,30 @@
 package org.dmly.traveller.presentation.admin.bean;
 
-//import org.dmly.traveller.app.infra.util.CommonUtil;
+import org.dmly.traveller.app.model.entity.geography.City;
+import org.dmly.traveller.app.service.GeographicService;
 
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.ArrayList;
 import java.util.List;
 
 
 @Named
 @RequestScoped
 public class CitiesBean {
-    private final List<CityBean> cities;
+    private final GeographicService geographicService;
 
-    public CitiesBean() {
-        cities = new ArrayList<>();
-        cities.add(new CityBean("Odessa", "", "Odessa"));
-        cities.add(new CityBean("Izmail", "", "Odessa"));
+    @Inject
+    public CitiesBean(GeographicService geographicService) {
+        this.geographicService = geographicService;
+        City testCity = new City();
+        testCity.setName("Odessa TEST");
+        testCity.setRegion("Odessa TEST");
+        testCity.setDistrict("Odessa TEST");
+        this.geographicService.saveCity(testCity);
     }
 
-    public List<CityBean> getCities() {
-        return cities;
+    public List<City> getCities() {
+        return geographicService.findCities();
     }
 }

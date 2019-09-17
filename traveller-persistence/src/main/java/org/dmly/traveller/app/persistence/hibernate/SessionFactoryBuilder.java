@@ -14,12 +14,14 @@ import org.hibernate.service.ServiceRegistry;
 import org.reflections.Reflections;
 
 import javax.annotation.PreDestroy;
+import javax.inject.Named;
 import javax.persistence.Entity;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 import java.util.Set;
 
+@Named
 public class SessionFactoryBuilder {
     private final SessionFactory sessionFactory;
 
