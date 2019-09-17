@@ -1,6 +1,6 @@
 package org.dmly.traveller.presentation.admin.bean;
 
-import org.dmly.traveller.app.infra.util.CommonUtil;
+//import org.dmly.traveller.app.infra.util.CommonUtil;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
