@@ -2,18 +2,20 @@
 <html lang="en" ng-app="app">
 <head>
     <meta charset="UTF-8">
-    <title>Traveller</title>
+    <title ng-bind="'TITLE' | translate"></title>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-translate/angular-translate.js"></script>
+    <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
 </head>
 <body>
-    <div ng-bind="'Traveller project'"></div>
-    <div ng-controller="CityCtrl"> Cities
+    <div ng-bind="'TITLE' | translate"></div>
+    <div ng-controller="CityCtrl"> {{'CITIES' | translate}}
         <table style="width: 100%">
             <tr>
-                <th>Name</th>
-                <th>District</th>
-                <th>Region</th>
+                <th ng-bind="'CITY_NAME' | translate"></th>
+                <th ng-bind="'CITY_DISTRICT' | translate"></th>
+                <th ng-bind="'CITY_REGION' | translate"></th>
             </tr>
             <tr ng-repeat="city in cities">
                 <td ng-bind="city.name"></td>

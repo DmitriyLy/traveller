@@ -18,5 +18,9 @@
     "angular": "1.5.8",
     "angular-resource": "1.5.8",
     "angular-mocks": "1.5.8"
+  },
+  "devDependencies": {
+    "angular-translate": "^2.12.1",
+    "angular-translate-loader-static-files": "2.12.1"
   }
 }
