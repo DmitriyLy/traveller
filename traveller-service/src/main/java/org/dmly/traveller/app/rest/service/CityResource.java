@@ -1,5 +1,7 @@
 package org.dmly.traveller.app.rest.service;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.dmly.traveller.app.model.entity.geography.City;
 import org.dmly.traveller.app.model.entity.transport.TransportType;
@@ -19,6 +21,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Path("cities")
+@Api(value = "cities", description = "City-related operations")
 public class CityResource extends BaseResource {
 
     private final GeographicService service;
@@ -39,6 +42,7 @@ public class CityResource extends BaseResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Returns all the existing cities")
     public List<CityDTO> findCities() {
         return service.findCities().stream()
                 .map(city -> transformer.transform(city, CityDTO.class))
