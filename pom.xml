@@ -12,6 +12,7 @@
         <module>traveller-model</module>
         <module>traveller-persistence</module>
         <module>traveller-service</module>
+        <module>traveller-admin</module>
     </modules>
     <packaging>pom</packaging>
 
