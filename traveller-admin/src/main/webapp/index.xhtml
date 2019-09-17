@@ -1,12 +1,29 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core">
 <h:head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Germes application</title>
+    <title>Traveller application</title>
 </h:head>
 <h:body>
     <div>
         <h:outputText value="Traveller application"></h:outputText>
     </div>
+    <div>
+        <h:outputText value="Cities"></h:outputText>
+    </div>
+    <h:dataTable var="city" value="#{citiesBean.cities}">
+        <h:column>
+            <f:facet name="header">Name</f:facet>
+            #{city.name}
+        </h:column>
+        <h:column>
+            <f:facet name="header">District</f:facet>
+            #{city.district}
+        </h:column>
+        <h:column>
+            <f:facet name="header">Region</f:facet>
+            #{city.region}
+        </h:column>
+    </h:dataTable>
 </h:body>
 </html>
