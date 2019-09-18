@@ -3,28 +3,31 @@ package org.dmly.traveller.presentation.admin.bean;
 import org.dmly.traveller.app.model.entity.geography.City;
 import org.dmly.traveller.app.service.GeographicService;
 
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.List;
 
 
 @Named
-@RequestScoped
-public class CitiesBean {
+@ApplicationScoped
+public class CityController {
     private final GeographicService geographicService;
 
     @Inject
-    public CitiesBean(GeographicService geographicService) {
+    public CityController(GeographicService geographicService) {
         this.geographicService = geographicService;
-        City testCity = new City();
-        testCity.setName("Odessa TEST");
-        testCity.setRegion("Odessa TEST");
-        testCity.setDistrict("Odessa TEST");
-        this.geographicService.saveCity(testCity);
     }
 
     public List<City> getCities() {
         return geographicService.findCities();
+    }
+
+    public void saveCity(CityBean cityBean) {
+        City city = new City();
+        city.setName(cityBean.getName());
+        city.setRegion(cityBean.getRegion());
+        city.setDistrict(cityBean.getDistrict());
+        geographicService.saveCity(city);
     }
 }
