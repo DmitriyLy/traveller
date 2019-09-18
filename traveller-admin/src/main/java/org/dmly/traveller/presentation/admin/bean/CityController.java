@@ -30,4 +30,8 @@ public class CityController {
         city.setDistrict(cityBean.getDistrict());
         geographicService.saveCity(city);
     }
+
+    public void delete(int cityId) {
+        geographicService.deleteCity(cityId);
+    }
 }

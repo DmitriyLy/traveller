@@ -52,10 +52,18 @@ public class HibernateCityRepository implements CityRepository {
 
     @Override
     public void delete(int cityId) {
+        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
             City city = session.get(City.class, cityId);
             if (city != null) {
                 session.delete(city);
+            }
+            transaction.commit();
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            if (transaction != null) {
+                transaction.rollback();
             }
         }
     }

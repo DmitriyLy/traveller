@@ -25,4 +25,6 @@ public interface GeographicService {
     void saveCity(City city);
 
     void deleteCities();
+
+    void deleteCity(int id);
 }
