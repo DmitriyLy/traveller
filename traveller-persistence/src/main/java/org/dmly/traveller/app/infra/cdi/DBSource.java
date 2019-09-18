@@ -1,4 +1,4 @@
-package org.dmly.traveller.app.infa.cdi;
+package org.dmly.traveller.app.infra.cdi;
 
 import javax.inject.Qualifier;
 import java.lang.annotation.ElementType;

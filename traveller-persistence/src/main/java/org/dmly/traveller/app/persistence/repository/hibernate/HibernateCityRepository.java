@@ -1,6 +1,6 @@
 package org.dmly.traveller.app.persistence.repository.hibernate;
 
-import org.dmly.traveller.app.infa.cdi.DBSource;
+import org.dmly.traveller.app.infra.cdi.DBSource;
 import org.dmly.traveller.app.model.entity.geography.City;
 import org.dmly.traveller.app.model.entity.geography.Station;
 import org.dmly.traveller.app.persistence.hibernate.SessionFactoryBuilder;

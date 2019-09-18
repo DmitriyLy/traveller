@@ -1,6 +1,18 @@
 package org.dmly.traveller.app.service.impl;
 
-import org.dmly.traveller.app.infa.cdi.DBSource;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+
+import org.dmly.traveller.app.infra.cdi.DBSource;
+import org.dmly.traveller.app.infra.exception.flow.ValidationException;
 import org.dmly.traveller.app.model.entity.geography.City;
 import org.dmly.traveller.app.model.entity.geography.Station;
 import org.dmly.traveller.app.model.search.criteria.StationCriteria;
@@ -8,12 +20,6 @@ import org.dmly.traveller.app.model.search.criteria.range.RangeCriteria;
 import org.dmly.traveller.app.persistence.repository.CityRepository;
 import org.dmly.traveller.app.persistence.repository.StationRepository;
 import org.dmly.traveller.app.service.GeographicService;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.validation.*;
-import java.util.*;
-import org.dmly.traveller.app.infra.exception.flow.ValidationException;
 
 /**
  * Default implementation of the {@link GeographicService}
