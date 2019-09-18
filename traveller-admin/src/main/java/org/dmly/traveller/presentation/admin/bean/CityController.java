@@ -28,6 +28,7 @@ public class CityController {
         city.setName(cityBean.getName());
         city.setRegion(cityBean.getRegion());
         city.setDistrict(cityBean.getDistrict());
+        city.setId(cityBean.getId());
         geographicService.saveCity(city);
     }
 
