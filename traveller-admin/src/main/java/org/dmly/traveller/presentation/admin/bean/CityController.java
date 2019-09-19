@@ -5,6 +5,8 @@ import org.dmly.traveller.app.service.GeographicService;
 import org.dmly.traveller.app.service.transform.Transformer;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.Initialized;
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.List;
@@ -41,5 +43,8 @@ public class CityController {
 
     public void delete(int cityId) {
         geographicService.deleteCity(cityId);
+    }
+
+    public void init(@Observes @Initialized(ApplicationScoped.class) Object event) {
     }
 }

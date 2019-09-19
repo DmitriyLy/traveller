@@ -1,11 +1,6 @@
 package org.dmly.traveller.app.persistence.hibernate;
 
 import org.dmly.traveller.app.infra.exception.PersistenceException;
-import org.dmly.traveller.app.model.entity.geography.Address;
-import org.dmly.traveller.app.model.entity.geography.City;
-import org.dmly.traveller.app.model.entity.geography.Coordinate;
-import org.dmly.traveller.app.model.entity.geography.Station;
-import org.dmly.traveller.app.model.entity.person.Account;
 import org.dmly.traveller.app.persistence.hibernate.interceptor.TimestampInterceptor;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;

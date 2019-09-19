@@ -18,61 +18,37 @@ import java.util.List;
 
 @Named
 @DBSource
-public class HibernateCityRepository implements CityRepository {
+public class HibernateCityRepository extends BaseHibernateRepository implements CityRepository {
     private static final Logger LOGGER = LoggerFactory.getLogger(HibernateCityRepository.class);
-
-    private final SessionFactory sessionFactory;
 
     @Inject
     public HibernateCityRepository(SessionFactoryBuilder builder) {
-        this.sessionFactory = builder.getSessionFactory();
+        super(builder);
     }
 
     @Override
     public void save(City city) {
-        Transaction transaction = null;
-        try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            session.saveOrUpdate(city);
-            transaction.commit();
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
-            if (transaction != null) {
-                transaction.rollback();
-            }
-        }
+        execute(session -> session.saveOrUpdate(city));
     }
 
     @Override
     public City findById(int cityId) {
-        try (Session session = sessionFactory.openSession()) {
-            return session.get(City.class, cityId);
-        }
+        return query(session -> session.get(City.class, cityId));
     }
 
     @Override
     public void delete(int cityId) {
-        Transaction transaction = null;
-        try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
+        execute(session -> {
             City city = session.get(City.class, cityId);
             if (city != null) {
                 session.delete(city);
             }
-            transaction.commit();
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
-            if (transaction != null) {
-                transaction.rollback();
-            }
-        }
+        });
     }
 
     @Override
     public List<City> findAll() {
-        try (Session session = sessionFactory.openSession()) {
-            return session.createCriteria(City.class).list();
-        }
+        return query(session -> session.createNamedQuery(City.));
     }
 
     @Override

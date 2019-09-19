@@ -1,6 +1,6 @@
 package org.dmly.traveller.app.model.entity.base;
 
-import org.dmly.traveller.app.model.entity.person.Account;
+import org.dmly.traveller.app.model.entity.person.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -20,8 +20,8 @@ public class AbstractEntity {
     private int id;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-    private Account createdBy;
-    private Account modifiedBy;
+    private User createdBy;
+    private User modifiedBy;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,21 +53,21 @@ public class AbstractEntity {
 
     @OneToOne(fetch = FetchType.LAZY, cascade = {})
     @JoinColumn(name = "CREATED_BY", updatable = false)
-    public Account getCreatedBy() {
+    public User getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Account createdBy) {
+    public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
     }
 
     @OneToOne(fetch = FetchType.LAZY, cascade = {})
     @JoinColumn(name = "MODIFIED_BY", insertable = false)
-    public Account getModifiedBy() {
+    public User getModifiedBy() {
         return modifiedBy;
     }
 
-    public void setModifiedBy(Account modifiedBy) {
+    public void setModifiedBy(User modifiedBy) {
         this.modifiedBy = modifiedBy;
     }
 
