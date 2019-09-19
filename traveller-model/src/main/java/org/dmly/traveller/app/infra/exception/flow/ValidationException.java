@@ -7,11 +7,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ValidationException extends FlowException {
+    private final Set<ConstraintViolation<?>> constraints;
 
-    public <T> ValidationException(String message, Set<ConstraintViolation<T>> constraints) {
-        super(message + " : " +
-                constraints.stream()
-                        .map(constraint -> constraint.getPropertyPath() + ":" + constraint.getMessage())
-                        .collect(Collectors.joining(",")));
+    public ValidationException(String message, Set<ConstraintViolation<?>> constraints) {
+        super(message + constraints);
+        this.constraints = constraints;
+    }
+
+    public Set<ConstraintViolation<?>> getConstraints() {
+        return constraints;
     }
 }
