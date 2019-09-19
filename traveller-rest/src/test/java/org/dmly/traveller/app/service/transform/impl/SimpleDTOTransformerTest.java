@@ -40,7 +40,8 @@ public class SimpleDTOTransformerTest {
 
     @Test(expected = InvalidParameterException.class)
     public void testTransformNullDTOClassFailure() {
-        transformer.transform(new City("Odessa"), null);
+        Class<CityDTO> clz = null;
+        transformer.transform(new City("Odessa"), clz);
     }
 
     @Test
