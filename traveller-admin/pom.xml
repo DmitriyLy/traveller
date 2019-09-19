@@ -51,6 +51,17 @@
             <version>2.2.14</version>
         </dependency>
         <dependency>
+            <groupId>org.primefaces.themes</groupId>
+            <artifactId>bootstrap</artifactId>
+            <version>1.0.10</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.14</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.jglue.cdi-unit</groupId>
             <artifactId>cdi-unit</artifactId>
             <version>3.1.4</version>
@@ -61,12 +72,6 @@
             <artifactId>mockito-all</artifactId>
             <version>1.10.19</version>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.primefaces.themes</groupId>
-            <artifactId>bootstrap</artifactId>
-            <version>1.0.10</version>
         </dependency>
 
         <!--<dependency>

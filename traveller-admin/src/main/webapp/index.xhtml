@@ -45,7 +45,7 @@
                         <p:commandButton value="#{msg['button.edit']}"
                                          oncomplete="PF('cityDlg').show();" update=":cityForm:cityDialog"
                                          actionListener="#{cityController.update(city, currentCity)}" />
-                        <p:commandButton value="msg['button.remove']" update="citiesTable"
+                        <p:commandButton value="#{msg['button.remove']}" update="citiesTable"
                                          actionListener="#{cityController.delete(city.id)}" />
                     </p:column>
                     <f:facet name="footer">
