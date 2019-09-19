@@ -1,8 +1,9 @@
 package org.dmly.traveller.app.rest.dto.base;
 
 import org.dmly.traveller.app.model.entity.base.AbstractEntity;
+import org.dmly.traveller.app.model.transform.Transformable;
 
-public class BaseDTO<T extends AbstractEntity> {
+public abstract class BaseDTO<T extends AbstractEntity> implements Transformable<T> {
     private int id;
 
     public int getId() {

@@ -31,7 +31,7 @@
                 <p:column>
                     <p:commandButton value="Edit" oncomplete="PF('cityDlg').show();"
                                      update=":cityForm:cityDialog"
-                                     actionListener="#{currentCity.update(city)}" />
+                                     actionListener="#{cityController.update(city, currentCity)}" />
                     <p:commandButton value="Remove" update="citiesTable"
                                      actionListener="#{cityController.delete(city.id)}" />
                 </p:column>
