@@ -48,54 +48,29 @@ public class HibernateCityRepository extends BaseHibernateRepository implements 
 
     @Override
     public List<City> findAll() {
-        return query(session -> session.createNamedQuery(City.));
+        return query(session -> session.createNamedQuery(City.QUERY_FIND_ALL, City.class).list());
     }
 
     @Override
     public void deleteAll() {
-        try (Session session = sessionFactory.openSession()) {
-            Transaction transaction = null;
-
-            try {
-                transaction = session.beginTransaction();
-                Query stationQuery = session.getNamedQuery(Station.QUERY_DELETE_ALL);
-                stationQuery.executeUpdate();
-                Query cityQuery = session.getNamedQuery(City.QUERY_DELETE_ALL);
-                int deleted = cityQuery.executeUpdate();
-                LOGGER.debug("Deleted {} cities", deleted);
-                transaction.commit();
-            } catch (Exception e) {
-                LOGGER.error(e.getMessage(), e);
-                if (transaction != null) {
-                    transaction.rollback();
-                }
-            }
-        }
+        execute(session -> {
+            session.createNamedQuery(Station.QUERY_DELETE_ALL).executeUpdate();
+            int deleted = session.getNamedQuery(City.QUERY_DELETE_ALL).executeUpdate();
+            LOGGER.debug("Deleted {} cities", deleted);
+        });
     }
 
     @Override
     public void saveAll(List<City> cities) {
-        int batchSize = sessionFactory.getSessionFactoryOptions().getJdbcBatchSize();
-        try (Session session = sessionFactory.openSession()) {
-            Transaction transaction = null;
-            try {
-                transaction = session.beginTransaction();
-
-                for (int i = 0; i < cities.size(); i++) {
-                    session.persist(cities.get(i));
-                    if (i % batchSize == 0 || i == cities.size() - 1) {
-                        session.flush();
-                        session.clear();
-                    }
-                }
-
-                transaction.commit();
-            } catch (Exception e) {
-                LOGGER.error(e.getMessage(), e);
-                if (transaction != null) {
-                    transaction.rollback();
+        int batchSize = getBatchSize();
+        execute(session -> {
+            for (int i = 0; i < cities.size(); i++) {
+                session.persist(cities.get(i));
+                if (i % batchSize == 0 || i == cities.size() - 1) {
+                    session.flush();
+                    session.clear();
                 }
             }
-        }
+        });
     }
 }
