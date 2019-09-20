@@ -1,6 +1,7 @@
 package org.dmly.traveller.presentation.admin.security;
 
 import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
@@ -18,6 +19,12 @@ public class CDIRealm extends AuthorizingRealm {
 
     public CDIRealm(UserService userService) {
         this.userService = userService;
+
+        HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
+        credentialsMatcher.setHashAlgorithmName("SHA-256");
+        credentialsMatcher.setStoredCredentialsHexEncoded(true);
+
+        setCredentialsMatcher(credentialsMatcher);
     }
 
     @Override

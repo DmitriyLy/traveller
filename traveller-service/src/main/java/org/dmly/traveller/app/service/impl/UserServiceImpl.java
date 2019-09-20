@@ -4,6 +4,7 @@ import org.dmly.traveller.app.infra.cdi.DBSource;
 import org.dmly.traveller.app.model.entity.person.User;
 import org.dmly.traveller.app.persistence.repository.UserRepository;
 import org.dmly.traveller.app.service.UserService;
+import org.dmly.traveller.app.infra.util.SecurityUtil;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -21,7 +22,7 @@ public class UserServiceImpl implements UserService {
 
         User user = new User();
         user.setUserName("guest");
-        user.setPassword("guest");
+        user.setPassword(SecurityUtil.encryptSHA("guest"));
 
         userRepository.save(user);
     }

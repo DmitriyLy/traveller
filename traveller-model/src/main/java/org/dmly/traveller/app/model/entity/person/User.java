@@ -29,7 +29,7 @@ public class User extends AbstractEntity {
         this.userName = userName;
     }
 
-    @Column(name = "PASSWORD", nullable = false, length = 24)
+    @Column(name = "PASSWORD", nullable = false, length = 100)
     public String getPassword() {
         return password;
     }
