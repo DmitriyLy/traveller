@@ -44,7 +44,4 @@ public class CityController {
     public void delete(int cityId) {
         geographicService.deleteCity(cityId);
     }
-
-    public void init(@Observes @Initialized(ApplicationScoped.class) Object event) {
-    }
 }

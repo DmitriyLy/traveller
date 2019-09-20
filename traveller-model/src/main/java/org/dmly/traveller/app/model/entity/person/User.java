@@ -10,10 +10,12 @@ import org.dmly.traveller.app.model.entity.base.AbstractEntity;
 @Table(name = "USER")
 @Entity
 @NamedQueries({
-        @NamedQuery(name = User.QUERY_FIND_ALL, query = "from User")
+        @NamedQuery(name = User.QUERY_FIND_ALL, query = "from User"),
+        @NamedQuery(name = User.QUERY_FIND_BY_USERNAME, query = "from User where userName = :userName")
 })
 public class User extends AbstractEntity {
-    public static final String QUERY_FIND_ALL = "user.findAll";
+    public static final String QUERY_FIND_ALL = "User.findAll";
+    public static final String QUERY_FIND_BY_USERNAME = "User.findByUserName";
 
     private String userName;
     private String password;

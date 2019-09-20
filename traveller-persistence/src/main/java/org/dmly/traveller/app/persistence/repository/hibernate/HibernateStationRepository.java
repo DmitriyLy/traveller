@@ -7,8 +7,6 @@ import javax.inject.Named;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.dmly.traveller.app.infra.cdi.DBSource;
 import org.dmly.traveller.app.model.entity.geography.City;
@@ -36,7 +34,7 @@ public class HibernateStationRepository extends BaseHibernateRepository implemen
             }
 
             if (!StringUtils.isEmpty(stationCriteria.getName())) {
-                criteria = criteria.createCriteria(Station.FIELD_NAME);
+                criteria = criteria.createCriteria(Station.FIELD_CITY);
                 criteria.add(Restrictions.eq(City.FIELD_NAME, stationCriteria.getName()));
             }
 
