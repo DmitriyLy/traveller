@@ -5,6 +5,7 @@ import org.dmly.traveller.app.model.entity.person.User;
 import org.dmly.traveller.app.persistence.hibernate.SessionFactoryBuilder;
 import org.dmly.traveller.app.persistence.repository.UserRepository;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +14,7 @@ import java.util.Optional;
 @DBSource
 public class HibernateUserRepository extends BaseHibernateRepository implements UserRepository {
 
+    @Inject
     public HibernateUserRepository(SessionFactoryBuilder builder) {
         super(builder);
     }
