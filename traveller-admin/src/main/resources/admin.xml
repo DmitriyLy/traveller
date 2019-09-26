@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://www.eclipse.org/jetty/configure_9_0.dtd">
+<Configure class="org.eclipse.jetty.webapp.WebAppContext">
+    <Set name="contextPath">/admin</Set>
+    <Set name="war"><Property name="jetty.webapps" default="."/>/admin.war</Set>
+    <Call name="prependServerClass">
+        <Arg>-org.eclipse.jetty.server.handler.ContextHandler</Arg>
+    </Call>
+    <Call name="prependServerClass">
+        <Arg>-org.eclipse.jetty.servlet.FilterHolder</Arg>
+    </Call>
+    <Call name="prependServerClass">
+        <Arg>-org.eclipse.jetty.servlet.ServletContextHandler</Arg>
+    </Call>
+    <Call name="prependServerClass">
+        <Arg>-org.eclipse.jetty.servlet.ServletHolder</Arg>
+    </Call>
+</Configure>

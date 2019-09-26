@@ -1,4 +1,8 @@
 .git
 .settings
 .idea
-traveller-*/*
+traveller-model/*
+traveller-persistence/*
+traveller-presentation/*
+traveller-rest/*
+traveller-service/*

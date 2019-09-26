@@ -1,0 +1,1 @@
+GRANT ALL ON traveller.* TO 'traveller'@'%' IDENTIFIED BY 'traveller'; FLUSH PRIVILEGES;
