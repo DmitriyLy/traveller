@@ -1,0 +1,5 @@
+docker build -t traveller/mysql -f mysql.dockerfile --no-cache=true .
+
+docker run -it -e MYSQL_ROOT_PASSWORD=root -p 3307:3306 --name=traveller_db --memory=512M --cpus=1 -v c:/data/traveller:/var/lib/mysql traveller/mysql
+
+docker exec -it traveller_db /bin/sh
