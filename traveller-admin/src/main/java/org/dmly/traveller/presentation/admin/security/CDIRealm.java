@@ -20,6 +20,10 @@ public class CDIRealm extends AuthorizingRealm {
     public CDIRealm(UserService userService) {
         this.userService = userService;
 
+        if (userService == null) {
+            System.out.println("\n >>> userService is null >>> \n");
+        }
+
         HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
         credentialsMatcher.setHashAlgorithmName("SHA-256");
         credentialsMatcher.setStoredCredentialsHexEncoded(true);
@@ -37,6 +41,13 @@ public class CDIRealm extends AuthorizingRealm {
 
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
         String username = token.getUsername();
+
+        /*if (userService == null) {
+            System.out.println("\n >>> userService is null >>> \n");
+            Weld weld = new Weld();
+            WeldContainer container = weld.initialize();
+            userService = container.select(UserService.class).get();
+        }*/
 
         try {
             String password = Optional.ofNullable(username)

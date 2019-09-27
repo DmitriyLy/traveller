@@ -20,11 +20,12 @@ public class UserServiceImpl implements UserService {
     public UserServiceImpl(@DBSource UserRepository userRepository) {
         this.userRepository = userRepository;
 
-        User user = new User();
-        user.setUserName("guest");
-        user.setPassword(SecurityUtil.encryptSHA("guest"));
-
-        userRepository.save(user);
+        if (!userRepository.findByUserName("guest").isPresent()) {
+            User user = new User();
+            user.setUserName("guest");
+            user.setPassword(SecurityUtil.encryptSHA("guest"));
+            userRepository.save(user);
+        }
     }
 
 

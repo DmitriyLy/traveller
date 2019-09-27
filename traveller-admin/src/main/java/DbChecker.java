@@ -1,6 +1,4 @@
 import org.dmly.traveller.app.service.UserService;
-import org.jboss.weld.environment.se.Weld;
-import org.jboss.weld.environment.se.WeldContainer;
 
 import java.sql.*;
 
@@ -46,9 +44,9 @@ public class DbChecker {
             e.printStackTrace();
         }
 
-        Weld weld = new Weld();
+       /* Weld weld = new Weld();
         WeldContainer weldContainer = weld.initialize();
-        weldContainer.select(UserService.class).get();
+        weldContainer.select(UserService.class).get();*/
 
     }
 }
