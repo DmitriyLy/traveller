@@ -8,6 +8,10 @@ docker run -it -v d:/Projects/traveller/traveller-admin/target:/var/lib/jetty/we
 
 docker run -e MYSQL_ROOT_PASSWORD=root -p 3307:3306 --network=mynet --name=traveller_db --memory=512M --cpus=1 -v c:/data/traveller:/var/lib/mysql traveller/mysql
 
-docker build -t traveller/admin -f admin.dockerfile --no-cache=true .
+docker build -t traveller/admin -f admin-jetty.dockerfile --no-cache=true .
 
 docker run --name=admin -p 8080:8080 --network=mynet traveller/admin
+
+docker build -t traveller/admin -f admin-tomcat.dockerfile --no-cache=true .
+
+docker container run -e JPDA_ADDRESS=8000 -e JPDA_TRANSPORT=dt_socket --name=admin -p 8080:8080 -p 8000:8000 --network=mynet traveller/admin /usr/local/tomcat/bin/catalina.sh jpda run
