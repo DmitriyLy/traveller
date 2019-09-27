@@ -8,6 +8,6 @@ docker run -it -v d:/Projects/traveller/traveller-admin/target:/var/lib/jetty/we
 
 docker run -e MYSQL_ROOT_PASSWORD=root -p 3307:3306 --network=mynet --name=traveller_db --memory=512M --cpus=1 -v c:/data/traveller:/var/lib/mysql traveller/mysql
 
-docker build -t traveller/admin -f admin.dockerfile .
+docker build -t traveller/admin -f admin.dockerfile --no-cache=true .
 
 docker run --name=admin -p 8080:8080 --network=mynet traveller/admin
