@@ -1,17 +1,16 @@
 package org.dmly.traveller.app.config;
 
+import org.glassfish.jersey.internal.inject.AbstractBinder;
 import org.dmly.traveller.app.infra.cdi.DBSourceInstance;
 import org.dmly.traveller.app.persistence.hibernate.SessionFactoryBuilder;
 import org.dmly.traveller.app.persistence.repository.CityRepository;
 import org.dmly.traveller.app.persistence.repository.StationRepository;
 import org.dmly.traveller.app.persistence.repository.hibernate.HibernateCityRepository;
 import org.dmly.traveller.app.persistence.repository.hibernate.HibernateStationRepository;
-import org.dmly.traveller.app.persistence.repository.inmemory.InMemoryCityRepository;
 import org.dmly.traveller.app.service.GeographicService;
 import org.dmly.traveller.app.service.impl.GeographicServiceImpl;
 import org.dmly.traveller.app.service.transform.Transformer;
 import org.dmly.traveller.app.service.transform.impl.SimpleDTOTransformer;
-import org.glassfish.hk2.utilities.binding.AbstractBinder;
 
 import javax.inject.Singleton;
 

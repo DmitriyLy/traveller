@@ -22,18 +22,6 @@
             <artifactId>hibernate-validator</artifactId>
             <version>5.4.0.Final</version>
         </dependency>
-        <dependency>
-            <groupId>javax.el</groupId>
-            <artifactId>javax.el-api</artifactId>
-            <version>${el.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.web</groupId>
-            <artifactId>javax.el</artifactId>
-            <version>${el.version}</version>
-            <scope>runtime</scope>
-        </dependency>
     </dependencies>
 
 
