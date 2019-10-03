@@ -4,6 +4,7 @@ import org.dmly.traveller.app.model.entity.geography.City;
 import org.dmly.traveller.app.service.GeographicService;
 import org.dmly.traveller.app.service.transform.Transformer;
 import org.jglue.cdiunit.CdiRunner;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -15,6 +16,7 @@ import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
 @RunWith(CdiRunner.class)
+@Ignore
 public class CityControllerTest {
 
     @Inject

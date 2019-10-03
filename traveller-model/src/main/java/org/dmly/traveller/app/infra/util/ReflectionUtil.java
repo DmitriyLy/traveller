@@ -39,19 +39,15 @@ public class ReflectionUtil {
             List<Field> fields = getFields(clz1);
 
             List<String> targetFields = getFields(clz2).stream()
-                    .filter(field -> !field.isAnnotationPresent(Ignore.class))
-                    .map(field -> field.getName())
+                    .filter(field -> !field.isAnnotationPresent(Ignore.class)).map((field) -> field.getName())
                     .collect(Collectors.toList());
-
-            return fields.stream()
-                    .filter(field -> !field.isAnnotationPresent(Ignore.class))
-                    .filter(field -> !Modifier.isStatic(field.getModifiers()) && !Modifier.isFinal(field.getModifiers()))
-                    .map(field -> field.getName())
-                    .filter(name -> targetFields.contains(name))
+            return fields.stream().filter(field -> !field.isAnnotationPresent(Ignore.class))
+                    .filter(field -> !Modifier.isStatic(field.getModifiers())
+                            && !Modifier.isFinal(field.getModifiers()))
+                    .map((field) -> field.getName()).filter((name) -> targetFields.contains(name))
                     .collect(Collectors.toList());
-
-        } catch (SecurityException e) {
-            throw new ConfigurationException(e);
+        } catch (SecurityException ex) {
+            throw new ConfigurationException(ex);
         }
 
     }
