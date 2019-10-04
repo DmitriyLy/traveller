@@ -1,14 +1,17 @@
 package org.dmly.traveller.presentation.admin.i18n;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
+import java.io.Serializable;
 import java.util.Locale;
 
-@ManagedBean(name = "language")
+@Named("language")
 @SessionScoped
-public class LanguageBean {
+public class LanguageBean implements Serializable {
+    private static final long serialVersionUID = -1622109063359055116L;
+
     private Locale locale;
 
     public Locale getLocale() {

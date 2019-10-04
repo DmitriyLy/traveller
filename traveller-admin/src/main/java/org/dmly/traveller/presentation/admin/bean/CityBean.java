@@ -6,14 +6,17 @@ import lombok.ToString;
 import org.dmly.traveller.app.model.entity.geography.City;
 import org.dmly.traveller.app.model.transform.Transformable;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
+import java.io.Serializable;
 
-@ManagedBean(name="currentCity")
+@Named("currentCity")
 @ViewScoped
 @ToString
 @Getter @Setter
-public class CityBean implements Transformable<City> {
+public class CityBean implements Serializable, Transformable<City> {
+    private static final long serialVersionUID = -2187178300935394009L;
+
     private int id;
     private String name;
     private String district;

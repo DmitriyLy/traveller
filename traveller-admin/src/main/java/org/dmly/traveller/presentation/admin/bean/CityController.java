@@ -5,8 +5,8 @@ import org.dmly.traveller.app.service.GeographicService;
 import org.dmly.traveller.app.service.transform.Transformer;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.Initialized;
-import javax.enterprise.event.Observes;
+import javax.faces.push.Push;
+import javax.faces.push.PushContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.List;
@@ -19,6 +19,10 @@ public class CityController {
     private final Transformer transformer;
 
     @Inject
+    @Push
+    private PushContext cityChannel;
+
+    @Inject
     public CityController(GeographicService geographicService, Transformer transformer) {
         this.geographicService = geographicService;
         this.transformer = transformer;
@@ -29,12 +33,10 @@ public class CityController {
     }
 
     public void saveCity(CityBean cityBean) {
-        City city = new City();
-        city.setName(cityBean.getName());
-        city.setRegion(cityBean.getRegion());
-        city.setDistrict(cityBean.getDistrict());
-        city.setId(cityBean.getId());
+        City city = transformer.untransform(cityBean, City.class);
         geographicService.saveCity(city);
+
+        cityChannel.send("test");
     }
 
     public void update(City city, CityBean cityBean) {
