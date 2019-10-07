@@ -16,3 +16,20 @@ app.controller('TranslateCtrl', ['$scope', '$translate', function ($scope, $tran
         $translate.use(lang);
     };
 }]);
+
+app.controller('EventCtrl', ['$scope', function ($scope) {
+
+    $scope.currentTime = '';
+
+    if (typeof (EventSource) !== "undefined") {
+        var source = new EventSource('/api/sse/time');
+
+        source.onmessage = function (ev) {
+            $scope.currentTime = ev.data;
+            $scope.$apply();
+        };
+    } else {
+        console.log('SSE not supported by browser.');
+    }
+
+}]);
