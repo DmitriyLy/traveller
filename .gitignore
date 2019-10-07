@@ -9,3 +9,4 @@ service.log
 **/node_modules/
 **/bower_components/
 **/test/coverage/
+jmh-result.text

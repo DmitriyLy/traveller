@@ -31,6 +31,7 @@
         <jetty.version>9.4.7.v20170914</jetty.version>
         <apache-shiro.version>1.4.0</apache-shiro.version>
         <mysql.version>6.0.6</mysql.version>
+        <jmh.version>1.19</jmh.version>
     </properties>
 
     <dependencies>
@@ -69,6 +70,17 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-core</artifactId>
+            <version>${jmh.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-generator-annprocess</artifactId>
+            <version>${jmh.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
