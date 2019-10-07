@@ -1,0 +1,1 @@
+docker run -it --rm -v /home/dmitriy/Projects/traveller/:/opt/maven -w /opt/maven  maven:3-jdk-9-slim mvn clean install
