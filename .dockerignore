@@ -13,3 +13,4 @@
 scripts/
 sql/
 *.iml
+!traveller-admin/target

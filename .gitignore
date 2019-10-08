@@ -10,3 +10,4 @@ service.log
 **/bower_components/
 **/test/coverage/
 jmh-result.text
+tree.txt
