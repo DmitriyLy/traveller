@@ -31,3 +31,7 @@ docker run -e MYSQL_ROOT_PASSWORD=root -p 3307:3306 --network=mynet --name=trave
 docker container run -e JPDA_ADDRESS=8000 -e JPDA_TRANSPORT=dt_socket --name=admin -p 8080:8080 -p 8000:8000 --network=mynet traveller/admin /usr/local/tomcat/bin/catalina.sh jpda run
 
 ==============================================================================================================================
+
+docker build -t traveller/client -f .\docker\client-tomcat-maven.dockerfile .
+
+docker container run -e JPDA_ADDRESS=8000 -e JPDA_TRANSPORT=dt_socket --name=client -p 8080:8080 -p 8000:8000  traveller/client /usr/local/tomcat/bin/catalina.sh jpda run
