@@ -1,0 +1,5 @@
+*
+!src/main/resources/docker
+!src/main/resources/admin.xml
+!target/admin.war
+!docker-entrypoint.sh

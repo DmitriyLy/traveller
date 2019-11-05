@@ -2,24 +2,44 @@ version : '3.4'
 services:
   mysql:
     build:
-      context: ./
-      dockerfile: mysql.dockerfile
+      context: ./traveller-admin
+      dockerfile: src/main/resources/docker/mysql.dockerfile
     logging:
       driver: none
     networks:
       - network1
+    environment:
+      - MYSQL_USER=traveller
+      - MYSQL_PASSWORD=traveller
+      - MYSQL_DATABASE=traveller
+    env_file:
+      - mysql.env
   admin:
     build:
-      context: ./
-      dockerfile: admin-tomcat.dockerfile
+      context: ./traveller-admin
+      dockerfile: src/main/resources/docker/admin-tomcat.dockerfile
+    ports:
+      - "9000:8080"
+    networks:
+      - network1
+    depends_on:
+      - mysql
+    entrypoint: bash -c "sleep 5s && catalina.sh run"
+    #environment:
+    #  - JAVA_OPTS=--add-modules java.xml.bind
+  client:
+    build:
+      context: ./traveller-presentation
+      dockerfile: src/main/resources/docker/client-tomcat.dockerfile
     ports:
       - "8080:8080"
     networks:
       - network1
     depends_on:
       - mysql
-    entrypoint: bash -c "sleep 7s && catalina.sh run"
-
+    entrypoint: bash -c "sleep 5s && catalina.sh run"
+    #environment:
+    #  - JAVA_OPTS=--add-modules java.xml.bind
 networks:
   network1:
     driver: bridge

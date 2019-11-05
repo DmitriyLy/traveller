@@ -6,8 +6,6 @@
                 template="/WEB-INF/layout/standard.xhtml">
 
     <ui:define name="content">
-        <f:websocket channel="cityChannel"
-                     onmessage="function(message){alert(message)}" />
 
         <h:panelGrid columns="3">
             <p:commandLink value="UA" update="@all"

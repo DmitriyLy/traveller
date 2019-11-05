@@ -35,3 +35,8 @@ docker container run -e JPDA_ADDRESS=8000 -e JPDA_TRANSPORT=dt_socket --name=adm
 docker build -t traveller/client -f .\docker\client-tomcat-maven.dockerfile .
 
 docker container run -e JPDA_ADDRESS=8000 -e JPDA_TRANSPORT=dt_socket --name=client -p 8080:8080 -p 8000:8000  traveller/client /usr/local/tomcat/bin/catalina.sh jpda run
+
+
+docker-compose up
+
+docker-compose down
