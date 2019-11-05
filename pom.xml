@@ -13,6 +13,7 @@
         <module>traveller-service</module>
         <module>traveller-admin</module>
         <module>traveller-rest</module>
+        <module>traveller-web</module>
     </modules>
     <packaging>pom</packaging>
 
