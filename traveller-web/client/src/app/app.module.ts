@@ -20,12 +20,12 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
     BrowserModule,
     HttpClientModule,
     TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
-      }
-    })
+            loader: {
+                provide: TranslateLoader,
+                useFactory: HttpLoaderFactory,
+                deps: [HttpClient]
+            }
+        })
   ],
   providers: [TranslateService],
   bootstrap: [AppComponent]
@@ -33,5 +33,5 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 export class AppModule { }
 
 export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http);
+    return new TranslateHttpLoader(http);
 }

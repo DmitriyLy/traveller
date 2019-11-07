@@ -10,7 +10,7 @@ export class CitiesComponent implements OnInit {
   rowsPerPage = 10;
   cities: any;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
   }
@@ -21,5 +21,4 @@ export class CitiesComponent implements OnInit {
     }
     return true;
   }
-
 }
