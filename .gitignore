@@ -11,3 +11,4 @@ service.log
 **/test/coverage/
 jmh-result.text
 tree.txt
+**/dist/
