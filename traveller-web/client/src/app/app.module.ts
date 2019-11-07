@@ -9,6 +9,7 @@ import { LanguageComponent } from './language/language.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { CityService } from "./city.service";
 
 @NgModule({
   declarations: [
@@ -27,7 +28,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
             }
         })
   ],
-  providers: [TranslateService],
+  providers: [TranslateService, CityService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

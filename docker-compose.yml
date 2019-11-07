@@ -29,7 +29,7 @@ services:
     #  - JAVA_OPTS=--add-modules java.xml.bind
   client:
     build:
-      context: ./traveller-presentation
+      context: ./traveller-web
       dockerfile: src/main/resources/docker/client-tomcat.dockerfile
     ports:
       - "8080:8080"
