@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {CityService} from "../city.service";
+import {City} from "../city";
 
 @Component({
   selector: 'app-cities',
@@ -9,7 +10,7 @@ import {CityService} from "../city.service";
 export class CitiesComponent implements OnInit {
 
   rowsPerPage = 10;
-  cities: any;
+  cities: City[];
 
   constructor(private cityService: CityService) {
     cityService.getCities().subscribe(response => this.cities = response);

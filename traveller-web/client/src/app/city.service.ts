@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {City} from "./city";
 
 @Injectable()
 export class CityService {
 
   constructor(private http: HttpClient) { }
 
-  getCities() : Observable<any> {
-    return this.http.get('api/cities');
+  getCities() : Observable<Array<City>> {
+    return this.http.get<Array<City>>('api/cities');
     //return Observable.of([{name: 'Odessa', region: 'Odessa', district: ''}]);
   }
 
