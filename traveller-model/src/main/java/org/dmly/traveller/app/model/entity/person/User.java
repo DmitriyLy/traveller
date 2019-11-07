@@ -1,5 +1,6 @@
 package org.dmly.traveller.app.model.entity.person;
 
+import lombok.Setter;
 import org.dmly.traveller.app.model.entity.base.AbstractEntity;
 ;import javax.persistence.*;
 
@@ -13,6 +14,7 @@ import org.dmly.traveller.app.model.entity.base.AbstractEntity;
         @NamedQuery(name = User.QUERY_FIND_ALL, query = "from User"),
         @NamedQuery(name = User.QUERY_FIND_BY_USERNAME, query = "from User where userName = :userName")
 })
+@Setter
 public class User extends AbstractEntity {
     public static final String QUERY_FIND_ALL = "User.findAll";
     public static final String QUERY_FIND_BY_USERNAME = "User.findByUserName";
@@ -25,16 +27,8 @@ public class User extends AbstractEntity {
         return userName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
     @Column(name = "PASSWORD", nullable = false, length = 100)
     public String getPassword() {
         return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

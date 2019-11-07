@@ -1,5 +1,6 @@
 package org.dmly.traveller.app.model.entity.geography;
 
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.dmly.traveller.app.model.entity.base.AbstractEntity;
 import org.dmly.traveller.app.model.entity.transport.TransportType;
@@ -11,6 +12,7 @@ import java.util.Objects;
 @Table(name = "STATION")
 @Entity
 @NamedQuery(name = Station.QUERY_DELETE_ALL, query = "delete from Station")
+@Setter
 public class Station extends AbstractEntity {
     public static final String QUERY_DELETE_ALL = "deleteStations";
 
@@ -34,17 +36,9 @@ public class Station extends AbstractEntity {
         return city;
     }
 
-    public void setCity(City city) {
-        this.city = city;
-    }
-
     @Embedded
     public Address getAddress() {
         return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
     }
 
     @Column(name = "PHONE", length = 16)
@@ -52,27 +46,15 @@ public class Station extends AbstractEntity {
         return phone;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
     @Embedded
     public Coordinate getCoordinate() {
         return coordinate;
-    }
-
-    public void setCoordinate(Coordinate coordinate) {
-        this.coordinate = coordinate;
     }
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "TRANSPORT_TYPE")
     public TransportType getTransportType() {
         return transportType;
-    }
-
-    public void setTransportType(TransportType transportType) {
-        this.transportType = transportType;
     }
 
     public boolean match(final StationCriteria criteria) {

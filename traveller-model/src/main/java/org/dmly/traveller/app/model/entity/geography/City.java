@@ -1,5 +1,6 @@
 package org.dmly.traveller.app.model.entity.geography;
 
+import lombok.Setter;
 import org.dmly.traveller.app.infra.util.CommonUtil;
 import org.dmly.traveller.app.model.entity.base.AbstractEntity;
 import org.dmly.traveller.app.model.entity.transport.TransportType;
@@ -19,6 +20,7 @@ import java.util.*;
         @NamedQuery(name = City.QUERY_DELETE_ALL, query = "delete from City"),
         @NamedQuery(name = City.QUERY_FIND_ALL, query = "from City")
 })
+@Setter
 public class City extends AbstractEntity {
     public static final String QUERY_DELETE_ALL = "deleteCities";
     public static final String QUERY_FIND_ALL = "City.findAll";
@@ -42,19 +44,11 @@ public class City extends AbstractEntity {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     @NotNull
     @Size(min = 2, max = 32)
     @Column(name = "DISTRICT", nullable = false, length = 32)
     public String getDistrict() {
         return district;
-    }
-
-    public void setDistrict(String district) {
-        this.district = district;
     }
 
     @NotNull
@@ -64,17 +58,9 @@ public class City extends AbstractEntity {
         return region;
     }
 
-    public void setRegion(String region) {
-        this.region = region;
-    }
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "city", orphanRemoval = true)
     public Set<Station> getStations() {
         return CommonUtil.getSafeSet(stations);
-    }
-
-    public void setStations(Set<Station> stations) {
-        this.stations = stations;
     }
 
     /**

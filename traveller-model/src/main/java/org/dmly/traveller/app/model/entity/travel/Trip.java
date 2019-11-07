@@ -18,7 +18,7 @@ public class Trip extends AbstractEntity {
     private double price;
 
     @ManyToOne(cascade = {}, fetch = FetchType.EAGER)
-    @JoinColumn(name = "ROUTE_ID")
+    @JoinColumn(name = "ROUTE_ID", nullable = false)
     public Route getRoute() {
         return route;
     }

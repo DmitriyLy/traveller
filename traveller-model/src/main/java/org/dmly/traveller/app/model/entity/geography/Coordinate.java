@@ -1,9 +1,12 @@
 package org.dmly.traveller.app.model.entity.geography;
 
+import lombok.Setter;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
+@Setter
 public class Coordinate {
     private double x;
     private double y;
@@ -18,16 +21,8 @@ public class Coordinate {
         return x;
     }
 
-    public void setX(double x) {
-        this.x = x;
-    }
-
     @Column(name = "Y")
     public double getY() {
         return y;
-    }
-
-    public void setY(double y) {
-        this.y = y;
     }
 }
