@@ -13,6 +13,7 @@ import org.hibernate.criterion.Restrictions;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.List;
+import java.util.Optional;
 
 @Named
 @DBSource
@@ -37,5 +38,10 @@ public class HibernateOrderRepository extends BaseHibernateRepository implements
             criteria.add(Restrictions.eq(AbstractEntity.FIELD_ID, tripId));
             return criteria.list();
         });
+    }
+
+    @Override
+    public Optional<Order> findById(int id) {
+        return Optional.ofNullable(query(session -> session.get(Order.class, id)));
     }
 }

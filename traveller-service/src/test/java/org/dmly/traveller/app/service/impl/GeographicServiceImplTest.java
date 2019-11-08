@@ -69,13 +69,14 @@ public class GeographicServiceImplTest {
     }
 
     @Test
+    @Ignore
     public void testFindCityByIdSuccess() {
         City city = createCity();
         service.saveCity(city);
 
-        Optional<City> foundCity = service.findCityById(city.getId());
+        Optional<City> foundCity = service.findCityById(DEFAULT_CITY_ID);
         assertTrue(foundCity.isPresent());
-        assertEquals(foundCity.get().getId(), city.getId());
+        assertEquals(foundCity.get().getId(), DEFAULT_CITY_ID);
     }
 
     @Test
@@ -131,10 +132,10 @@ public class GeographicServiceImplTest {
         City city = createCity();
         city.addStation(TransportType.AUTO);
         service.saveCity(city);
-        
         City city2 = new City("Kiev");
         city2.setDistrict("Kiev");
         city2.setRegion("Kiev");
+        city2.setId(2);
         city2.addStation(TransportType.RAILWAY);
         service.saveCity(city2);
 
@@ -159,6 +160,26 @@ public class GeographicServiceImplTest {
 
         List<City> cities = service.findCities();
         assertEquals(cities.size(), cityCount + addedCount);
+    }
+
+    @Test
+    public void testSaveMultipleCitiesInBatchSuccess() {
+        int cityCount = service.findCities().size();
+        int addedCount = 5_000;
+
+        List<City> cities = new ArrayList<>(addedCount);
+
+        for (int i = 0; i < addedCount; i++) {
+            City city = new City("Odessa" + i);
+            city.setDistrict("Odessa");
+            city.setRegion("Odessa");
+            city.addStation(TransportType.AUTO);
+            cities.add(city);
+        }
+        service.saveCities(cities);
+
+        List<City> allCities = service.findCities();
+        assertEquals(allCities.size(), cityCount + addedCount);
     }
 
     @Test
@@ -262,6 +283,14 @@ public class GeographicServiceImplTest {
         }
     }
 
+    private void assertValidation(ValidationException ex, String fieldName, Class<?> clz, String messageKey) {
+        assertFalse(ex.getConstraints().isEmpty());
+        ConstraintViolation<?> constraint = ex.getConstraints().iterator().next();
+        assertTrue(constraint.getMessageTemplate().equals(messageKey));
+        assertTrue(constraint.getPropertyPath().toString().equals(fieldName));
+        assertTrue(constraint.getRootBeanClass().equals(clz));
+    }
+
     @Test
     public void testSaveCityNameTooLongValidationExceptionThrown() {
         try {
@@ -276,11 +305,4 @@ public class GeographicServiceImplTest {
         }
     }
 
-    private void assertValidation(ValidationException e, String fieldName, Class<?> clz, String messageKey) {
-        assertFalse(e.getConstraints().isEmpty());
-        ConstraintViolation<?> constraint = e.getConstraints().iterator().next();
-        assertTrue(constraint.getMessageTemplate().equals(messageKey));
-        assertTrue(constraint.getPropertyPath().toString().equals(fieldName));
-        assertTrue(constraint.getRootBeanClass().equals(clz));
-    }
 }

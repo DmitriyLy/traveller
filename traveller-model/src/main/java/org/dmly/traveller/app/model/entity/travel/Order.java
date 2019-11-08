@@ -1,15 +1,20 @@
 package org.dmly.traveller.app.model.entity.travel;
 
 import lombok.Setter;
+import org.dmly.traveller.app.infra.exception.flow.ReservationException;
 import org.dmly.traveller.app.model.entity.base.AbstractEntity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Entity
 @Table(name = "ORDERS")
 @Setter
 public class Order extends AbstractEntity {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Order.class);
+
     private OrderState state;
     private LocalDateTime dueDate;
     private Trip trip;
@@ -55,4 +60,31 @@ public class Order extends AbstractEntity {
     public String getCancellationReason() {
         return cancellationReason;
     }
+
+    public void cancel(String reason) {
+        if (dueDate.isBefore(LocalDateTime.now())) {
+            LOGGER.warn("This order misses due date and should be automatically cancelled, id: " + getId());
+        }
+        this.state = OrderState.CANCELLED;
+        this.cancellationReason = reason;
+    }
+
+    public void complete() {
+        if (dueDate.isBefore(LocalDateTime.now())) {
+            throw new ReservationException("This order misses due date, id: " + getId());
+        }
+
+        this.state = OrderState.COMPLETED;
+    }
+
+    @Transient
+    public boolean isCompleted() {
+        return state == OrderState.COMPLETED;
+    }
+
+    @Transient
+    public boolean isCancelled() {
+        return state == OrderState.CANCELLED;
+    }
+
 }

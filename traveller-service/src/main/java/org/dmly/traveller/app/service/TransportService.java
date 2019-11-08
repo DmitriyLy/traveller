@@ -1,6 +1,5 @@
 package org.dmly.traveller.app.service;
 
-import org.dmly.traveller.app.model.entity.geography.City;
 import org.dmly.traveller.app.model.entity.travel.Order;
 import org.dmly.traveller.app.model.entity.travel.Route;
 import org.dmly.traveller.app.model.entity.travel.Ticket;
@@ -13,7 +12,7 @@ public interface TransportService {
 
     List<Route> findRoutes();
 
-    Optional<City> findRouteById(int id);
+    Optional<Route> findRouteById(int id);
 
     void saveRoute(Route route);
 
@@ -33,7 +32,7 @@ public interface TransportService {
 
     void makeReservation(Order order);
 
-    void cancelReservation(int orderId);
+    void cancelReservation(int orderId, String reason);
 
     void completeReservation(int orderId);
 
