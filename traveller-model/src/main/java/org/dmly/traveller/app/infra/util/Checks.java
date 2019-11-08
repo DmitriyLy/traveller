@@ -6,7 +6,7 @@ public class Checks {
     private Checks() {
     }
 
-    public static void checkParameter(boolean check, final String message) throws InvalidParameterException {
+    public static void checkParameter(final boolean check, final String message) throws InvalidParameterException {
         if (!check) {
             throw new InvalidParameterException(message);
         }

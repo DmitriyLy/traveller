@@ -1,10 +1,12 @@
 package org.dmly.traveller.app.service.impl;
 
 import org.dmly.traveller.app.infra.cdi.DBSource;
+import org.dmly.traveller.app.infra.util.generator.text.StringGenerator;
 import org.dmly.traveller.app.model.entity.travel.Order;
 import org.dmly.traveller.app.model.entity.travel.Route;
 import org.dmly.traveller.app.model.entity.travel.Ticket;
 import org.dmly.traveller.app.model.entity.travel.Trip;
+import org.dmly.traveller.app.model.entity.travel.generator.TicketNumberGenerator;
 import org.dmly.traveller.app.persistence.repository.transport.OrderRepository;
 import org.dmly.traveller.app.persistence.repository.transport.RouteRepository;
 import org.dmly.traveller.app.persistence.repository.transport.TicketRepository;
@@ -24,6 +26,7 @@ public class TransportServiceImpl implements TransportService {
     private final TicketRepository ticketRepository;
     private final TripRepository tripRepository;
     private final OrderRepository orderRepository;
+    private final StringGenerator ticketNumberGenerator = new TicketNumberGenerator();
 
     @Inject
     public TransportServiceImpl(@DBSource RouteRepository routeRepository, @DBSource TicketRepository ticketRepository,
@@ -116,18 +119,19 @@ public class TransportServiceImpl implements TransportService {
     }
 
     @Override
-    public void buyTicket(int tripId, String clientName) {
+    public Ticket buyTicket(int tripId, String clientName) {
         Optional<Trip> trip = tripRepository.findById(tripId);
+        if (trip.isPresent()) {
+            Ticket ticket = new Ticket();
+            ticket.setTrip(trip.get());
+            ticket.generateUid(ticketNumberGenerator);
+            ticket.setName(clientName);
+            ticketRepository.save(ticket);
 
-        trip.ifPresentOrElse(
-                data -> {
-                    Ticket ticket = new Ticket();
-                    ticket.setTrip(data);
-                    ticket.setUid(String.valueOf(System.nanoTime()));
-                    ticket.setName(clientName);
-                    ticketRepository.save(ticket);
-                },
-                () -> LOGGER.error("Invalid trip identifier: {}", tripId)
-        );
+            return ticket;
+        } else {
+            LOGGER.error("Invalid trip identifier: {}", tripId);
+            return null;
+        }
     }
 }

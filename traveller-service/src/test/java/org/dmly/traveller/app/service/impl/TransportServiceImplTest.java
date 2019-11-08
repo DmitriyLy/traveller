@@ -1,10 +1,13 @@
 package org.dmly.traveller.app.service.impl;
 
 import org.dmly.traveller.app.model.entity.travel.Order;
+import org.dmly.traveller.app.model.entity.travel.Ticket;
+import org.dmly.traveller.app.model.entity.travel.Trip;
 import org.dmly.traveller.app.persistence.repository.transport.OrderRepository;
 import org.dmly.traveller.app.persistence.repository.transport.RouteRepository;
 import org.dmly.traveller.app.persistence.repository.transport.TicketRepository;
 import org.dmly.traveller.app.persistence.repository.transport.TripRepository;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -38,6 +41,10 @@ public class TransportServiceImplTest {
     @Mock
     private TripRepository tripRepository;
 
+    @Before
+    public void setup() {
+    }
+
     @Test
     public void cancelReservation_validOrder_orderCancelled() {
         Order order = new Order();
@@ -45,7 +52,7 @@ public class TransportServiceImplTest {
         order.setDueDate(LocalDateTime.now().plusDays(2));
 
         when(orderRepository.findById(order.getId())).thenReturn(Optional.of(order));
-        transportService.cancelReservation(order.getId(), "test_reason");
+        transportService.cancelReservation(order.getId(), "test");
 
         assertTrue(order.isCancelled());
         verify(orderRepository, times(1)).save(order);
@@ -54,7 +61,7 @@ public class TransportServiceImplTest {
     @Test
     public void cancelReservation_invalidId_orderNotCancelled() {
         when(orderRepository.findById(100)).thenReturn(Optional.empty());
-        transportService.cancelReservation(100, "test_reason");
+        transportService.cancelReservation(100, "test");
 
         verify(orderRepository, never()).save(Matchers.any(Order.class));
     }
@@ -70,5 +77,21 @@ public class TransportServiceImplTest {
 
         assertTrue(order.isCompleted());
         verify(orderRepository, times(1)).save(order);
+    }
+
+    @Test
+    public void buyTicket_validTrip_ticketCreated() {
+        Trip trip = new Trip();
+        trip.setId(1);
+        String clientName = "Guest";
+
+        when(tripRepository.findById(trip.getId())).thenReturn(Optional.of(trip));
+        Ticket ticket = transportService.buyTicket(trip.getId(), clientName);
+        assertNotNull(ticket);
+        assertNotNull(ticket.getUid());
+        assertEquals(ticket.getTrip(), trip);
+        assertEquals(clientName, ticket.getName());
+
+        verify(ticketRepository, times(1)).save(any(Ticket.class));
     }
 }

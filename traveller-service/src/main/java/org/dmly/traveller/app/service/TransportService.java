@@ -36,5 +36,5 @@ public interface TransportService {
 
     void completeReservation(int orderId);
 
-    void buyTicket(int tripId, String clientName);
+    Ticket buyTicket(int tripId, String clientName);
 }
