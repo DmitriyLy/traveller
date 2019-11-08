@@ -4,15 +4,17 @@ import lombok.Setter;
 import org.dmly.traveller.app.model.entity.base.AbstractEntity;
 
 import javax.persistence.*;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Table(name = "TRIP")
 @Entity
 @Setter
 public class Trip extends AbstractEntity {
+    public static final String FIELD_ROUTE = "route";
+
     private Route route;
-    private LocalTime startTime;
-    private LocalTime endTime;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private int maxSeats;
     private int availableSeats;
     private double price;
@@ -24,12 +26,12 @@ public class Trip extends AbstractEntity {
     }
 
     @Column(name = "START_TIME", nullable = false)
-    public LocalTime getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
     @Column(name = "END_TIME", nullable = false)
-    public LocalTime getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 

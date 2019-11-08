@@ -20,6 +20,7 @@ public class AbstractEntity {
     public static final String FIELD_CITY = "city";
     public static final String FIELD_NAME = "name";
     public static final String FIELD_TRANSPORT_TYPE = "transportType";
+    public static final String FIELD_ID = "id";
 
     private int id;
     private LocalDateTime createdAt;

@@ -6,16 +6,22 @@ import org.dmly.traveller.app.model.entity.geography.Station;
 
 import javax.persistence.*;
 import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Table(name = "ROUTE")
 @Entity
 @Setter
+@NamedQueries({@NamedQuery(name = Route.QUERY_FIND_ALL, query = "from Route")})
 public class Route extends AbstractEntity {
+    public static final String QUERY_FIND_ALL = "Route.findAll";
+
     private Station start;
     private Station destination;
     private LocalTime startTime;
     private LocalTime endTime;
     private double price;
+    private Set<Trip> trips;
 
     @ManyToOne(cascade = {}, fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "START_ID")
@@ -42,5 +48,21 @@ public class Route extends AbstractEntity {
     @Column(name = "PRICE")
     public double getPrice() {
         return price;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "route", orphanRemoval = true)
+    public Set<Trip> getTrips() {
+        return trips;
+    }
+
+    public Trip addTrip(final Trip trip) {
+        if (trips == null) {
+            trips = new HashSet<>();
+        }
+
+        trips.add(trip);
+        trip.setRoute(this);
+
+        return trip;
     }
 }

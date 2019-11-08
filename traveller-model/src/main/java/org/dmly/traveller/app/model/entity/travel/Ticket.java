@@ -8,7 +8,10 @@ import javax.persistence.*;
 @Entity
 @Table(name = "TICKETS")
 @Setter
+@NamedQueries({@NamedQuery(name = Ticket.QUERY_FIND_ALL, query = "from Ticket")})
 public class Ticket extends AbstractEntity {
+    public static final String QUERY_FIND_ALL = "Ticket.findAll";
+
     private Trip trip;
     private String name;
     private String uid;

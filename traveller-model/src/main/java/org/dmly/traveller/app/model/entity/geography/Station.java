@@ -15,6 +15,7 @@ import java.util.Objects;
 @Setter
 public class Station extends AbstractEntity {
     public static final String QUERY_DELETE_ALL = "deleteStations";
+    public static final String FIELD_TRIP = "trip";
 
     private City city;
     private Address address;
