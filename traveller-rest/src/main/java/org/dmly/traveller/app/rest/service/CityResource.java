@@ -11,6 +11,7 @@ import org.dmly.traveller.app.service.transform.Transformer;
 
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -48,7 +49,7 @@ public class CityResource extends BaseResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public void saveCity(CityDTO cityDTO) {
+    public void saveCity(@Valid CityDTO cityDTO) {
         service.saveCity(transformer.untransform(cityDTO, City.class));
     }
 

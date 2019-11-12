@@ -58,6 +58,49 @@ public class CityResourceTest  extends JerseyTest {
         assertEquals(response.getStatus(), Response.Status.BAD_REQUEST.getStatusCode());
     }
 
+    @Test
+    public void save_emptyName_badRequestReturned() {
+        CityDTO city = new CityDTO();
+        city.setDistrict("Nikolaev");
+        city.setRegion("Nikolaev");
+        Response response = target("cities").request().post(Entity.entity(city, MediaType.APPLICATION_JSON_TYPE));
+        assertNotNull(response);
+        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+    }
+
+    @Test
+    public void save_cityValid_successStatusReturned() {
+        CityDTO city = new CityDTO();
+        city.setName("Odessa");
+        city.setDistrict("Odessa");
+        city.setRegion("Odessa");
+        Response response = target("cities").request().post(Entity.entity(city, MediaType.APPLICATION_JSON_TYPE));
+        assertNotNull(response);
+        assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
+    }
+
+    @Test
+    public void save_nameTooShort_badRequestReturned() {
+        CityDTO city = new CityDTO();
+        city.setName("N");
+        city.setDistrict("Odessa");
+        city.setRegion("Odessa");
+        Response response = target("cities").request().post(Entity.entity(city, MediaType.APPLICATION_JSON_TYPE));
+        assertNotNull(response);
+        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+    }
+
+    @Test
+    public void save_nameTooLong_badRequestReturned() {
+        CityDTO city = new CityDTO();
+        city.setName("N1234567890123456789012345678901234567890");
+        city.setDistrict("Odessa");
+        city.setRegion("Odessa");
+        Response response = target("cities").request().post(Entity.entity(city, MediaType.APPLICATION_JSON_TYPE));
+        assertNotNull(response);
+        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+    }
+
     @SuppressWarnings("unchecked")
     @Test
     public void testSaveCitySuccess() throws Throwable {

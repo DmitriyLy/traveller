@@ -1,6 +1,5 @@
 package org.dmly.traveller.app.service.impl;
 
-import org.dmly.traveller.app.infra.exception.flow.ValidationException;
 import org.dmly.traveller.app.model.entity.geography.City;
 import org.dmly.traveller.app.model.entity.geography.Station;
 import org.dmly.traveller.app.model.entity.transport.TransportType;
@@ -17,7 +16,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.Ignore;
 
-import javax.validation.ConstraintViolation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -254,55 +252,4 @@ public class GeographicServiceImplTest {
 
         return city;
     }
-
-    @Test
-    public void testSaveCityMissingNameValidationExceptionThrown() {
-        try {
-            City city = new City();
-            city.setDistrict("Nikolaev");
-            city.setRegion("Nikolaev");
-            service.saveCity(city);
-
-            fail("City name validation failed");
-        } catch (ValidationException ex) {
-            assertValidation(ex, "name", City.class, "{javax.validation.constraints.NotNull.message}");
-        }
-    }
-
-    @Test
-    public void testSaveCityNameTooShortValidationExceptionThrown() {
-        try {
-            City city = new City("N");
-            city.setDistrict("Nikolaev");
-            city.setRegion("Nikolaev");
-            service.saveCity(city);
-
-            fail("City name validation failed");
-        } catch (ValidationException ex) {
-            assertValidation(ex, "name", City.class, "{javax.validation.constraints.Size.message}");
-        }
-    }
-
-    private void assertValidation(ValidationException ex, String fieldName, Class<?> clz, String messageKey) {
-        assertFalse(ex.getConstraints().isEmpty());
-        ConstraintViolation<?> constraint = ex.getConstraints().iterator().next();
-        assertTrue(constraint.getMessageTemplate().equals(messageKey));
-        assertTrue(constraint.getPropertyPath().toString().equals(fieldName));
-        assertTrue(constraint.getRootBeanClass().equals(clz));
-    }
-
-    @Test
-    public void testSaveCityNameTooLongValidationExceptionThrown() {
-        try {
-            City city = new City("N1234567890123456789012345678901234567890");
-            city.setDistrict("Nikolaev");
-            city.setRegion("Nikolaev");
-            service.saveCity(city);
-
-            fail("City name validation failed");
-        } catch (ValidationException ex) {
-            assertValidation(ex, "name", City.class, "{javax.validation.constraints.Size.message}");
-        }
-    }
-
 }

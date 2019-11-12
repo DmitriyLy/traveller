@@ -1,5 +1,6 @@
 package org.dmly.traveller.app.service.impl;
 
+import org.dmly.traveller.app.infra.exception.flow.InvalidParameterException;
 import org.dmly.traveller.app.model.entity.travel.Order;
 import org.dmly.traveller.app.model.entity.travel.Ticket;
 import org.dmly.traveller.app.model.entity.travel.Trip;
@@ -93,5 +94,15 @@ public class TransportServiceImplTest {
         assertEquals(clientName, ticket.getName());
 
         verify(ticketRepository, times(1)).save(any(Ticket.class));
+    }
+
+    @Test(expected = InvalidParameterException.class)
+    public void buyTicket_invalidTripId_exceptionThrown() {
+        Trip trip = new Trip();
+        trip.setId(1);
+        String clientName = "Guest";
+
+        when(tripRepository.findById(trip.getId())).thenReturn(Optional.empty());
+        transportService.buyTicket(trip.getId(), clientName);
     }
 }

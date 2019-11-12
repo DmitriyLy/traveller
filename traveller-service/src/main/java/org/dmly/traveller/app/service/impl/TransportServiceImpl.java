@@ -1,6 +1,7 @@
 package org.dmly.traveller.app.service.impl;
 
 import org.dmly.traveller.app.infra.cdi.DBSource;
+import org.dmly.traveller.app.infra.exception.flow.InvalidParameterException;
 import org.dmly.traveller.app.infra.util.generator.text.StringGenerator;
 import org.dmly.traveller.app.model.entity.travel.Order;
 import org.dmly.traveller.app.model.entity.travel.Route;
@@ -120,18 +121,16 @@ public class TransportServiceImpl implements TransportService {
 
     @Override
     public Ticket buyTicket(int tripId, String clientName) {
-        Optional<Trip> trip = tripRepository.findById(tripId);
-        if (trip.isPresent()) {
-            Ticket ticket = new Ticket();
-            ticket.setTrip(trip.get());
-            ticket.generateUid(ticketNumberGenerator);
-            ticket.setName(clientName);
-            ticketRepository.save(ticket);
+        Optional<Trip> optional = tripRepository.findById(tripId);
 
-            return ticket;
-        } else {
-            LOGGER.error("Invalid trip identifier: {}", tripId);
-            return null;
-        }
+        Trip trip = optional.orElseThrow(() -> new InvalidParameterException("Invalid trip identifier: " + tripId));
+
+        Ticket ticket = new Ticket();
+        ticket.setTrip(trip);
+        ticket.generateUid(ticketNumberGenerator);
+        ticket.setName(clientName);
+        ticketRepository.save(ticket);
+
+        return ticket;
     }
 }

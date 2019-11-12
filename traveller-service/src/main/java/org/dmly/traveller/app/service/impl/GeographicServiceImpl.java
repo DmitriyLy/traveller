@@ -2,17 +2,11 @@ package org.dmly.traveller.app.service.impl;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 
 import org.dmly.traveller.app.infra.cdi.DBSource;
-import org.dmly.traveller.app.infra.exception.flow.ValidationException;
 import org.dmly.traveller.app.model.entity.geography.City;
 import org.dmly.traveller.app.model.entity.geography.Station;
 import org.dmly.traveller.app.model.search.criteria.StationCriteria;
@@ -29,15 +23,11 @@ import org.dmly.traveller.app.service.GeographicService;
 public class GeographicServiceImpl implements GeographicService {
     private final CityRepository cityRepository;
     private final StationRepository stationRepository;
-    private final Validator validator;
 
     @Inject
     public GeographicServiceImpl(@DBSource CityRepository cityRepository, @DBSource StationRepository stationRepository) {
         this.cityRepository = cityRepository;
         this.stationRepository = stationRepository;
-
-        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-        validator = validatorFactory.getValidator();
     }
 
     @Override
@@ -57,10 +47,6 @@ public class GeographicServiceImpl implements GeographicService {
 
     @Override
     public void saveCity(City city) {
-        Set constraintViolations = validator.validate(city);
-        if (!constraintViolations.isEmpty()) {
-            throw new ValidationException("City validation failure", constraintViolations);
-        }
         cityRepository.save(city);
     }
 
