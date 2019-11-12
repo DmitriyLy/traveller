@@ -13,6 +13,11 @@
 
     <packaging>war</packaging>
 
+    <properties>
+        <maven.exec.skip>false</maven.exec.skip>
+        <angular.dist.folder>client/dist</angular.dist.folder>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.dmly</groupId>
@@ -39,45 +44,58 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>docker/*.*</exclude>
+                </excludes>
+            </resource>
+        </resources>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>1.6.0</version>
+                    <executions>
+                        <execution>
+                            <id>install dependencies</id>
+                            <configuration>
+                                <workingDirectory>client/src/</workingDirectory>
+                                <executable>npm</executable>
+                                <arguments>
+                                    <argument>install</argument>
+                                </arguments>
+                                <skip>${maven.exec.skip}</skip>
+                            </configuration>
+                            <phase>generate-resources</phase>
+                            <goals>
+                                <goal>exec</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>build angular</id>
+                            <configuration>
+                                <workingDirectory>client/src/</workingDirectory>
+                                <executable>npm</executable>
+                                <arguments>
+                                    <argument>run</argument>
+                                    <argument>build</argument>
+                                </arguments>
+                                <skip>${maven.exec.skip}</skip>
+                            </configuration>
+                            <phase>generate-resources</phase>
+                            <goals>
+                                <goal>exec</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.6.0</version>
-                <executions>
-                    <execution>
-                        <id>install dependencies</id>
-                        <configuration>
-                            <workingDirectory>client/src/</workingDirectory>
-                            <executable>npm</executable>
-                            <arguments>
-                                <argument>install</argument>
-                            </arguments>
-                        </configuration>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>build angular</id>
-                        <configuration>
-                            <workingDirectory>client/src/</workingDirectory>
-                            <executable>npm</executable>
-                            <arguments>
-                                <argument>run</argument>
-                                <argument>build</argument>
-                            </arguments>
-                        </configuration>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.2.0</version>
                 <configuration>
@@ -85,11 +103,48 @@
                     <warName>client</warName>
                     <webResources>
                         <resource>
-                            <directory>client/dist</directory>
+                            <directory>${angular.dist.folder}</directory>
                             <targetPath>/</targetPath>
                         </resource>
                     </webResources>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.github.kongchen</groupId>
+                <artifactId>swagger-maven-plugin</artifactId>
+                <version>3.1.7</version>
+                <configuration>
+                    <apiSources>
+                        <apiSource>
+                            <springmvc>false</springmvc>
+                            <locations>
+                                <location>org.itsimulator.germes.app.rest.service</location>
+                            </locations>
+                            <schemes>
+                                <scheme>http</scheme>
+                            </schemes>
+                            <host>localhost:8080</host>
+                            <basePath>/api</basePath>
+                            <info>
+                                <title>Germes client project</title>
+                                <version>v1</version>
+                            </info>
+                            <swaggerDirectory>${basedir}/target/generated/swagger-ui</swaggerDirectory>
+                        </apiSource>
+                    </apiSources>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

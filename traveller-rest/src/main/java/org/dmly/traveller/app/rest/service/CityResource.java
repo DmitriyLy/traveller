@@ -3,13 +3,11 @@ package org.dmly.traveller.app.rest.service;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.dmly.traveller.app.model.entity.geography.City;
-import org.dmly.traveller.app.model.entity.transport.TransportType;
 import org.dmly.traveller.app.rest.dto.CityDTO;
 import org.dmly.traveller.app.rest.service.base.BaseResource;
 import org.dmly.traveller.app.service.GeographicService;
 import org.dmly.traveller.app.service.transform.Transformer;
 
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.*;
@@ -32,11 +30,6 @@ public class CityResource extends BaseResource {
         this.transformer = transformer;
 
         this.service = service;
-        City city = new City("Odessa");
-        city.addStation(TransportType.AUTO);
-        city.setDistrict("Odessa");
-        city.setRegion("Odessa");
-        service.saveCity(city);
     }
 
     @GET
@@ -49,7 +42,9 @@ public class CityResource extends BaseResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public void saveCity(@Valid CityDTO cityDTO) {
+    @ApiOperation(value = "Saves city object", consumes = MediaType.APPLICATION_JSON)
+    @ApiResponses(value = { @ApiResponse(code = 400, message = "Invalid content of city object") })
+    public void saveCity(@Valid @ApiParam(name = "city", required = true) CityDTO cityDTO) {
         service.saveCity(transformer.untransform(cityDTO, City.class));
     }
 
@@ -70,9 +65,4 @@ public class CityResource extends BaseResource {
         }
         return ok(transformer.transform(city.get(), CityDTO.class));
     }
-
-    @PreDestroy
-    public void preDestroy() {
-    }
-
 }
