@@ -1,8 +1,10 @@
 package org.dmly.traveller.app.rest.service.transport;
 
 import org.dmly.traveller.app.rest.dto.transport.RouteDTO;
+import org.dmly.traveller.app.rest.resolver.ObjectMapperContextResolver;
 import org.dmly.traveller.app.rest.service.config.JerseyConfig;
 import org.glassfish.jersey.test.JerseyTest;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -22,6 +24,11 @@ public class RouteResourceTest extends JerseyTest {
     @Override
     protected Application configure() {
         return new JerseyConfig();
+    }
+
+    @Before
+    public void setup() {
+        getClient().register(ObjectMapperContextResolver.class);
     }
 
     @Test
@@ -58,7 +65,7 @@ public class RouteResourceTest extends JerseyTest {
     }
 
     @Test
-    @Ignore
+    //@Ignore
     public void save_routeValid_successStatusReturned() {
         RouteDTO route = new RouteDTO();
         route.setDestinationId(1);

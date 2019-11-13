@@ -31,6 +31,7 @@
         <apache-shiro.version>1.4.0</apache-shiro.version>
         <mysql.version>6.0.6</mysql.version>
         <jmh.version>1.21</jmh.version>
+        <jackson.version>2.8.10</jackson.version>
     </properties>
 
     <dependencies>
