@@ -22,6 +22,8 @@ public interface GeographicService {
 
     List<Station> searchStations(StationCriteria criteria, RangeCriteria rangeCriteria);
 
+    Optional<Station> findStationById(int id);
+
     void saveCity(City city);
 
     void saveCities(List<City> cities);

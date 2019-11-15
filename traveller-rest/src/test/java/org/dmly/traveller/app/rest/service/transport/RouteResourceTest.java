@@ -1,5 +1,6 @@
 package org.dmly.traveller.app.rest.service.transport;
 
+import org.dmly.traveller.app.rest.dto.CityDTO;
 import org.dmly.traveller.app.rest.dto.transport.RouteDTO;
 import org.dmly.traveller.app.rest.resolver.ObjectMapperContextResolver;
 import org.dmly.traveller.app.rest.service.config.JerseyConfig;
@@ -35,6 +36,12 @@ public class RouteResourceTest extends JerseyTest {
     @Before
     public void setup() {
         getClient().register(ObjectMapperContextResolver.class);
+
+        CityDTO city = new CityDTO();
+        city.setName("Odessa");
+        city.setDistrict("Odessa");
+        city.setRegion("Odessa");
+        target("cities").request().post(Entity.entity(city, MediaType.APPLICATION_JSON_TYPE));
     }
 
     @Test

@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import org.dmly.traveller.app.model.entity.travel.Route;
+import org.dmly.traveller.app.model.transform.annotation.DomainProperty;
 import org.dmly.traveller.app.rest.dto.base.BaseDTO;
 
 import javax.validation.constraints.NotNull;
@@ -18,10 +19,12 @@ public class RouteDTO extends BaseDTO<Route> {
 
     @ApiModelProperty(name = "Identifier of the start station", required = true)
     @Positive
+    @DomainProperty("start")
     private int startId;
 
     @ApiModelProperty(name = "Identifier of the destination station", required = true)
     @Positive
+    @DomainProperty("destination")
     private int destinationId;
 
     @ApiModelProperty(name = "Route departure time", required = true)

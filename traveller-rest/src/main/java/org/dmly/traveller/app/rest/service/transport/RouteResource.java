@@ -5,6 +5,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.dmly.traveller.app.model.entity.travel.Route;
 import org.dmly.traveller.app.rest.dto.transport.RouteDTO;
 import org.dmly.traveller.app.rest.service.base.BaseResource;
+import org.dmly.traveller.app.service.GeographicService;
 import org.dmly.traveller.app.service.TransportService;
 import org.dmly.traveller.app.service.transform.Transformer;
 
@@ -21,21 +22,24 @@ import java.util.stream.Collectors;
 @Api("routes")
 public class RouteResource extends BaseResource {
 
-    private final TransportService service;
+    private final TransportService transportService;
+
+    private final GeographicService geographicService;
 
     private final Transformer transformer;
 
     @Inject
-    public RouteResource(TransportService service, Transformer transformer) {
-        this.service = service;
+    public RouteResource(TransportService transportService, GeographicService geographicService, Transformer transformer) {
+        this.transportService = transportService;
         this.transformer = transformer;
+        this.geographicService = geographicService;
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "Returns all the existing routes")
     public List<RouteDTO> findAll() {
-        return service.findRoutes().stream()
+        return transportService.findRoutes().stream()
                 .map(route -> transformer.transform(route, RouteDTO.class))
                 .collect(Collectors.toList());
     }
@@ -45,7 +49,10 @@ public class RouteResource extends BaseResource {
     @ApiOperation(value = "Saves route object", consumes = MediaType.APPLICATION_JSON)
     @ApiResponses(value = { @ApiResponse(code = 400, message = "Invalid content of the route object") })
     public void save(@Valid @ApiParam(name = "route", required = true) RouteDTO routeDTO) {
-        service.saveRoute(transformer.untransform(routeDTO, Route.class));
+        Route route = transformer.untransform(routeDTO, Route.class);
+        route.setStart(geographicService.findStationById(routeDTO.getStartId()).orElse(null));
+        route.setDestination(geographicService.findStationById(routeDTO.getDestinationId()).orElse(null));
+        transportService.saveRoute(route);
     }
 
     @Path("/{cityId}")
@@ -59,7 +66,7 @@ public class RouteResource extends BaseResource {
             return BAD_REQUEST;
         }
 
-        Optional<Route> route = service.findRouteById(NumberUtils.toInt(cityId));
+        Optional<Route> route = transportService.findRouteById(NumberUtils.toInt(cityId));
         if (!route.isPresent()) {
             return NOT_FOUND;
         }

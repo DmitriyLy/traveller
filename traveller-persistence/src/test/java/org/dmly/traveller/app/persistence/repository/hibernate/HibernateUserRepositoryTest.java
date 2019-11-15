@@ -14,59 +14,51 @@ public class HibernateUserRepositoryTest {
     private UserRepository repository;
 
     @Before
-    public void setUp() throws Exception {
+    public void setup() {
         SessionFactoryBuilder builder = new SessionFactoryBuilder();
         repository = new HibernateUserRepository(builder);
     }
 
     @Test
-    public void findAll_InitialInvocation_ListEmpty() {
+    public void findAll_InitialInvokation_ListIsEmpty() {
+        List<User> cities = repository.findAll();
+        assertFalse(cities.isEmpty());
+
         User user = new User();
-        user.setUserName("user");
-        user.setPassword("password");
-
+        user.setUserName("test1");
+        user.setPassword("test1");
         repository.save(user);
-
-        List<User> users = repository.findAll();
-
-        assertFalse(users.isEmpty());
     }
 
     @Test
     public void save_ValidUserObject_UserSaved() {
-        int userCount = repository.findAll().size();
+        int cityCount = repository.findAll().size();
 
         User user = new User();
-        user.setUserName("username" + (int)(Math.random() * 1000));
-        user.setPassword("password");
+        user.setUserName("test2");
+        user.setPassword("test2");
         repository.save(user);
 
         List<User> users = repository.findAll();
-
-        assertEquals(userCount + 1, users.size());
+        assertEquals(users.size(), cityCount + 1);
     }
 
-    @Test(expected = Exception.class)
-    public void save_UserExists_ExceptionThrown() {
+    @Test(expected=Exception.class)
+    public void save_UserIsNull_ExceptionThrown() {
         repository.save(null);
 
         assertTrue(false);
     }
 
     @Test
-    public void delete_UserExists_UserDeleted() {
-        int userNumber = repository.findAll().size();
+    public void delete_UserExists_UsersDeleted() {
+        List<User> users = repository.findAll();
+        int oldCount = users.size();
 
-        User user = new User();
-        user.setUserName("username" + (int)(Math.random() * 1000));
-        user.setPassword("password");
-
-        repository.save(user);
-
-        assertEquals(userNumber + 1, repository.findAll().size());
+        User user = users.get(0);
 
         repository.delete(user.getId());
-
-        assertEquals(userNumber, repository.findAll().size());
+        users = repository.findAll();
+        assertEquals(users.size() + 1, oldCount);
     }
 }

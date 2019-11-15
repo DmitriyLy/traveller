@@ -2,6 +2,7 @@ package org.dmly.traveller.app.rest.dto.base;
 
 import lombok.Getter;
 import lombok.Setter;
+
 import org.dmly.traveller.app.model.entity.base.AbstractEntity;
 import org.dmly.traveller.app.model.transform.Transformable;
 

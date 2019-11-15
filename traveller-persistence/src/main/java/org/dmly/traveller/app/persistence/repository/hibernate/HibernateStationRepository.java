@@ -42,4 +42,8 @@ public class HibernateStationRepository extends BaseHibernateRepository implemen
         });
     }
 
+    @Override
+    public Station findById(int stationId) {
+        return query(session -> session.get(Station.class, stationId));
+    }
 }
