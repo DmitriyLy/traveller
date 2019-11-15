@@ -71,7 +71,7 @@ public class RouteResourceTest extends JerseyTest {
     }
 
     @Test
-    //@Ignore
+    @Ignore
     public void save_routeValid_successStatusReturned() {
         RouteDTO route = new RouteDTO();
         route.setDestinationId(1);
