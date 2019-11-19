@@ -19,7 +19,7 @@ public class GuavaCachedFieldProvider extends FieldProvider {
 
         List<String> fields = cache.get(key);
         if (fields == null) {
-            fields = ReflectionUtil.findSimilarField(source, destination);
+            fields = ReflectionUtil.findSimilarFields(source, destination);
             cache.putAll(key, fields);
         }
 

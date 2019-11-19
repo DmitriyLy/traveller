@@ -6,6 +6,6 @@ import java.util.List;
 
 public class FieldProvider {
     public List<String> getFieldNames(Class<?> source, Class<?> destination) {
-        return ReflectionUtil.findSimilarField(source, destination);
+        return ReflectionUtil.findSimilarFields(source, destination);
     }
 }

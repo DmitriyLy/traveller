@@ -53,9 +53,9 @@ public class CachedFieldProviderTest {
         List<String> fields = provider.getFieldNames(Source.class, Destination.class);
 
         PowerMockito.mockStatic(ReflectionUtil.class);
-        when(ReflectionUtil.findSimilarField(Source.class, Destination.class)).thenReturn(Collections.emptyList());
+        when(ReflectionUtil.findSimilarFields(Source.class, Destination.class)).thenReturn(Collections.emptyList());
 
-        assertTrue(ReflectionUtil.findSimilarField(Source.class, Destination.class).isEmpty());
+        assertTrue(ReflectionUtil.findSimilarFields(Source.class, Destination.class).isEmpty());
         List<String> fields2 = provider.getFieldNames(Source.class, Destination.class);
         assertFalse(fields.isEmpty());
         assertEquals(fields, fields2);
@@ -66,7 +66,7 @@ public class CachedFieldProviderTest {
     public void testGetFieldNamesAreCachedUsingJMockit() {
         new Expectations() {
             {
-                ReflectionUtil.findSimilarField(Source.class, Destination.class);
+                ReflectionUtil.findSimilarFields(Source.class, Destination.class);
                 result = Collections.singletonList("name");
             }
         };
@@ -75,12 +75,12 @@ public class CachedFieldProviderTest {
 
         new Expectations() {
             {
-                ReflectionUtil.findSimilarField(Source.class, Destination.class);
+                ReflectionUtil.findSimilarFields(Source.class, Destination.class);
                 result = Collections.emptyList();
             }
         };
 
-        assertTrue(ReflectionUtil.findSimilarField(Source.class, Destination.class).isEmpty());
+        assertTrue(ReflectionUtil.findSimilarFields(Source.class, Destination.class).isEmpty());
         List<String> fields2 = provider.getFieldNames(Source.class, Destination.class);
         assertFalse(fields.isEmpty());
         assertEquals(fields, fields2);
@@ -105,7 +105,7 @@ public class CachedFieldProviderTest {
 
         MockReflectionUtil.fields = Collections.emptyList();
 
-        assertFalse(ReflectionUtil.findSimilarField(Source.class, Destination.class).isEmpty());
+        assertTrue(ReflectionUtil.findSimilarFields(Source.class, Destination.class).isEmpty());
         List<String> fields2 = provider.getFieldNames(Source.class, Destination.class);
         assertFalse(fields.isEmpty());
         assertEquals(fields, fields2);

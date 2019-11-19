@@ -36,7 +36,7 @@ public class CityResource extends BaseResource {
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "Returns all the existing cities")
     public List<CityDTO> findCities() {
-        return service.findCities().stream().map((city) -> transformer.transform(city, CityDTO.class))
+        return service.findCities().stream().map(city -> transformer.transform(city, CityDTO.class))
                 .collect(Collectors.toList());
     }
 

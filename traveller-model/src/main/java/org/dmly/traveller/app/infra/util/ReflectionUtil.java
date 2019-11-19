@@ -1,13 +1,16 @@
 package org.dmly.traveller.app.infra.util;
 
+import org.apache.commons.lang3.StringUtils;
 import org.dmly.traveller.app.infra.exception.ConfigurationException;
 import org.dmly.traveller.app.infra.util.annotation.Ignore;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -27,42 +30,55 @@ public class ReflectionUtil {
      */
     public static <T> T createInstance(Class<T> clz) throws ConfigurationException {
         try {
-            return clz.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
+            return clz.getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
             throw new ConfigurationException(e);
         }
     }
 
-    public static List<String> findSimilarField(Class<?> clz1, Class<?> clz2) throws ConfigurationException {
-
+    public static List<String> findSimilarFields(Class<?> clz1, Class<?> clz2) throws ConfigurationException {
         try {
-            List<Field> fields = getFields(clz1);
+            Predicate<Field> ignoredField = field -> !field.isAnnotationPresent(Ignore.class);
+            List<String> targetFields = getFields(clz2, List.of(ignoredField));
 
-            List<String> targetFields = getFields(clz2).stream()
-                    .filter(field -> !field.isAnnotationPresent(Ignore.class)).map((field) -> field.getName())
-                    .collect(Collectors.toList());
-            return fields.stream().filter(field -> !field.isAnnotationPresent(Ignore.class))
-                    .filter(field -> !Modifier.isStatic(field.getModifiers())
-                            && !Modifier.isFinal(field.getModifiers()))
-                    .map((field) -> field.getName()).filter((name) -> targetFields.contains(name))
-                    .collect(Collectors.toList());
-        } catch (SecurityException ex) {
-            throw new ConfigurationException(ex);
+            return getFields(clz1, List.of(ignoredField,
+                    field -> !Modifier.isStatic(field.getModifiers()) && !Modifier.isFinal(field.getModifiers()),
+                    field -> targetFields.contains(field.getName())
+            ));
+        } catch (SecurityException e) {
+            throw new ConfigurationException(e);
         }
-
     }
 
-    public static <T> List<Field> getFields(Class<?> cls) {
+    public static <T> List<Field> getFields(final Class<?> cls) {
         List<Field> fields = new ArrayList<>();
-        while (cls != null) {
-            fields.addAll(Arrays.asList(cls.getDeclaredFields()));
-            cls = cls.getSuperclass();
+
+        Class<?> current = cls;
+        while (current != null) {
+            fields.addAll(Arrays.asList(current.getDeclaredFields()));
+            current = current.getSuperclass();
         }
 
         return fields;
     }
 
-    public static void copyFields(Object source, Object destination, List<String> fields) throws ConfigurationException {
+    public static List<String> getFields(final Class<?> cls, final List<Predicate<Field>> filters) {
+        List<Field> fields = new ArrayList<>();
+
+        Class<?> current = cls;
+        while (current != null) {
+            fields.addAll(
+                    Arrays.stream(current.getDeclaredFields())
+                            .filter(field -> filters.stream().allMatch(p -> p.test(field)))
+                            .collect(Collectors.toList())
+            );
+            current = current.getSuperclass();
+        }
+
+        return fields.stream().map(Field::getName).collect(Collectors.toList());
+    }
+
+    public static void copyFields(final Object source, final Object destination, final List<String> fields) throws ConfigurationException {
         Checks.checkParameter(source != null, "Source object is not initialized");
         Checks.checkParameter(destination != null, "Destination object is not initialized");
 
@@ -74,8 +90,7 @@ public class ReflectionUtil {
                     fieldSource.setAccessible(true);
                     Object value = fieldSource.get(source);
 
-                    fieldDestination.setAccessible(true);
-                    fieldDestination.set(destination, value);
+                    setFieldValue(destination, field, value);
                 }
             }
         } catch (SecurityException | ReflectiveOperationException e) {
@@ -94,5 +109,31 @@ public class ReflectionUtil {
         }
 
         throw new ConfigurationException("No field " + name + " in the class " + clz);
+    }
+
+    public static Object getFieldValue(final Object src, final String name) throws ConfigurationException {
+        Checks.checkParameter(src != null, "Source object is not initialized");
+        Checks.checkParameter(!StringUtils.isEmpty(name), "Field name is not initialized");
+
+        try {
+            Field field = getField(src.getClass(), name);
+            field.setAccessible(true);
+            return field.get(src);
+        } catch (IllegalAccessException e) {
+            throw new ConfigurationException(e);
+        }
+    }
+
+    public static void setFieldValue(final Object src, final String name, final Object value) throws ConfigurationException {
+        Checks.checkParameter(src != null, "Source object is not initialized");
+        Checks.checkParameter(!StringUtils.isEmpty(name), "Field name is not initialized");
+
+        try {
+            Field field = getField(src.getClass(), name);
+            field.setAccessible(true);
+            field.set(src, value);
+        } catch (IllegalAccessException e) {
+            throw new ConfigurationException(e);
+        }
     }
 }
