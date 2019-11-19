@@ -1,6 +1,7 @@
 package org.dmly.traveller.app.service.transform.impl;
 
 import org.dmly.traveller.app.infra.util.ReflectionUtil;
+import org.dmly.traveller.app.model.transform.annotation.DomainProperty;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -45,6 +46,13 @@ public class CachedFieldProviderTest {
         List<String> fields2 = provider.getFieldNames(Source.class, Destination.class);
         assertFalse(fields.isEmpty());
         assertEquals(fields, fields2);
+    }
+
+    @Test
+    public void getDomainProperties_singleFieldAnnotation_oneFieldReturned() {
+        List<String> fields = provider.getDomainProperties(DTO.class);
+        assertNotNull(fields);
+        assertEquals("id", fields.get(0));
     }
 
     @Test
@@ -119,4 +127,9 @@ class Source {
 
 class Destination {
     int value;
+}
+
+class DTO {
+    @DomainProperty("id")
+    private int id;
 }

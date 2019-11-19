@@ -9,64 +9,33 @@ import org.dmly.traveller.app.service.transform.Transformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
+
 public class SimpleDTOTransformer implements Transformer {
     private static final Logger LOGGER = LoggerFactory.getLogger(SimpleDTOTransformer.class);
 
-    private final FieldProvider fieldProvider;
+    private final FieldProvider provider;
 
-    public SimpleDTOTransformer() {
-        fieldProvider = new CachedFieldProvider();
+    @Inject
+    public SimpleDTOTransformer(FieldProvider provider) {
+        this.provider = provider;
     }
 
     @Override
-    public <T extends AbstractEntity, P extends Transformable<T>> P transform(final T entity, final Class<P> clz) {
-        checkParams(entity, clz);
-
-        P dto = ReflectionUtil.createInstance(clz);
-        ReflectionUtil.copyFields(entity, dto, fieldProvider.getFieldNames(entity.getClass(), clz));
-        dto.transform(entity);
-
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("SimpleDTOTransformer.transform: {} DTO object", CommonUtil.toString(dto));
-        }
-
-        return dto;
-    }
-
-    @Override
-    public <T extends AbstractEntity, P extends Transformable<T>> void transform(final T entity, final P destination) {
-        checkParam(entity, "Source transformation object is not initialized");
-        checkParam(destination, "Destination object is not initialized");
-
-        handleTransformation(entity, destination);
-    }
-
-    @Override
-    public <T extends AbstractEntity, P extends Transformable<T>> T untransform(final P dto, final Class<T> clz) {
-        checkParams(dto, clz);
-
-        T entity = ReflectionUtil.createInstance(clz);
-        ReflectionUtil.copyFields(dto, entity, fieldProvider.getFieldNames(dto.getClass(), clz));
+    public <T extends AbstractEntity, P extends Transformable<T>> T untransform(P dto, T entity) {
+        ReflectionUtil.copyFields(dto, entity, provider.getFieldNames(dto.getClass(), entity.getClass()));
         dto.untransform(entity);
 
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("SimpleDTOTransformer.untransform: {} entity", CommonUtil.toString(entity));
+            LOGGER.debug("SimpleDTOTransformer.transform: {} entity", CommonUtil.toString(dto));
         }
 
         return entity;
     }
 
-    private void checkParams(final Object param, final Class<?> clz) {
-        checkParam(param, "Source transform object is not initialized");
-        checkParam(clz, "No class is defined for transformation");
-    }
-
-    private void checkParam(final Object param, final String errorMessage) {
-        Checks.checkParameter(param != null, errorMessage);
-    }
-
-    private <T extends AbstractEntity, P extends Transformable<T>> P handleTransformation(final T entity, final P destination) {
-        ReflectionUtil.copyFields(entity, destination, fieldProvider.getFieldNames(entity.getClass(), destination.getClass()));
+    @Override
+    public <T extends AbstractEntity, P extends Transformable<T>> P transform(T entity, P destination) {
+        ReflectionUtil.copyFields(entity, destination, provider.getFieldNames(entity.getClass(), destination.getClass()));
         destination.transform(entity);
 
         if (LOGGER.isDebugEnabled()) {

@@ -24,7 +24,8 @@ public class EntityReferenceTransformerTest {
 
     @Before
     public void setup() {
-        entityReferenceTransformer = new EntityReferenceTransformer(entityLoader);
+        entityReferenceTransformer = new EntityReferenceTransformer(entityLoader,
+                new CachedFieldProvider());
     }
 
     @Test

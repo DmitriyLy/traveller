@@ -5,12 +5,16 @@ import org.dmly.traveller.app.infra.util.ReflectionUtil;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CachedFieldProvider extends FieldProvider {
     private final Map<String, List<String>> cache;
 
+    private final Map<String, List<String>> domainFields;
+
     public CachedFieldProvider() {
         cache = new HashMap<>();
+        domainFields = new ConcurrentHashMap<>();
     }
 
     @Override
@@ -24,5 +28,11 @@ public class CachedFieldProvider extends FieldProvider {
         }
 
         return fields;
+    }
+
+    @Override
+    public List<String> getDomainProperties(Class<?> clz) {
+        String key = clz.getSimpleName();
+        return domainFields.computeIfAbsent(key, item -> super.getDomainProperties(clz));
     }
 }

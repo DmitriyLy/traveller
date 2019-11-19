@@ -1,22 +1,33 @@
 package org.dmly.traveller.app.service.transform.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.dmly.traveller.app.infra.exception.ConfigurationException;
 import org.dmly.traveller.app.infra.util.ReflectionUtil;
 import org.dmly.traveller.app.model.entity.base.AbstractEntity;
 import org.dmly.traveller.app.model.entity.loader.EntityLoader;
 import org.dmly.traveller.app.model.transform.Transformable;
 import org.dmly.traveller.app.model.transform.annotation.DomainProperty;
 import org.dmly.traveller.app.service.transform.Transformer;
+import org.hibernate.internal.util.config.ConfigurationException;
 
 
+import javax.inject.Inject;
 import java.lang.reflect.Field;
 import java.util.List;
 
-@RequiredArgsConstructor
 public class EntityReferenceTransformer implements Transformer {
 
     private final EntityLoader entityLoader;
+
+    private final FieldProvider fieldProvider;
+
+    private final Transformer delegate;
+
+    @Inject
+    public EntityReferenceTransformer(EntityLoader entityLoader, FieldProvider fieldProvider) {
+        this.entityLoader = entityLoader;
+        this.fieldProvider = fieldProvider;
+        this.delegate = new SimpleDTOTransformer(fieldProvider);
+    }
 
     @Override
     public <T extends AbstractEntity, P extends Transformable<T>> P transform(T entity, Class<P> clz) {
@@ -27,45 +38,39 @@ public class EntityReferenceTransformer implements Transformer {
     }
 
     @Override
-    public <T extends AbstractEntity, P extends Transformable<T>> void transform(T entity, P destination) {
-        List<String> markedFields = ReflectionUtil.getFields(destination.getClass(),
-                List.of(field -> field.isAnnotationPresent(DomainProperty.class)));
-
+    public <T extends AbstractEntity, P extends Transformable<T>> P transform(final T entity, final P destination) {
+        List<String> markedFields = fieldProvider.getDomainProperties(destination.getClass());
         for (String name : markedFields) {
-            String domainProperty = ReflectionUtil.getField(destination.getClass(), name)
-                    .getAnnotation(DomainProperty.class).value();
+            String domainProperty = ReflectionUtil.getField(destination.getClass(), name).getAnnotation(DomainProperty.class)
+                    .value();
             Object value = ReflectionUtil.getFieldValue(entity, domainProperty);
-
             if (!(value instanceof AbstractEntity)) {
                 throw new ConfigurationException(
                         "Reference property value of the domain object " + entity + " is not an entity: " + value);
             }
-
             AbstractEntity ref = (AbstractEntity) value;
             int id = ref.getId();
             ReflectionUtil.setFieldValue(destination, name, id);
         }
+
+        return delegate.transform(entity, destination);
     }
 
     @Override
-    public <T extends AbstractEntity, P extends Transformable<T>> T untransform(P dto, Class<T> clz) {
-        T entity = ReflectionUtil.createInstance(clz);
+    public <T extends AbstractEntity, P extends Transformable<T>> T untransform(final P dto, final T entity) {
 
-        List<String> markedFields = ReflectionUtil.getFields(dto.getClass(),
-                List.of(field -> field.isAnnotationPresent(DomainProperty.class))
-        );
-
+        List<String> markedFields = fieldProvider.getDomainProperties(dto.getClass());
         for (String name : markedFields) {
-            String domainProperty = ReflectionUtil.getField(dto.getClass(), name)
-                    .getAnnotation(DomainProperty.class).value();
+            String domainProperty = ReflectionUtil.getField(dto.getClass(), name).getAnnotation(DomainProperty.class)
+                    .value();
 
-            Field dstField = ReflectionUtil.getField(clz, domainProperty);
+            Field dstField = ReflectionUtil.getField(entity.getClass(), domainProperty);
             int id = (int) ReflectionUtil.getFieldValue(dto, name);
 
             AbstractEntity value = entityLoader.load((Class)dstField.getType(), id);
             ReflectionUtil.setFieldValue(entity, domainProperty, value);
-
         }
+        delegate.untransform(dto, entity);
 
         return entity;
     }

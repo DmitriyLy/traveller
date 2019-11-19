@@ -14,7 +14,7 @@ public class SimpleDTOTransformerTest {
 
     @Before
     public void setUp() throws Exception {
-        transformer = new SimpleDTOTransformer();
+        transformer = new SimpleDTOTransformer(new CachedFieldProvider());
     }
 
     @Test
@@ -70,6 +70,6 @@ public class SimpleDTOTransformerTest {
 
     @Test(expected = InvalidParameterException.class)
     public void testUntransformNullEntityClassFailure() {
-        transformer.untransform(new CityDTO(), null);
+        transformer.untransform(new CityDTO(), (Class<City>) null);
     }
 }
