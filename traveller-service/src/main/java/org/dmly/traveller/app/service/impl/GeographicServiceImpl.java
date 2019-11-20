@@ -69,4 +69,9 @@ public class GeographicServiceImpl implements GeographicService {
     public Optional<Station> findStationById(int id) {
         return Optional.ofNullable(stationRepository.findById(id));
     }
+
+    @Override
+    public void saveStation(Station station) {
+        stationRepository.save(station);
+    }
 }

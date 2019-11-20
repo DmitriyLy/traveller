@@ -9,4 +9,6 @@ public interface StationRepository {
     List<Station> findByCriteria(StationCriteria criteria);
 
     Station findById(int stationId);
+
+    void save(Station station);
 }

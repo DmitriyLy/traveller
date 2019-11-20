@@ -1,6 +1,8 @@
 package org.dmly.traveller.app.rest.service.transport;
 
+import org.dmly.traveller.app.model.entity.transport.TransportType;
 import org.dmly.traveller.app.rest.dto.CityDTO;
+import org.dmly.traveller.app.rest.dto.StationDTO;
 import org.dmly.traveller.app.rest.dto.transport.RouteDTO;
 import org.dmly.traveller.app.rest.resolver.ObjectMapperContextResolver;
 import org.dmly.traveller.app.rest.service.config.JerseyConfig;
@@ -24,6 +26,7 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 public class RouteResourceTest extends JerseyTest {
+    private static final int CITY_ID = 1;
 
     @Override
     protected Application configure() {
@@ -78,15 +81,30 @@ public class RouteResourceTest extends JerseyTest {
     }
 
     @Test
-    @Ignore
     public void save_routeValid_successStatusReturned() {
+        StationDTO start = new StationDTO();
+        start.setCityId(CITY_ID);
+        start.setTransportType(TransportType.AUTO.toString());
+
+        Response response = target("stations").request().post(Entity.entity(start, MediaType.APPLICATION_JSON_TYPE));
+        assertNotNull(response);
+        assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
+
+        StationDTO dest = new StationDTO();
+        dest.setCityId(CITY_ID);
+        dest.setTransportType(TransportType.AUTO.toString());
+
+        response = target("stations").request().post(Entity.entity(dest, MediaType.APPLICATION_JSON_TYPE));
+        assertNotNull(response);
+        assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
+
         RouteDTO route = new RouteDTO();
         route.setDestinationId(1);
         route.setStartId(2);
         route.setStartTime(LocalTime.of(15, 45));
         route.setEndTime(LocalTime.of(20, 10));
         route.setPrice(20);
-        Response response = target("routes").request().post(Entity.entity(route, MediaType.APPLICATION_JSON_TYPE));
+        response = target("routes").request().post(Entity.entity(route, MediaType.APPLICATION_JSON_TYPE));
         assertNotNull(response);
         assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
     }

@@ -1,5 +1,6 @@
 package org.dmly.traveller.app.model.entity.geography;
 
+import lombok.EqualsAndHashCode;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.dmly.traveller.app.model.entity.base.AbstractEntity;
@@ -13,6 +14,7 @@ import java.util.Objects;
 @Entity
 @NamedQuery(name = Station.QUERY_DELETE_ALL, query = "delete from Station")
 @Setter
+@EqualsAndHashCode(callSuper = true, of = { "city", "transportType", "address" })
 public class Station extends AbstractEntity {
     public static final String QUERY_DELETE_ALL = "deleteStations";
     public static final String FIELD_TRIP = "trip";
@@ -73,40 +75,6 @@ public class Station extends AbstractEntity {
             }
         }
 
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = super.hashCode();
-        result = prime * result + ((address == null) ? 0 : address.hashCode());
-        result = prime * result + ((city == null) ? 0 : city.hashCode());
-        result = prime * result + ((transportType == null) ? 0 : transportType.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!super.equals(obj))
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Station other = (Station) obj;
-        if (address == null) {
-            if (other.address != null)
-                return false;
-        } else if (!address.equals(other.address))
-            return false;
-        if (city == null) {
-            if (other.city != null)
-                return false;
-        } else if (!city.equals(other.city))
-            return false;
-        if (transportType != other.transportType)
-            return false;
         return true;
     }
 }

@@ -55,7 +55,7 @@ public class CityResource extends BaseResource {
     @ApiResponses(value = { @ApiResponse(code = 400, message = "Invalid city identifier"),
             @ApiResponse(code = 404, message = "Identifier of the non-existing city") })
     public Response findCityById(@ApiParam("Unique numeric city identifier") @PathParam("cityId") final String cityId) {
-        if (!NumberUtils.isNumber(cityId)) {
+        if (!NumberUtils.isCreatable(cityId)) {
             return BAD_REQUEST;
         }
 

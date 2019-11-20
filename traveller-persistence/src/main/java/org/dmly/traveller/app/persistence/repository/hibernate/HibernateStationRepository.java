@@ -46,4 +46,9 @@ public class HibernateStationRepository extends BaseHibernateRepository implemen
     public Station findById(int stationId) {
         return query(session -> session.get(Station.class, stationId));
     }
+
+    @Override
+    public void save(Station station) {
+        execute(session -> session.saveOrUpdate(station));
+    }
 }

@@ -24,6 +24,8 @@ public interface GeographicService {
 
     Optional<Station> findStationById(int id);
 
+    void saveStation(Station station);
+
     void saveCity(City city);
 
     void saveCities(List<City> cities);
