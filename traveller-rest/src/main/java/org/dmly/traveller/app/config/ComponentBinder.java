@@ -1,5 +1,6 @@
 package org.dmly.traveller.app.config;
 
+import org.dmly.traveller.app.infra.cdi.CachedInstance;
 import org.dmly.traveller.app.model.entity.loader.EntityLoader;
 import org.dmly.traveller.app.persistence.hibernate.loader.SessionEntityLoader;
 import org.dmly.traveller.app.persistence.repository.hibernate.transport.HibernateOrderRepository;
@@ -25,7 +26,6 @@ import org.dmly.traveller.app.persistence.repository.hibernate.HibernateStationR
 import org.dmly.traveller.app.service.GeographicService;
 import org.dmly.traveller.app.service.impl.GeographicServiceImpl;
 import org.dmly.traveller.app.service.transform.Transformer;
-import org.dmly.traveller.app.service.transform.impl.SimpleDTOTransformer;
 
 import javax.inject.Singleton;
 
@@ -39,8 +39,8 @@ public class ComponentBinder extends AbstractBinder {
         bind(HibernateRouteRepository.class).to(RouteRepository.class).in(Singleton.class).qualifiedBy(new DBSourceInstance());
         bind(HibernateTripRepository.class).to(TripRepository.class).in(Singleton.class).qualifiedBy(new DBSourceInstance());
         bind(EntityReferenceTransformer.class).to(Transformer.class).in(Singleton.class);
-        bind(SessionEntityLoader.class).to(EntityLoader.class).in(Singleton.class);
-        bind(CachedFieldProvider.class).to(FieldProvider.class).in(Singleton.class);
+        bind(SessionEntityLoader.class).to(EntityLoader.class).in(Singleton.class).qualifiedBy(new DBSourceInstance());
+        bind(CachedFieldProvider.class).to(FieldProvider.class).in(Singleton.class).qualifiedBy(new CachedInstance());
         bind(GeographicServiceImpl.class).to(GeographicService.class).in(Singleton.class);
         bind(TransportServiceImpl.class).to(TransportService.class).in(Singleton.class);
         bind(SessionFactoryBuilder.class).to(SessionFactoryBuilder.class).in(Singleton.class);

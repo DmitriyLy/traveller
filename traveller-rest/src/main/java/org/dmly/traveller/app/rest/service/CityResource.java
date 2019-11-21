@@ -44,8 +44,11 @@ public class CityResource extends BaseResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "Saves city object", consumes = MediaType.APPLICATION_JSON)
     @ApiResponses(value = { @ApiResponse(code = 400, message = "Invalid content of city object") })
-    public void saveCity(@Valid @ApiParam(name = "city", required = true) CityDTO cityDTO) {
-        service.saveCity(transformer.untransform(cityDTO, City.class));
+    public Response saveCity(@Valid @ApiParam(name = "city", required = true) CityDTO cityDTO) {
+        City city = transformer.untransform(cityDTO, City.class);
+        service.saveCity(city);
+
+        return postForLocation(city.getId());
     }
 
     @Path("/{cityId}")
@@ -54,7 +57,7 @@ public class CityResource extends BaseResource {
     @ApiOperation(value = "Returns existing city by its identifier")
     @ApiResponses(value = { @ApiResponse(code = 400, message = "Invalid city identifier"),
             @ApiResponse(code = 404, message = "Identifier of the non-existing city") })
-    public Response findCityById(@ApiParam("Unique numeric city identifier") @PathParam("cityId") final String cityId) {
+    public Response findById(@ApiParam("Unique numeric city identifier") @PathParam("cityId") final String cityId) {
         if (!NumberUtils.isCreatable(cityId)) {
             return BAD_REQUEST;
         }

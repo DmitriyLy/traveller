@@ -11,7 +11,6 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.glassfish.jersey.test.TestProperties;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.ws.rs.client.Entity;
@@ -88,7 +87,7 @@ public class RouteResourceTest extends JerseyTest {
 
         Response response = target("stations").request().post(Entity.entity(start, MediaType.APPLICATION_JSON_TYPE));
         assertNotNull(response);
-        assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
+        assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
 
         StationDTO dest = new StationDTO();
         dest.setCityId(CITY_ID);
@@ -96,7 +95,7 @@ public class RouteResourceTest extends JerseyTest {
 
         response = target("stations").request().post(Entity.entity(dest, MediaType.APPLICATION_JSON_TYPE));
         assertNotNull(response);
-        assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
+        assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
 
         RouteDTO route = new RouteDTO();
         route.setDestinationId(1);
@@ -106,6 +105,7 @@ public class RouteResourceTest extends JerseyTest {
         route.setPrice(20);
         response = target("routes").request().post(Entity.entity(route, MediaType.APPLICATION_JSON_TYPE));
         assertNotNull(response);
-        assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
+        assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
+        assertNotNull(response.getLocation());
     }
 }

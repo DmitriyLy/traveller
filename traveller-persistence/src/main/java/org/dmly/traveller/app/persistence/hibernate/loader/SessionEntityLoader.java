@@ -2,6 +2,8 @@ package org.dmly.traveller.app.persistence.hibernate.loader;
 
 import lombok.extern.slf4j.Slf4j;
 import javax.persistence.PersistenceException;
+
+import org.dmly.traveller.app.infra.cdi.DBSource;
 import org.dmly.traveller.app.model.entity.base.AbstractEntity;
 import org.dmly.traveller.app.model.entity.loader.EntityLoader;
 import org.dmly.traveller.app.persistence.hibernate.SessionFactoryBuilder;
@@ -9,9 +11,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
-@Named
+@DBSource
 @Slf4j
 public class SessionEntityLoader implements EntityLoader {
     private final SessionFactory sessionFactory;

@@ -24,15 +24,12 @@ public class RouteResource extends BaseResource {
 
     private final TransportService transportService;
 
-    private final GeographicService geographicService;
-
     private final Transformer transformer;
 
     @Inject
-    public RouteResource(TransportService transportService, GeographicService geographicService, Transformer transformer) {
+    public RouteResource(TransportService transportService, Transformer transformer) {
         this.transportService = transportService;
         this.transformer = transformer;
-        this.geographicService = geographicService;
     }
 
     @GET
@@ -48,11 +45,11 @@ public class RouteResource extends BaseResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "Saves route object", consumes = MediaType.APPLICATION_JSON)
     @ApiResponses(value = { @ApiResponse(code = 400, message = "Invalid content of the route object") })
-    public void save(@Valid @ApiParam(name = "route", required = true) RouteDTO routeDTO) {
+    public Response save(@Valid @ApiParam(name = "route", required = true) RouteDTO routeDTO) {
         Route route = transformer.untransform(routeDTO, Route.class);
-        route.setStart(geographicService.findStationById(routeDTO.getStartId()).orElse(null));
-        route.setDestination(geographicService.findStationById(routeDTO.getDestinationId()).orElse(null));
         transportService.saveRoute(route);
+
+        return postForLocation(route.getId());
     }
 
     @Path("/{cityId}")

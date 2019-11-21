@@ -1,6 +1,7 @@
 package org.dmly.traveller.app.service.transform.impl;
 
-import lombok.RequiredArgsConstructor;
+import org.dmly.traveller.app.infra.cdi.Cached;
+import org.dmly.traveller.app.infra.cdi.DBSource;
 import org.dmly.traveller.app.infra.util.ReflectionUtil;
 import org.dmly.traveller.app.model.entity.base.AbstractEntity;
 import org.dmly.traveller.app.model.entity.loader.EntityLoader;
@@ -11,9 +12,11 @@ import org.hibernate.internal.util.config.ConfigurationException;
 
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.lang.reflect.Field;
 import java.util.List;
 
+@Named
 public class EntityReferenceTransformer implements Transformer {
 
     private final EntityLoader entityLoader;
@@ -23,7 +26,7 @@ public class EntityReferenceTransformer implements Transformer {
     private final Transformer delegate;
 
     @Inject
-    public EntityReferenceTransformer(EntityLoader entityLoader, FieldProvider fieldProvider) {
+    public EntityReferenceTransformer(@DBSource EntityLoader entityLoader, @Cached FieldProvider fieldProvider) {
         this.entityLoader = entityLoader;
         this.fieldProvider = fieldProvider;
         this.delegate = new SimpleDTOTransformer(fieldProvider);

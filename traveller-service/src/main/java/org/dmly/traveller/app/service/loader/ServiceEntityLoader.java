@@ -32,7 +32,7 @@ public class ServiceEntityLoader implements EntityLoader {
     @Override
     public <T extends AbstractEntity> T load(Class<T> clz, int id) {
         Loader<T> loader = loaders.get(clz);
-        if(loader == null) {
+        if (loader == null) {
             throw new ConfigurationException("No loader for class " + clz);
         }
         return loader.load(id).orElse(null);

@@ -1,6 +1,6 @@
 package org.dmly.traveller.app.service.transform.impl;
 
-import org.dmly.traveller.app.infra.util.Checks;
+import lombok.RequiredArgsConstructor;
 import org.dmly.traveller.app.infra.util.CommonUtil;
 import org.dmly.traveller.app.infra.util.ReflectionUtil;
 import org.dmly.traveller.app.model.entity.base.AbstractEntity;
@@ -9,17 +9,11 @@ import org.dmly.traveller.app.service.transform.Transformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
-
+@RequiredArgsConstructor
 public class SimpleDTOTransformer implements Transformer {
     private static final Logger LOGGER = LoggerFactory.getLogger(SimpleDTOTransformer.class);
 
     private final FieldProvider provider;
-
-    @Inject
-    public SimpleDTOTransformer(FieldProvider provider) {
-        this.provider = provider;
-    }
 
     @Override
     public <T extends AbstractEntity, P extends Transformable<T>> T untransform(P dto, T entity) {

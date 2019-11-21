@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -76,7 +77,8 @@ public class CityResourceTest  extends JerseyTest {
         city.setRegion("Odessa");
         Response response = target("cities").request().post(Entity.entity(city, MediaType.APPLICATION_JSON_TYPE));
         assertNotNull(response);
-        assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
+        assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
+        assertNotNull(response.getHeaderString(HttpHeaders.LOCATION));
     }
 
     @Test
@@ -112,7 +114,7 @@ public class CityResourceTest  extends JerseyTest {
         CompletableFuture<Void> cf = target("cities").request().rx()
                 .post(Entity.entity(cityDTO, MediaType.APPLICATION_JSON))
                 .thenAccept(response ->
-                    assertEquals(response.getStatus(), Response.Status.NO_CONTENT.getStatusCode())
+                    assertEquals(response.getStatus(), Response.Status.CREATED.getStatusCode())
                 )
                 .thenCompose(v -> target("cities").request().rx().get(Response.class))
                 .thenAccept(response -> {

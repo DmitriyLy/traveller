@@ -33,8 +33,11 @@ public class StationResource extends BaseResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "Saves station object", consumes = MediaType.APPLICATION_JSON)
     @ApiResponses(value = { @ApiResponse(code = 400, message = "Invalid content of station object") })
-    public void save(@Valid @ApiParam(name = "station", required = true) StationDTO stationDTO) {
-        service.saveStation(transformer.untransform(stationDTO, Station.class));
+    public Response save(@Valid @ApiParam(name = "station", required = true) StationDTO stationDTO) {
+        Station station = transformer.untransform(stationDTO, Station.class);
+        service.saveStation(station);
+
+        return postForLocation(station.getId());
     }
 
     @Path("/{stationId}")
@@ -43,7 +46,7 @@ public class StationResource extends BaseResource {
     @ApiOperation(value = "Returns existing station by its identifier")
     @ApiResponses(value = { @ApiResponse(code = 400, message = "Invalid station identifier"),
             @ApiResponse(code = 404, message = "Identifier of the non-existing station") })
-    public Response findStationById(@ApiParam("Unique numeric station identifier") @PathParam("stationId") final String stationId) {
+    public Response findById(@ApiParam("Unique numeric station identifier") @PathParam("stationId") final String stationId) {
         if (!NumberUtils.isCreatable(stationId)) {
             return BAD_REQUEST;
         }

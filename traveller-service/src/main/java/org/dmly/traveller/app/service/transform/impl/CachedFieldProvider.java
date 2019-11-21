@@ -1,5 +1,6 @@
 package org.dmly.traveller.app.service.transform.impl;
 
+import org.dmly.traveller.app.infra.cdi.Cached;
 import org.dmly.traveller.app.infra.util.ReflectionUtil;
 
 import java.util.HashMap;
@@ -7,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Cached
 public class CachedFieldProvider extends FieldProvider {
     private final Map<String, List<String>> cache;
 
