@@ -69,9 +69,10 @@ public class EntityReferenceTransformer implements Transformer {
 
             Field dstField = ReflectionUtil.getField(entity.getClass(), domainProperty);
             int id = (int) ReflectionUtil.getFieldValue(dto, name);
-
-            AbstractEntity value = entityLoader.load((Class)dstField.getType(), id);
-            ReflectionUtil.setFieldValue(entity, domainProperty, value);
+            if (id > 0) {
+                AbstractEntity value = entityLoader.load((Class)dstField.getType(), id);
+                ReflectionUtil.setFieldValue(entity, domainProperty, value);
+            }
         }
         delegate.untransform(dto, entity);
 

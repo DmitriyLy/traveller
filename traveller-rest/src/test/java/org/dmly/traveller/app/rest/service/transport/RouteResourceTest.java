@@ -64,7 +64,7 @@ public class RouteResourceTest extends JerseyTest {
     public void findById_invalidIdentifier_badRequestReturned() {
         Response response = target("routes/aaab").request().get(Response.class);
         assertNotNull(response);
-        assertEquals(response.getStatus(), Response.Status.BAD_REQUEST.getStatusCode());
+        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
     }
 
     @Test

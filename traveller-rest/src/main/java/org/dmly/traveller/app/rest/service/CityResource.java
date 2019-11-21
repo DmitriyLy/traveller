@@ -2,6 +2,7 @@ package org.dmly.traveller.app.rest.service;
 
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.dmly.traveller.app.infra.exception.flow.InvalidParameterException;
 import org.dmly.traveller.app.model.entity.geography.City;
 import org.dmly.traveller.app.rest.dto.CityDTO;
 import org.dmly.traveller.app.rest.service.base.BaseResource;
@@ -44,7 +45,7 @@ public class CityResource extends BaseResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "Saves city object", consumes = MediaType.APPLICATION_JSON)
     @ApiResponses(value = { @ApiResponse(code = 400, message = "Invalid content of city object") })
-    public Response saveCity(@Valid @ApiParam(name = "city", required = true) CityDTO cityDTO) {
+    public Response save(@Valid @ApiParam(name = "city", required = true) CityDTO cityDTO) {
         City city = transformer.untransform(cityDTO, City.class);
         service.saveCity(city);
 
@@ -57,15 +58,10 @@ public class CityResource extends BaseResource {
     @ApiOperation(value = "Returns existing city by its identifier")
     @ApiResponses(value = { @ApiResponse(code = 400, message = "Invalid city identifier"),
             @ApiResponse(code = 404, message = "Identifier of the non-existing city") })
-    public Response findById(@ApiParam("Unique numeric city identifier") @PathParam("cityId") final String cityId) {
-        if (!NumberUtils.isCreatable(cityId)) {
-            return BAD_REQUEST;
-        }
+    public Response findById(@ApiParam("Unique numeric city identifier") @PathParam("cityId") final int cityId) {
+       City city = service.findCityById(cityId)
+               .orElseThrow(() -> new InvalidParameterException("Invalid city identifier: " + cityId));
 
-        Optional<City> city = service.findCityById(NumberUtils.toInt(cityId));
-        if (!city.isPresent()) {
-            return NOT_FOUND;
-        }
-        return ok(transformer.transform(city.get(), CityDTO.class));
+        return ok(transformer.transform(city, CityDTO.class));
     }
 }

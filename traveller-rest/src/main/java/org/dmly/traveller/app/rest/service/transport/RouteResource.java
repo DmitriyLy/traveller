@@ -2,6 +2,7 @@ package org.dmly.traveller.app.rest.service.transport;
 
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.dmly.traveller.app.infra.exception.flow.InvalidParameterException;
 import org.dmly.traveller.app.model.entity.travel.Route;
 import org.dmly.traveller.app.rest.dto.transport.RouteDTO;
 import org.dmly.traveller.app.rest.service.base.BaseResource;
@@ -58,15 +59,10 @@ public class RouteResource extends BaseResource {
     @ApiOperation(value = "Returns existing route by its identifier")
     @ApiResponses(value = { @ApiResponse(code = 400, message = "Invalid city identifier"),
             @ApiResponse(code = 404, message = "Identifier of the non-existing city") })
-    public Response findById(@ApiParam("Unique numeric city identifier") @PathParam("cityId") final String cityId) {
-        if (!NumberUtils.isParsable(cityId)) {
-            return BAD_REQUEST;
-        }
+    public Response findById(@ApiParam("Unique numeric city identifier") @PathParam("cityId") final int routeId) {
+        Route route = transportService.findRouteById(routeId)
+                .orElseThrow(() -> new InvalidParameterException("Invalid route identifier: " + routeId));
 
-        Optional<Route> route = transportService.findRouteById(NumberUtils.toInt(cityId));
-        if (!route.isPresent()) {
-            return NOT_FOUND;
-        }
-        return ok(transformer.transform(route.get(), RouteDTO.class));
+        return ok(transformer.transform(route, RouteDTO.class));
     }
 }

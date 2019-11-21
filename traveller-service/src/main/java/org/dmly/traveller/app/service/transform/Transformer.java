@@ -1,5 +1,6 @@
 package org.dmly.traveller.app.service.transform;
 
+import org.dmly.traveller.app.infra.exception.flow.ValidationException;
 import org.dmly.traveller.app.infra.util.Checks;
 import org.dmly.traveller.app.infra.util.ReflectionUtil;
 import org.dmly.traveller.app.model.entity.base.AbstractEntity;
@@ -32,6 +33,10 @@ public interface Transformer {
 
         T entity = ReflectionUtil.createInstance(clz);
 
-        return untransform(dto, entity);
+        try {
+            return untransform(dto, entity);
+        } catch (Exception ex) {
+            throw new ValidationException(ex.getMessage(), ex);
+        }
     }
 }
