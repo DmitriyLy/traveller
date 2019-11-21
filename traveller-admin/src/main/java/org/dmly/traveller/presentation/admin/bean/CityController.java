@@ -1,9 +1,13 @@
 package org.dmly.traveller.presentation.admin.bean;
 
+import com.codahale.metrics.Counter;
+import com.codahale.metrics.MetricRegistry;
 import org.dmly.traveller.app.model.entity.geography.City;
+import org.dmly.traveller.app.monitoring.MetricsManager;
 import org.dmly.traveller.app.service.GeographicService;
 import org.dmly.traveller.app.service.transform.Transformer;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.faces.push.Push;
 import javax.faces.push.PushContext;
@@ -16,16 +20,22 @@ import java.util.List;
 @ApplicationScoped
 public class CityController {
     private final GeographicService geographicService;
+
     private final Transformer transformer;
+
+    private final MetricsManager metricsManager;
+
+    private Counter savedCitiesCounter;
 
     @Inject
     @Push
     private PushContext cityChannel;
 
     @Inject
-    public CityController(GeographicService geographicService, Transformer transformer) {
+    public CityController(GeographicService geographicService, Transformer transformer, MetricsManager metricsManager) {
         this.geographicService = geographicService;
         this.transformer = transformer;
+        this.metricsManager = metricsManager;
     }
 
     public List<City> getCities() {
@@ -36,7 +46,7 @@ public class CityController {
         City city = transformer.untransform(cityBean, City.class);
         geographicService.saveCity(city);
 
-        cityChannel.send("test");
+        savedCitiesCounter.inc();
     }
 
     public void update(City city, CityBean cityBean) {
@@ -45,5 +55,11 @@ public class CityController {
 
     public void delete(int cityId) {
         geographicService.deleteCity(cityId);
+    }
+
+    @PostConstruct
+    public void init() {
+        savedCitiesCounter = (Counter) metricsManager.registerMetric(MetricRegistry.name("admin", "city", "saved"),
+                new Counter());
     }
 }
