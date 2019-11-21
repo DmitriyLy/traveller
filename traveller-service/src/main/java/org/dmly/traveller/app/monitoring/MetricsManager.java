@@ -43,6 +43,5 @@ public class MetricsManager {
 
     public void registerHealthCheck(final String name, final HealthCheck healthCheck) {
         HEALTH_CHECK_REGISTRY.register(name, healthCheck);
-        System.out.println("Names: " + HEALTH_CHECK_REGISTRY.getNames());
     }
 }
