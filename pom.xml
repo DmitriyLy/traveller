@@ -32,6 +32,7 @@
         <mysql.version>6.0.6</mysql.version>
         <jmh.version>1.21</jmh.version>
         <jackson.version>2.8.10</jackson.version>
+        <metrics.version>4.0.2</metrics.version>
     </properties>
 
     <dependencies>
