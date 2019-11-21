@@ -2,7 +2,10 @@ package org.dmly.traveller.app.rest.service;
 
 import org.dmly.traveller.app.rest.dto.CityDTO;
 import org.dmly.traveller.app.rest.service.config.JerseyConfig;
+import org.glassfish.jersey.logging.LoggingFeature;
+import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
+import org.glassfish.jersey.test.TestProperties;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -25,7 +28,10 @@ public class CityResourceTest  extends JerseyTest {
 
     @Override
     protected Application configure() {
-        return new JerseyConfig();
+        enable(TestProperties.LOG_TRAFFIC);
+        enable(TestProperties.DUMP_ENTITY);
+        ResourceConfig config = new JerseyConfig().property(LoggingFeature.LOGGING_FEATURE_LOGGER_LEVEL_SERVER, "WARNING");
+        return config;
     }
 
     @Test
