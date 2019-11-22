@@ -1,9 +1,9 @@
 package org.dmly.traveller.app.infra.util;
 
 import org.dmly.traveller.app.infra.exception.flow.InvalidParameterException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ChecksTest {
 
