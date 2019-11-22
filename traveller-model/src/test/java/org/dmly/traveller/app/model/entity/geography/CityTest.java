@@ -1,63 +1,56 @@
 package org.dmly.traveller.app.model.entity.geography;
 
 import org.dmly.traveller.app.model.entity.transport.TransportType;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CityTest {
     private City city;
 
-    @Before
-    public void setup() {
-        city = new City("Test");
+    @BeforeEach
+    void setup() {
+        city = new City("Odessa");
     }
 
-    @Test
-    public void testAddValidStationSuccess() {
-        Station station = new Station(city, TransportType.AUTO);
+    @Nested
+    @DisplayName("Checks addStation method")
+    class AddStationTest {
+        @Test
+        void successIfValidStation() {
+            Station station = city.addStation(TransportType.AUTO);
 
-        city.addStation(TransportType.AUTO);
+            assertTrue(containsStation(city, station));
+            assertEquals(city, station.getCity());
+        }
 
-        assertTrue(containsStation(city, station));
-        assertEquals(city, station.getCity());
+        @Test
+        void throwsExceptionIfNullTransportType() {
+            assertThrows(NullPointerException.class, () -> city.addStation(null));
+        }
     }
 
-    @Test(expected = NullPointerException.class)
-    public void testAddNullStationFailure() {
-        city.addStation(null);
+    @Nested
+    @DisplayName("Checks addStation method")
+    class RemoveStationTest {
+        @Test
+        void success() {
+            Station station = city.addStation(TransportType.AVIA);
+            city.removeStation(station);
 
-        assertTrue(false);
-    }
+            assertTrue(city.getStations().isEmpty());
+        }
 
-    @Test
-    public void testAddDuplicateStationFailure() {
-        Station station = new Station(city, TransportType.AUTO);
-        city.addStation(TransportType.AUTO);
-        city.addStation(TransportType.AUTO);
-
-        assertEquals(1, city.getStations().size());
-    }
-
-    @Test
-    public void testRemoveStationSuccess() {
-        Station station = new Station(city, TransportType.AUTO);
-        city.addStation(TransportType.AUTO);
-        city.removeStation(station);
-
-        assertTrue(city.getStations().isEmpty());
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void testRemoveNullStationFailure() {
-        city.removeStation(null);
-
-        assertTrue(false);
+        @Test
+        void throwsExceptionIfStationNull() {
+            assertThrows(NullPointerException.class, () -> city.removeStation(null));
+        }
     }
 
     private boolean containsStation(City city, Station station) {
         return city.getStations().contains(station);
     }
-
 }
