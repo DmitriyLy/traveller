@@ -16,7 +16,7 @@ import java.util.Optional;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ServiceEntityLoaderTest {
@@ -41,6 +41,8 @@ public class ServiceEntityLoaderTest {
         City dbCity = serviceEntityLoader.load(City.class, cityId);
         assertNotNull(dbCity);
         assertEquals(cityId, dbCity.getId());
+
+        verify(geographicService, times(1)).findCityById(cityId);
     }
 
     @Test
@@ -48,6 +50,8 @@ public class ServiceEntityLoaderTest {
         when(geographicService.findCityById(anyInt())).thenReturn(Optional.empty());
         City dbCity = serviceEntityLoader.load(City.class, 1);
         assertNull(dbCity);
+
+        verify(geographicService, times(1)).findCityById(anyInt());
     }
 
     @Test(expected = ConfigurationException.class)

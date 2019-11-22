@@ -11,10 +11,7 @@ import org.dmly.traveller.app.persistence.repository.transport.TripRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Matchers;
-import org.mockito.Mock;
-import org.mockito.Spy;
+import org.mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.time.LocalDateTime;
@@ -64,7 +61,7 @@ public class TransportServiceImplTest {
         when(orderRepository.findById(100)).thenReturn(Optional.empty());
         transportService.cancelReservation(100, "test");
 
-        verify(orderRepository, never()).save(Matchers.any(Order.class));
+        verify(orderRepository, never()).save(ArgumentMatchers.any(Order.class));
     }
 
     @Test
