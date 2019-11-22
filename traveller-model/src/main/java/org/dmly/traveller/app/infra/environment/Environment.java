@@ -7,4 +7,5 @@ public interface Environment {
     String getProperty(String name);
 
     Map<String, String> getProperties(String prefix);
+
 }

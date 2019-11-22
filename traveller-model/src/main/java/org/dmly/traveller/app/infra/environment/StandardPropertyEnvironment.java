@@ -1,51 +1,51 @@
 package org.dmly.traveller.app.infra.environment;
 
+import org.dmly.traveller.app.infra.environment.source.EnvironmentPropertySource;
+import org.dmly.traveller.app.infra.environment.source.FilePropertySource;
+import org.dmly.traveller.app.infra.environment.source.PropertySource;
+import org.dmly.traveller.app.infra.environment.source.SystemPropertySource;
 import org.dmly.traveller.app.infra.util.Checks;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 import java.util.stream.Collectors;
-
-import javax.persistence.PersistenceException;
 
 public class StandardPropertyEnvironment implements Environment {
     private static final String PROPERTIES_FILE = "application.properties";
 
-    private final Properties properties;
+    private final List<PropertySource> propertySources;
 
     public StandardPropertyEnvironment() {
-        properties = loadProperties();
+        propertySources = new ArrayList<>();
+        propertySources.add(new SystemPropertySource());
+        propertySources.add(new FilePropertySource(PROPERTIES_FILE));
+        propertySources.add(new EnvironmentPropertySource());
     }
 
     @Override
     public String getProperty(String name) {
         Checks.checkParameter(name != null, "Name should be not null");
 
-        return properties.getProperty(name);
+        for (PropertySource source : propertySources) {
+            String value = source.getProperty(name);
+            if (value != null) {
+                return value;
+            }
+        }
+        return null;
     }
 
     @Override
     public Map<String, String> getProperties(String prefix) {
         Checks.checkParameter(prefix != null, "Prefix should be not null");
 
-        return properties.keySet().stream()
-                .map(Object::toString)
-                .filter(item -> item.startsWith(prefix))
-                .collect(Collectors.toMap(key -> key, key -> properties.getProperty(key)));
-    }
-
-    private Properties loadProperties() {
-        try {
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(PROPERTIES_FILE);
-            Properties properties = new Properties();
-
-            properties.load(inputStream);
-
-            return properties;
-        } catch (IOException e) {
-            throw new PersistenceException(e);
+        Map<String, String> properties = new HashMap<>();
+        for (PropertySource source : propertySources) {
+            properties.putAll(
+                    source.getProperties().entrySet().stream()
+                        .filter(entry -> entry.getKey().startsWith(prefix))
+                        .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue()))
+            );
         }
+        return properties;
     }
 }

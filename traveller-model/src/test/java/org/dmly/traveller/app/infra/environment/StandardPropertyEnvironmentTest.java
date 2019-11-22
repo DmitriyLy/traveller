@@ -9,22 +9,22 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 public class StandardPropertyEnvironmentTest {
-
     private Environment environment;
 
     @Before
     public void setup() {
+        System.setProperty("key", "value2");
         environment = new StandardPropertyEnvironment();
     }
 
     @Test
     public void getProperty_nonExistingProperty_nullReturned() {
-        assertNull(environment.getProperty("test"));
+        assertNull(environment.getProperty("test111"));
     }
 
     @Test
     public void getProperty_existingProperty_valueReturned() {
-        assertEquals("value", environment.getProperty("key"));
+        assertEquals("value2", environment.getProperty("key"));
     }
 
     @Test
@@ -41,8 +41,9 @@ public class StandardPropertyEnvironmentTest {
         assertTrue(properties.isEmpty());
     }
 
-    @Test(expected = InvalidParameterException.class)
+    @Test(expected=InvalidParameterException.class)
     public void getProperties_nullPrefix_exceptionThrown() {
         environment.getProperties(null);
     }
+
 }
