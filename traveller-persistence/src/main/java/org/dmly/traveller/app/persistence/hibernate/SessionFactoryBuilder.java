@@ -1,5 +1,6 @@
 package org.dmly.traveller.app.persistence.hibernate;
 
+import org.dmly.traveller.app.infra.environment.Environment;
 import org.dmly.traveller.app.infra.exception.PersistenceException;
 import org.dmly.traveller.app.persistence.hibernate.interceptor.TimestampInterceptor;
 import org.hibernate.SessionFactory;
@@ -9,6 +10,7 @@ import org.hibernate.service.ServiceRegistry;
 import org.reflections.Reflections;
 
 import javax.annotation.PreDestroy;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.Entity;
 import java.io.IOException;
@@ -18,10 +20,14 @@ import java.util.Set;
 
 @Named
 public class SessionFactoryBuilder {
+    private static final String PREFIX_PROPERTIES = "hibernate.";
+
     private final SessionFactory sessionFactory;
 
-    public SessionFactoryBuilder() {
-        ServiceRegistry registry = new StandardServiceRegistryBuilder().applySettings(loadProperties()).build();
+    @Inject
+    public SessionFactoryBuilder(Environment environment) {
+        ServiceRegistry registry = new StandardServiceRegistryBuilder()
+                .applySettings(environment.getProperties(PREFIX_PROPERTIES)).build();
 
         MetadataSources sources = new MetadataSources(registry);
 
@@ -44,18 +50,6 @@ public class SessionFactoryBuilder {
     public void destroy() {
         if (sessionFactory != null) {
             sessionFactory.close();
-        }
-    }
-
-    private Properties loadProperties() {
-        try {
-            InputStream inputStream = SessionFactoryBuilder.class.getClassLoader()
-                    .getResourceAsStream("application.properties");
-            Properties properties = new Properties();
-            properties.load(inputStream);
-            return properties;
-        } catch (IOException e) {
-            throw new PersistenceException(e.getMessage());
         }
     }
 }

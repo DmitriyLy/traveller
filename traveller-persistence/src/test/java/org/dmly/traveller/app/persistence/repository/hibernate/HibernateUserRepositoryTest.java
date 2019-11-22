@@ -1,5 +1,6 @@
 package org.dmly.traveller.app.persistence.repository.hibernate;
 
+import org.dmly.traveller.app.infra.environment.StandardPropertyEnvironment;
 import org.dmly.traveller.app.model.entity.person.User;
 import org.dmly.traveller.app.persistence.hibernate.SessionFactoryBuilder;
 import org.dmly.traveller.app.persistence.repository.UserRepository;
@@ -15,7 +16,7 @@ public class HibernateUserRepositoryTest {
 
     @Before
     public void setup() {
-        SessionFactoryBuilder builder = new SessionFactoryBuilder();
+        SessionFactoryBuilder builder = new SessionFactoryBuilder(new StandardPropertyEnvironment());
         repository = new HibernateUserRepository(builder);
     }
 

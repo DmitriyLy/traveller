@@ -1,5 +1,6 @@
 package org.dmly.traveller.app.persistence.hibernate.loader;
 
+import org.dmly.traveller.app.infra.environment.StandardPropertyEnvironment;
 import org.dmly.traveller.app.model.entity.geography.City;
 import org.dmly.traveller.app.model.entity.loader.EntityLoader;
 import org.dmly.traveller.app.persistence.hibernate.SessionFactoryBuilder;
@@ -17,7 +18,7 @@ public class SessionEntityLoaderTest {
 
     @Before
     public void setup() {
-        SessionFactoryBuilder builder = new SessionFactoryBuilder();
+        SessionFactoryBuilder builder = new SessionFactoryBuilder(new StandardPropertyEnvironment());
         entityLoader = new SessionEntityLoader(builder);
         cityRepository = new HibernateCityRepository(builder);
 

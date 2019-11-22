@@ -1,6 +1,8 @@
 package org.dmly.traveller.app.config;
 
 import org.dmly.traveller.app.infra.cdi.CachedInstance;
+import org.dmly.traveller.app.infra.environment.Environment;
+import org.dmly.traveller.app.infra.environment.StandardPropertyEnvironment;
 import org.dmly.traveller.app.model.entity.loader.EntityLoader;
 import org.dmly.traveller.app.persistence.hibernate.loader.SessionEntityLoader;
 import org.dmly.traveller.app.persistence.repository.hibernate.transport.HibernateOrderRepository;
@@ -44,5 +46,6 @@ public class ComponentBinder extends AbstractBinder {
         bind(GeographicServiceImpl.class).to(GeographicService.class).in(Singleton.class);
         bind(TransportServiceImpl.class).to(TransportService.class).in(Singleton.class);
         bind(SessionFactoryBuilder.class).to(SessionFactoryBuilder.class).in(Singleton.class);
+        bind(StandardPropertyEnvironment.class).to(Environment.class).in(Singleton.class);
     }
 }

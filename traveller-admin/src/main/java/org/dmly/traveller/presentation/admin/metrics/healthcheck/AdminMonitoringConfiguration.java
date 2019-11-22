@@ -4,6 +4,9 @@ import com.codahale.metrics.MetricFilter;
 import com.codahale.metrics.graphite.Graphite;
 import com.codahale.metrics.graphite.GraphiteReporter;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.dmly.traveller.app.infra.environment.Environment;
 import org.dmly.traveller.app.monitoring.MetricsManager;
 import org.dmly.traveller.app.monitoring.healthcheck.MySQLHealthCheck;
 import org.dmly.traveller.app.persistence.hibernate.SessionFactoryBuilder;
@@ -23,16 +26,22 @@ public class AdminMonitoringConfiguration {
     private static final String MYSQL_HEALTH_CHECK = "mysql";
 
     @Inject
-    public AdminMonitoringConfiguration(MetricsManager metricsManager, SessionFactoryBuilder sessionFactoryBuilder) {
+    public AdminMonitoringConfiguration(MetricsManager metricsManager, SessionFactoryBuilder sessionFactoryBuilder, Environment environment) {
         metricsManager.registerHealthCheck(MYSQL_HEALTH_CHECK, new MySQLHealthCheck(sessionFactoryBuilder));
 
-        Graphite graphite = new Graphite(new InetSocketAddress("graphite", 2003));
-        final GraphiteReporter reporter = GraphiteReporter.forRegistry(metricsManager.getMetricRegistry())
-                .prefixedWith("admin").convertRatesTo(TimeUnit.SECONDS)
-                .convertRatesTo(TimeUnit.MICROSECONDS)
-                .filter(MetricFilter.ALL)
-                .build(graphite);
+        boolean reportingEnabled = BooleanUtils.toBoolean(environment.getProperty("graphite.reporter.enabled"));
+        if (reportingEnabled) {
+            Graphite graphite = new Graphite(new InetSocketAddress(environment.getProperty("graphite.reporter.host"),
+                    NumberUtils.toInt(environment.getProperty("graphite.reporter.port"))));
 
-        reporter.start(30, TimeUnit.SECONDS);
+            final GraphiteReporter reporter = GraphiteReporter.forRegistry(metricsManager.getMetricRegistry())
+                    .prefixedWith("admin")
+                    .convertRatesTo(TimeUnit.SECONDS)
+                    .convertDurationsTo(TimeUnit.MILLISECONDS)
+                    .filter(MetricFilter.ALL)
+                    .build(graphite);
+
+            reporter.start(NumberUtils.toInt(environment.getProperty("graphite.reporter.duration")), TimeUnit.SECONDS);
+        }
     }
 }

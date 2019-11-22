@@ -1,5 +1,6 @@
 package org.dmly.traveller.app.persistence.repository.hibernate.transport;
 
+import org.dmly.traveller.app.infra.environment.StandardPropertyEnvironment;
 import org.dmly.traveller.app.model.entity.geography.Address;
 import org.dmly.traveller.app.model.entity.geography.City;
 import org.dmly.traveller.app.model.entity.geography.Station;
@@ -33,7 +34,7 @@ public class HibernateOrderRepositoryTest {
 
     @Before
     public void setup() {
-        SessionFactoryBuilder builder = new SessionFactoryBuilder();
+        SessionFactoryBuilder builder = new SessionFactoryBuilder(new StandardPropertyEnvironment());
         repository = new HibernateOrderRepository(builder);
         routeRepository = new HibernateRouteRepository(builder);
         cityRepository = new HibernateCityRepository(builder);

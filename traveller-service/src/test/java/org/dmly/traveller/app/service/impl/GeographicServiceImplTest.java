@@ -1,5 +1,6 @@
 package org.dmly.traveller.app.service.impl;
 
+import org.dmly.traveller.app.infra.environment.StandardPropertyEnvironment;
 import org.dmly.traveller.app.model.entity.geography.City;
 import org.dmly.traveller.app.model.entity.geography.Station;
 import org.dmly.traveller.app.model.entity.transport.TransportType;
@@ -34,7 +35,7 @@ public class GeographicServiceImplTest {
 
     @BeforeClass
     public static void setup() {
-        SessionFactoryBuilder builder = new SessionFactoryBuilder();
+        SessionFactoryBuilder builder = new SessionFactoryBuilder(new StandardPropertyEnvironment());
         CityRepository repository = new HibernateCityRepository(builder);
         StationRepository stationRepository = new HibernateStationRepository(builder);
         service = new GeographicServiceImpl(repository, stationRepository);
