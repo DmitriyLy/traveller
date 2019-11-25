@@ -14,6 +14,12 @@ services:
       - MYSQL_DATABASE=traveller
     env_file:
       - mysql.env
+    healthcheck:
+      test: mysql -ugermes -pgermes -e "SELECT version();"
+      interval: 1m
+      timeout: 10s
+      retries: 2
+      start_period: 1m
   admin:
     build:
       context: ./traveller-admin
@@ -25,6 +31,12 @@ services:
     depends_on:
       - mysql
     entrypoint: bash -c "sleep 5s && catalina.sh run"
+    healthcheck:
+      test: curl -f http://localhost:8080 || exit 1
+      interval: 1m
+      timeout: 10s
+      retries: 2
+      start_period: 1m
     #environment:
     #  - JAVA_OPTS=--add-modules java.xml.bind
   client:
@@ -38,6 +50,12 @@ services:
     depends_on:
       - mysql
     entrypoint: bash -c "sleep 5s && catalina.sh run"
+    healthcheck:
+      test: curl -f http://localhost:8080 || exit 1
+      interval: 1m
+      timeout: 10s
+      retries: 2
+      start_period: 1m
     #environment:
     #  - JAVA_OPTS=--add-modules java.xml.bind
 networks:
