@@ -1,142 +1,135 @@
 package org.dmly.traveller.app.rest.service;
 
+import org.dmly.traveller.app.jersey.extension.JerseyTestExtension;
 import org.dmly.traveller.app.rest.dto.CityDTO;
 import org.dmly.traveller.app.rest.service.config.JerseyConfig;
-import org.glassfish.jersey.logging.LoggingFeature;
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.test.JerseyTest;
-import org.glassfish.jersey.test.TestProperties;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Application;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.*;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Application;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-public class CityResourceTest  extends JerseyTest {
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
-    @Override
-    protected Application configure() {
-        enable(TestProperties.LOG_TRAFFIC);
-        enable(TestProperties.DUMP_ENTITY);
-        ResourceConfig config = new JerseyConfig().property(LoggingFeature.LOGGING_FEATURE_LOGGER_LEVEL_SERVER, "WARNING");
-        return config;
+import static org.junit.jupiter.api.Assertions.*;
+
+public class CityResourceTest {
+
+    @RegisterExtension
+    JerseyTestExtension extension = new JerseyTestExtension(configure());
+
+    private Application configure() {
+        return new JerseyConfig();
     }
 
-    @Test
-    public void testFindCitiesSuccess() {
-        List<Map<String, String>> cities = target("cities").request().get(List.class);
+    @org.junit.jupiter.api.Test
+    void testFindCitiesSuccess(WebTarget target) {
+        List<Map<String, String>> cities = target.path("cities").request().get(List.class);
         assertNotNull(cities);
         assertTrue(cities.isEmpty());
     }
 
-    @Test
-    @Ignore
-    public void testFindCityByIdSuccess() {
-        CityDTO cityDTO = target("cities/1").request().get(CityDTO.class);
-
-        assertNotNull(cityDTO);
-        assertEquals(1, cityDTO.getId());
-        assertEquals("Odessa", cityDTO.getName());
+    @org.junit.jupiter.api.Test
+    @Disabled
+    void testFindCityByIdSuccess(WebTarget target) {
+        CityDTO city = target.path("cities/1").request().get(CityDTO.class);
+        assertNotNull(city);
+        assertEquals(city.getId(), 1);
+        assertEquals(city.getName(), "Odessa");
     }
 
-    @Test
-    public void testFindCityByIdNotFound() {
-        Response response = target("cities/2").request().get(Response.class);
+    @org.junit.jupiter.api.Test
+    void testFindCityByIdNotFound(WebTarget target) {
+        Response response = target.path("cities/20000").request().get(Response.class);
         assertNotNull(response);
         assertEquals(response.getStatus(), Response.Status.NOT_FOUND.getStatusCode());
     }
 
-    @Test
-    public void testFindCityByIdInvalidId() {
-        Response response = target("cities/aaab").request().get(Response.class);
+    @org.junit.jupiter.api.Test
+    void testFindCityByIdInvalidId(WebTarget target) {
+        Response response = target.path("cities/aaab").request().get(Response.class);
         assertNotNull(response);
         assertEquals(response.getStatus(), Response.Status.BAD_REQUEST.getStatusCode());
     }
 
-    @Test
-    public void save_emptyName_badRequestReturned() {
+    @org.junit.jupiter.api.Test
+    void save_emptyName_badRequestReturned(WebTarget target) {
         CityDTO city = new CityDTO();
         city.setDistrict("Nikolaev");
         city.setRegion("Nikolaev");
-        Response response = target("cities").request().post(Entity.entity(city, MediaType.APPLICATION_JSON_TYPE));
+        Response response = target.path("cities").request().post(Entity.entity(city, MediaType.APPLICATION_JSON_TYPE));
         assertNotNull(response);
         assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
     }
 
-    @Test
-    public void save_cityValid_successStatusReturned() {
+    @org.junit.jupiter.api.Test
+    void save_cityValid_successStatusReturned(WebTarget target) {
         CityDTO city = new CityDTO();
         city.setName("Odessa");
         city.setDistrict("Odessa");
         city.setRegion("Odessa");
-        Response response = target("cities").request().post(Entity.entity(city, MediaType.APPLICATION_JSON_TYPE));
+        Response response = target.path("cities").request().post(Entity.entity(city, MediaType.APPLICATION_JSON_TYPE));
         assertNotNull(response);
         assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
         assertNotNull(response.getHeaderString(HttpHeaders.LOCATION));
     }
 
-    @Test
-    public void save_nameTooShort_badRequestReturned() {
+    @org.junit.jupiter.api.Test
+    void save_nameTooShort_badRequestReturned(WebTarget target) {
         CityDTO city = new CityDTO();
         city.setName("N");
         city.setDistrict("Odessa");
         city.setRegion("Odessa");
-        Response response = target("cities").request().post(Entity.entity(city, MediaType.APPLICATION_JSON_TYPE));
+        Response response = target.path("cities").request().post(Entity.entity(city, MediaType.APPLICATION_JSON_TYPE));
         assertNotNull(response);
         assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
     }
 
-    @Test
-    public void save_nameTooLong_badRequestReturned() {
+    @org.junit.jupiter.api.Test
+    public void save_nameTooLong_badRequestReturned(WebTarget target) {
         CityDTO city = new CityDTO();
         city.setName("N1234567890123456789012345678901234567890");
         city.setDistrict("Odessa");
         city.setRegion("Odessa");
-        Response response = target("cities").request().post(Entity.entity(city, MediaType.APPLICATION_JSON_TYPE));
+        Response response = target.path("cities").request().post(Entity.entity(city, MediaType.APPLICATION_JSON_TYPE));
         assertNotNull(response);
         assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
     }
 
     @SuppressWarnings("unchecked")
     @Test
-    public void testSaveCitySuccess() throws Throwable {
-        CityDTO cityDTO = new CityDTO();
-        cityDTO.setName("Kiev");
-        cityDTO.setDistrict("Kiev");
-        cityDTO.setRegion("Kiev");
+    void testSaveCitySuccess(WebTarget target) throws Throwable {
+        CityDTO city = new CityDTO();
+        city.setName("Kiev");
+        city.setDistrict("Kiev");
+        city.setRegion("Kiev");
 
-        CompletableFuture<Void> cf = target("cities").request().rx()
-                .post(Entity.entity(cityDTO, MediaType.APPLICATION_JSON))
-                .thenAccept(response ->
-                    assertEquals(response.getStatus(), Response.Status.CREATED.getStatusCode())
-                )
-                .thenCompose(v -> target("cities").request().rx().get(Response.class))
-                .thenAccept(response -> {
-                    List<Map<String, String>> cities = response.readEntity(List.class);
+        CompletableFuture<Void> cf = target.path("cities").request().rx()
+                .post(Entity.entity(city, MediaType.APPLICATION_JSON))
+                .thenAccept(response -> assertEquals(response.getStatus(), Response.Status.CREATED.getStatusCode()))
+                .thenCompose(v -> target.path("cities").request().rx().get(Response.class)).thenAccept(response -> {
+                    List<Map<String, String>> cities = (List<Map<String, String>>) response.readEntity(List.class);
                     assertNotNull(cities);
                     assertTrue(cities.stream().anyMatch(item -> item.get("name").equals("Kiev")));
-                })
-                .toCompletableFuture();
+                }).toCompletableFuture();
 
         try {
             cf.join();
         } catch (CompletionException e) {
             if (e.getCause() != null) {
-                throw  e.getCause();
+                throw e.getCause();
             }
             fail(e.getMessage());
         }
     }
+
 }
