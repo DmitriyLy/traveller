@@ -5,20 +5,21 @@ import org.dmly.traveller.app.model.entity.base.AbstractEntity;
 import org.dmly.traveller.app.model.entity.geography.City;
 import org.dmly.traveller.app.service.GeographicService;
 import org.dmly.traveller.app.service.TransportService;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ServiceEntityLoaderTest {
 
     @Mock
@@ -32,7 +33,7 @@ public class ServiceEntityLoaderTest {
     private ServiceEntityLoader serviceEntityLoader;
 
     @Test
-    public void load_validCityIdentifier_returnsCity() {
+    void load_validCityIdentifier_returnsCity() {
         int cityId = 1;
         City city = new City();
         city.setId(cityId);
@@ -46,7 +47,7 @@ public class ServiceEntityLoaderTest {
     }
 
     @Test
-    public void load_nonExistingCityIdentifier_returnsNull() {
+    void load_nonExistingCityIdentifier_returnsNull() {
         when(geographicService.findCityById(anyInt())).thenReturn(Optional.empty());
         City dbCity = serviceEntityLoader.load(City.class, 1);
         assertNull(dbCity);
@@ -54,9 +55,9 @@ public class ServiceEntityLoaderTest {
         verify(geographicService, times(1)).findCityById(anyInt());
     }
 
-    @Test(expected = ConfigurationException.class)
-    public void load_notSupportedEntityClass_throwsException() {
-        serviceEntityLoader.load(SomeEntity.class, 1);
+    @Test
+    void load_notSupportedEntityClass_throwsException() {
+        assertThrows(ConfigurationException.class, () -> serviceEntityLoader.load(SomeEntity.class, 1));
     }
 
     private static class SomeEntity extends AbstractEntity {

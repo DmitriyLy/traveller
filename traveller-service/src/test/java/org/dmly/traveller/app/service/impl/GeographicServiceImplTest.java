@@ -12,10 +12,12 @@ import org.dmly.traveller.app.persistence.repository.StationRepository;
 import org.dmly.traveller.app.persistence.repository.hibernate.HibernateCityRepository;
 import org.dmly.traveller.app.persistence.repository.hibernate.HibernateStationRepository;
 import org.dmly.traveller.app.service.GeographicService;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GeographicServiceImplTest {
     private static final int DEFAULT_CITY_ID = 1;
@@ -33,8 +36,8 @@ public class GeographicServiceImplTest {
 
     private static ExecutorService executorService;
 
-    @BeforeClass
-    public static void setup() {
+    @BeforeAll
+    static void setup() {
         SessionFactoryBuilder builder = new SessionFactoryBuilder(new StandardPropertyEnvironment());
         CityRepository repository = new HibernateCityRepository(builder);
         StationRepository stationRepository = new HibernateStationRepository(builder);
@@ -43,21 +46,21 @@ public class GeographicServiceImplTest {
         executorService = Executors.newCachedThreadPool();
     }
 
-    @AfterClass
-    public static void tearDown() {
+    @AfterAll
+    static void tearDown() {
         executorService.shutdownNow();
 
         service.deleteCities();
     }
 
     @Test
-    public void testNoDataReturnedAtStart() {
+    void testNoDataReturnedAtStart() {
         List<City> cities = service.findCities();
         assertTrue(!cities.isEmpty());
     }
 
     @Test
-    public void testSaveNewCitySuccess() {
+    void testSaveNewCitySuccess() {
         int cityCount = service.findCities().size();
 
         City city = createCity();
@@ -68,8 +71,8 @@ public class GeographicServiceImplTest {
     }
 
     @Test
-    @Ignore
-    public void testFindCityByIdSuccess() {
+    @Disabled
+    void testFindCityByIdSuccess() {
         City city = createCity();
         service.saveCity(city);
 
@@ -78,14 +81,15 @@ public class GeographicServiceImplTest {
         assertEquals(foundCity.get().getId(), DEFAULT_CITY_ID);
     }
 
-    @Test
-    public void testFindCityByIdNotFound() {
-        Optional<City> foundCity = service.findCityById(1_000_000);
+    @ParameterizedTest
+    @ValueSource(ints = { 0, -1, 1_000_000 })
+    public void findCityById_incorrectId_returnsEmptyOptional(int incorrectId) {
+        Optional<City> foundCity = service.findCityById(incorrectId);
         assertTrue(!foundCity.isPresent());
     }
 
     @Test
-    public void testSearchStationsByNameSuccess() {
+    void testSearchStationsByNameSuccess() {
         City city = new City("Zhytomyr");
         city.setDistrict("Zhytomyr");
         city.setRegion("Zhytomyr");
@@ -100,14 +104,14 @@ public class GeographicServiceImplTest {
     }
 
     @Test
-    public void testSearchStationsByNameNotFound() {
+    void testSearchStationsByNameNotFound() {
         List<Station> stations = service.searchStations(StationCriteria.byName("London"), new RangeCriteria(1, 5));
         assertNotNull(stations);
         assertTrue(stations.isEmpty());
     }
 
     @Test
-    public void testSearchStationsByTransportTypeSuccess() {
+    void testSearchStationsByTransportTypeSuccess() {
         int stationCount = service.searchStations(StationCriteria.byTransportType(TransportType.AUTO), new RangeCriteria(1, 5))
                 .size();
 
@@ -127,7 +131,7 @@ public class GeographicServiceImplTest {
     }
 
     @Test
-    public void testSearchStationsByTransportTypeNotFound() {
+    void testSearchStationsByTransportTypeNotFound() {
         City city = createCity();
         city.addStation(TransportType.AUTO);
         service.saveCity(city);
@@ -145,7 +149,7 @@ public class GeographicServiceImplTest {
     }
 
     @Test
-    public void testSaveMultipleCitiesSuccess() {
+    void testSaveMultipleCitiesSuccess() {
         int cityCount = service.findCities().size();
 
         int addedCount = 1_000;
@@ -162,7 +166,7 @@ public class GeographicServiceImplTest {
     }
 
     @Test
-    public void testSaveMultipleCitiesInBatchSuccess() {
+    void testSaveMultipleCitiesInBatchSuccess() {
         int cityCount = service.findCities().size();
         int addedCount = 5_000;
 
@@ -182,7 +186,7 @@ public class GeographicServiceImplTest {
     }
 
     @Test
-    public void testSaveMultipleCitiesConcurrentlySuccess() {
+    void testSaveMultipleCitiesConcurrentlySuccess() {
         int cityCount = service.findCities().size();
 
         int threadCount = 20;
@@ -209,7 +213,7 @@ public class GeographicServiceImplTest {
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void testSaveOneCityConcurrentlySuccess() {
         City city = new City("Nikolaev");
         city.setDistrict("Nikolaev");
