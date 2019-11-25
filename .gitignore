@@ -12,3 +12,4 @@ service.log
 jmh-result.text
 tree.txt
 **/dist/
+yarn.lock

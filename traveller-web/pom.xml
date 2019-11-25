@@ -63,7 +63,7 @@
                             <id>install dependencies</id>
                             <configuration>
                                 <workingDirectory>client/src/</workingDirectory>
-                                <executable>npm</executable>
+                                <executable>yarn</executable>
                                 <arguments>
                                     <argument>install</argument>
                                 </arguments>
@@ -78,7 +78,7 @@
                             <id>build angular</id>
                             <configuration>
                                 <workingDirectory>client/src/</workingDirectory>
-                                <executable>npm</executable>
+                                <executable>yarn</executable>
                                 <arguments>
                                     <argument>run</argument>
                                     <argument>build</argument>
