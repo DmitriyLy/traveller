@@ -5,6 +5,8 @@ import org.dmly.traveller.app.infra.environment.Environment;
 import org.dmly.traveller.app.infra.environment.StandardPropertyEnvironment;
 import org.dmly.traveller.app.model.entity.loader.EntityLoader;
 import org.dmly.traveller.app.persistence.hibernate.loader.SessionEntityLoader;
+import org.dmly.traveller.app.persistence.repository.SystemRepository;
+import org.dmly.traveller.app.persistence.repository.hibernate.HibernateSystemRepository;
 import org.dmly.traveller.app.persistence.repository.hibernate.transport.HibernateOrderRepository;
 import org.dmly.traveller.app.persistence.repository.hibernate.transport.HibernateRouteRepository;
 import org.dmly.traveller.app.persistence.repository.hibernate.transport.HibernateTicketRepository;
@@ -40,6 +42,7 @@ public class ComponentBinder extends AbstractBinder {
         bind(HibernateTicketRepository.class).to(TicketRepository.class).in(Singleton.class).qualifiedBy(new DBSourceInstance());
         bind(HibernateRouteRepository.class).to(RouteRepository.class).in(Singleton.class).qualifiedBy(new DBSourceInstance());
         bind(HibernateTripRepository.class).to(TripRepository.class).in(Singleton.class).qualifiedBy(new DBSourceInstance());
+        bind(HibernateSystemRepository.class).to(SystemRepository.class).in(Singleton.class).qualifiedBy(new DBSourceInstance());
         bind(EntityReferenceTransformer.class).to(Transformer.class).in(Singleton.class);
         bind(SessionEntityLoader.class).to(EntityLoader.class).in(Singleton.class).qualifiedBy(new DBSourceInstance());
         bind(CachedFieldProvider.class).to(FieldProvider.class).in(Singleton.class).qualifiedBy(new CachedInstance());

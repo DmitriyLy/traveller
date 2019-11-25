@@ -2,14 +2,13 @@ package org.dmly.traveller.app.service.transform.impl;
 
 import org.dmly.traveller.app.infra.cdi.Cached;
 import org.dmly.traveller.app.infra.cdi.DBSource;
+import org.dmly.traveller.app.infra.exception.ConfigurationException;
 import org.dmly.traveller.app.infra.util.ReflectionUtil;
 import org.dmly.traveller.app.model.entity.base.AbstractEntity;
 import org.dmly.traveller.app.model.entity.loader.EntityLoader;
 import org.dmly.traveller.app.model.transform.Transformable;
 import org.dmly.traveller.app.model.transform.annotation.DomainProperty;
 import org.dmly.traveller.app.service.transform.Transformer;
-import org.hibernate.internal.util.config.ConfigurationException;
-
 
 import javax.inject.Inject;
 import javax.inject.Named;

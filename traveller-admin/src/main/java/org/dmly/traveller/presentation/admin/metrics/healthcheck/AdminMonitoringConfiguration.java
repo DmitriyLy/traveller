@@ -6,10 +6,11 @@ import com.codahale.metrics.graphite.GraphiteReporter;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.dmly.traveller.app.infra.cdi.DBSource;
 import org.dmly.traveller.app.infra.environment.Environment;
 import org.dmly.traveller.app.monitoring.MetricsManager;
 import org.dmly.traveller.app.monitoring.healthcheck.MySQLHealthCheck;
-import org.dmly.traveller.app.persistence.hibernate.SessionFactoryBuilder;
+import org.dmly.traveller.app.persistence.repository.SystemRepository;
 import org.dmly.traveller.presentation.admin.bean.startup.Eager;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -26,8 +27,8 @@ public class AdminMonitoringConfiguration {
     private static final String MYSQL_HEALTH_CHECK = "mysql";
 
     @Inject
-    public AdminMonitoringConfiguration(MetricsManager metricsManager, SessionFactoryBuilder sessionFactoryBuilder, Environment environment) {
-        metricsManager.registerHealthCheck(MYSQL_HEALTH_CHECK, new MySQLHealthCheck(sessionFactoryBuilder));
+    public AdminMonitoringConfiguration(MetricsManager metricsManager, @DBSource SystemRepository systemRepository, Environment environment) {
+        metricsManager.registerHealthCheck(MYSQL_HEALTH_CHECK, new MySQLHealthCheck(systemRepository));
 
         boolean reportingEnabled = BooleanUtils.toBoolean(environment.getProperty("graphite.reporter.enabled"));
         if (reportingEnabled) {
