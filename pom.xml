@@ -13,6 +13,8 @@
         <module>traveller-admin</module>
         <module>traveller-rest</module>
         <module>traveller-web</module>
+        <module>traveller-common</module>
+        <module>traveller-ticket-service</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -116,6 +118,12 @@
             <groupId>biz.paluch.logging</groupId>
             <artifactId>logstash-gelf</artifactId>
             <version>1.12.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.4</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
