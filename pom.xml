@@ -16,6 +16,7 @@
         <module>traveller-common</module>
         <module>traveller-ticket-service</module>
         <module>traveller-trip-service</module>
+        <module>traveller-user-service</module>
     </modules>
     <packaging>pom</packaging>
 

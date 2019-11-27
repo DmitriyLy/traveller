@@ -31,12 +31,12 @@ public class TicketServiceImpl implements TicketService {
 
 
     @Override
-    public List<Ticket> findTickets(int tripId) {
+    public List<Ticket> findTickets(String tripId) {
         return null;
     }
 
     @Override
-    public List<Order> findReservations(int tripId) {
+    public List<Order> findReservations(String tripId) {
         return null;
     }
 

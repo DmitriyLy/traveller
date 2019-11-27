@@ -1,7 +1,7 @@
 package org.dmly.traveller.trip.model.entity;
 
 import lombok.Setter;
-import org.dmly.traveller.app.model.entity.base.AbstractEntity;
+import org.dmly.traveller.common.model.entity.base.AbstractEntity;
 
 import javax.persistence.*;
 import java.time.LocalTime;

@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface OrderRepository {
     void save(Order order);
 
-    List<Order> findAll(int tripId);
+    List<Order> findAll(String tripId);
 
     Optional<Order> findById(int id);
 }

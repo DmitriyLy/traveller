@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface TicketService {
 
-    List<Ticket> findTickets(int tripId);
+    List<Ticket> findTickets(String tripId);
 
-    List<Order> findReservations(int tripId);
+    List<Order> findReservations(String tripId);
 
     void makeReservation(Order order);
 

@@ -1,7 +1,7 @@
 package org.dmly.traveller.ticket.model.entity;
 
 import lombok.Setter;
-import org.dmly.traveller.app.model.entity.base.AbstractEntity;
+import org.dmly.traveller.common.model.entity.base.AbstractEntity;
 import org.dmly.traveller.ticket.infra.exception.ReservationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,9 +15,11 @@ import java.time.LocalDateTime;
 public class Order extends AbstractEntity {
     private static final Logger LOGGER = LoggerFactory.getLogger(Order.class);
 
+    public static final String FIELD_TRIP_ID = "tripId";
+
     private OrderState state;
     private LocalDateTime dueDate;
-    private String trip;
+    private String tripId;
     private Ticket ticket;
     private String clientName;
     private String clientPhone;
@@ -35,8 +37,8 @@ public class Order extends AbstractEntity {
     }
 
     @Column(name = "TRIP_ID", nullable = false)
-    public String getTrip() {
-        return trip;
+    public String getTripId() {
+        return tripId;
     }
 
     @ManyToOne(cascade = {}, fetch = FetchType.EAGER)

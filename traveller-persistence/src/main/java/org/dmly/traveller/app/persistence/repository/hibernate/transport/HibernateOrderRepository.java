@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @Named
 @DBSource
-public class HibernateOrderRepository extends BaseHibernateRepository implements OrderRepository {
+public class HibernateOrderRepository extends BaseHibernateRepository implements OrderRepository  {
 
     @Inject
     public HibernateOrderRepository(SessionFactoryBuilder builder) {

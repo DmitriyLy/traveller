@@ -31,7 +31,9 @@ public class SessionFactoryBuilder {
 
         MetadataSources sources = new MetadataSources(registry);
 
-        Reflections reflections = new Reflections("org.dmly.traveller.app.model.entity");
+        String basePackage = environment.getProperty("hibernate.base.package", "org.dmly.traveller");
+        Reflections reflections = new Reflections(basePackage);
+
         Set<Class<?>> entityClasses = reflections.getTypesAnnotatedWith(Entity.class);
 
         entityClasses.forEach(sources::addAnnotatedClass);

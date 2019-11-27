@@ -26,7 +26,7 @@ public class HibernateTicketRepository extends BaseHibernateRepository implement
     }
 
     @Override
-    public List<Ticket> findAll(int tripId) {
+    public List<Ticket> findAll(String tripId) {
         return query(session -> session.createNamedQuery(Ticket.QUERY_FIND_ALL, Ticket.class).list());
     }
 }

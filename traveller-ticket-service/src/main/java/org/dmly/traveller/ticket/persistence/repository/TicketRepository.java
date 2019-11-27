@@ -8,5 +8,5 @@ public interface TicketRepository {
 
     void save(Ticket ticket);
 
-    List<Ticket> findAll(int tripId);
+    List<Ticket> findAll(String tripId);
 }

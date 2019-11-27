@@ -23,6 +23,11 @@ public class StandardPropertyEnvironmentTest {
     }
 
     @Test
+    void getProperty_nonExistingProperty_defaultValueReturned() {
+        assertEquals(environment.getProperty("test111", "1"), "1");
+    }
+
+    @Test
     void getProperty_existingProperty_valueReturned() {
         assertEquals("value2", environment.getProperty("key"));
     }
