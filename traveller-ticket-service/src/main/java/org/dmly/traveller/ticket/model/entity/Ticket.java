@@ -15,15 +15,14 @@ public class Ticket extends AbstractEntity {
     public static final String QUERY_FIND_ALL = "Ticket.findAll";
     public static final int TICKET_NUMBER_SIZE = 32;
 
-    //private Trip trip;
+    private String tripId;
     private String name;
     private String uid;
 
-   /* @ManyToOne(cascade = {}, fetch = FetchType.EAGER)
-    @JoinColumn(name = "TRIP_ID")
-    public Trip getTrip() {
-        return trip;
-    }*/
+    @Column(name = "TRIP_ID", nullable = false)
+    public String getTripId() {
+        return tripId;
+    }
 
     @Column(length = 32, nullable = false)
     public String getName() {
