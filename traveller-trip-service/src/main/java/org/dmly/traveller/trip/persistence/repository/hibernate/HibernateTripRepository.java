@@ -1,9 +1,9 @@
 package org.dmly.traveller.trip.persistence.repository.hibernate;
 
-import org.dmly.traveller.app.infra.cdi.DBSource;
 import org.dmly.traveller.app.model.entity.base.AbstractEntity;
 import org.dmly.traveller.app.persistence.hibernate.SessionFactoryBuilder;
 import org.dmly.traveller.app.persistence.repository.hibernate.BaseHibernateRepository;
+import org.dmly.traveller.common.infra.cdi.DBSource;
 import org.dmly.traveller.trip.model.entity.Trip;
 import org.dmly.traveller.trip.persistence.repository.TripRepository;
 import org.hibernate.Criteria;

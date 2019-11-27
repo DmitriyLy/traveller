@@ -1,7 +1,7 @@
 package org.dmly.traveller.user.service.impl;
 
-import org.dmly.traveller.app.infra.cdi.DBSource;
 import org.dmly.traveller.app.infra.util.SecurityUtil;
+import org.dmly.traveller.common.infra.cdi.DBSource;
 import org.dmly.traveller.user.model.entity.User;
 import org.dmly.traveller.user.persistence.repository.UserRepository;
 import org.dmly.traveller.user.service.UserService;

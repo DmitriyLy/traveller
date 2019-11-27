@@ -1,9 +1,8 @@
 package org.dmly.traveller.ticket.persistence.repository.hibernate;
 
-
-import org.dmly.traveller.app.infra.cdi.DBSource;
 import org.dmly.traveller.app.persistence.hibernate.SessionFactoryBuilder;
 import org.dmly.traveller.app.persistence.repository.hibernate.BaseHibernateRepository;
+import org.dmly.traveller.common.infra.cdi.DBSource;
 import org.dmly.traveller.ticket.model.entity.Order;
 import org.dmly.traveller.ticket.persistence.repository.OrderRepository;
 import org.hibernate.Criteria;
