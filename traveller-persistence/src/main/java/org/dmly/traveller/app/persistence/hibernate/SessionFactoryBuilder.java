@@ -35,7 +35,6 @@ public class SessionFactoryBuilder {
         Reflections reflections = new Reflections(basePackage);
 
         Set<Class<?>> entityClasses = reflections.getTypesAnnotatedWith(Entity.class);
-
         entityClasses.forEach(sources::addAnnotatedClass);
 
         org.hibernate.boot.SessionFactoryBuilder builder = sources.getMetadataBuilder().build()
