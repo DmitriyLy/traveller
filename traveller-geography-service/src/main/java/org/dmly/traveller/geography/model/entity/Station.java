@@ -11,12 +11,12 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Table(name = "STATION")
-@Entity
-@NamedQuery(name = Station.QUERY_DELETE_ALL, query = "delete from Station")
+@Entity(name = "Station2")
+@NamedQuery(name = Station.QUERY_DELETE_ALL, query = "delete from Station2")
 @Setter
 @EqualsAndHashCode(callSuper = true, of = { "city", "transportType", "address" })
 public class Station extends AbstractEntity {
-    public static final String QUERY_DELETE_ALL = "deleteStations";
+    public static final String QUERY_DELETE_ALL = "Station.deleteAll";
     public static final String FIELD_TRIP = "trip";
 
     private City city;

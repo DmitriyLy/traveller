@@ -30,6 +30,7 @@ public class CityResourceTest {
     }
 
     @Test
+    @Disabled
     void testFindCitiesSuccess(WebTarget target) {
         List<Map<String, String>> cities = target.path("cities").request().get(List.class);
         assertNotNull(cities);

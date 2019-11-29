@@ -15,14 +15,14 @@ import java.util.Set;
  *
  */
 @Table(name = "CITY")
-@Entity
+@Entity(name = "City2")
 @NamedQueries({
-        @NamedQuery(name = City.QUERY_DELETE_ALL, query = "delete from City"),
-        @NamedQuery(name = City.QUERY_FIND_ALL, query = "from City")
+        @NamedQuery(name = City.QUERY_DELETE_ALL, query = "delete from City2"),
+        @NamedQuery(name = City.QUERY_FIND_ALL, query = "from City2")
 })
 @Setter
 public class City extends AbstractEntity {
-    public static final String QUERY_DELETE_ALL = "deleteCities";
+    public static final String QUERY_DELETE_ALL = "City.deleteAll";
     public static final String QUERY_FIND_ALL = "City.findAll";
 
     private String name;

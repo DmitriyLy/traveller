@@ -36,13 +36,13 @@ services:
     entrypoint: bash -c "sleep 5s && catalina.sh run"
     healthcheck:
       <<: *health_check
-        test: curl -f http://localhost:8080 || exit 1
+      test: curl -f http://localhost:8080 || exit 1
   geography:
     build:
-      context: ./traveller-web
-      dockerfile: src/main/resources/docker/client-tomcat.dockerfile
+      context: ./traveller-geography-service
+      dockerfile: src/main/resources/docker/tomcat.dockerfile
     ports:
-      - "8080:8080"
+      - "8090:8080"
     networks:
       - network1
     depends_on:

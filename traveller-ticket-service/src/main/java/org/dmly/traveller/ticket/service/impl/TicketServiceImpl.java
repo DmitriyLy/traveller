@@ -1,6 +1,8 @@
 package org.dmly.traveller.ticket.service.impl;
 
+import org.dmly.traveller.app.infra.util.Checks;
 import org.dmly.traveller.app.infra.util.generator.text.StringGenerator;
+import org.dmly.traveller.common.infra.cdi.DBSource;
 import org.dmly.traveller.ticket.model.entity.Order;
 import org.dmly.traveller.ticket.model.entity.Ticket;
 import org.dmly.traveller.ticket.model.generator.TicketNumberGenerator;
@@ -12,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Optional;
 
 public class TicketServiceImpl implements TicketService {
 
@@ -24,7 +27,7 @@ public class TicketServiceImpl implements TicketService {
     private final StringGenerator ticketNumberGenerator = new TicketNumberGenerator();
 
     @Inject
-    public TicketServiceImpl(TicketRepository ticketRepository, OrderRepository orderRepository) {
+    public TicketServiceImpl(@DBSource TicketRepository ticketRepository, @DBSource OrderRepository orderRepository) {
         this.ticketRepository = ticketRepository;
         this.orderRepository = orderRepository;
     }
@@ -32,31 +35,47 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public List<Ticket> findTickets(String tripId) {
-        return null;
+        return ticketRepository.findAll(tripId);
     }
 
     @Override
     public List<Order> findReservations(String tripId) {
-        return null;
+        return orderRepository.findAll(tripId);
     }
 
     @Override
     public void makeReservation(Order order) {
-
+        orderRepository.save(order);
     }
 
     @Override
     public void cancelReservation(int orderId, String reason) {
-
+        Optional<Order> order = orderRepository.findById(orderId);
+        order.ifPresentOrElse(result -> {
+            result.cancel(reason);
+            orderRepository.save(result);
+        }, () -> LOGGER.error("Invalid order identifier: {}", orderId));
     }
 
     @Override
     public void completeReservation(int orderId) {
-
+        Optional<Order> order = orderRepository.findById(orderId);
+        order.ifPresentOrElse(resulut -> {
+            resulut.complete();
+            orderRepository.save(resulut);
+        }, () -> LOGGER.error("Invalid order identifier: {}", orderId));
     }
 
     @Override
     public Ticket buyTicket(String tripId, String clientName) {
-        return null;
+        Checks.checkParameter(tripId != null, "Trip identifier should be not null");
+
+        Ticket ticket = new Ticket();
+        ticket.setTripId(tripId);
+        ticket.generateUid(ticketNumberGenerator);
+        ticket.setName(clientName);
+        ticketRepository.save(ticket);
+
+        return ticket;
     }
 }

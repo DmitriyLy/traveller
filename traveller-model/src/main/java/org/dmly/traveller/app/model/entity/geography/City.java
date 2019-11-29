@@ -21,7 +21,7 @@ import java.util.*;
 @Setter
 public class City extends AbstractEntity {
     public static final String QUERY_DELETE_ALL = "deleteCities";
-    public static final String QUERY_FIND_ALL = "City.findAll";
+    public static final String QUERY_FIND_ALL = "findCities";
 
     private String name;
     private String district;

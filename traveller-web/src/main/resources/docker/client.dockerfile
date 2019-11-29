@@ -2,12 +2,12 @@ FROM node:10-slim as node10
 
 RUN apt-get update && apt-get install -y bzip2
 
-COPY germes-web/client/package.json /opt/client/package.json
+COPY client/package.json /opt/client/package.json
 WORKDIR /opt/client/
 
 RUN yarn install
 
-COPY germes-web/client/ /opt/client 
+COPY client/ /opt/client
 
 RUN node_modules/.bin/ng build --prod 
 
