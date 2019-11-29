@@ -2,10 +2,10 @@ package org.dmly.traveller.geography.resource;
 
 import io.swagger.annotations.*;
 import org.dmly.traveller.app.infra.exception.flow.InvalidParameterException;
-import org.dmly.traveller.app.rest.service.base.BaseResource;
 import org.dmly.traveller.common.model.transform.Transformer;
 import org.dmly.traveller.geography.dto.CityDTO;
 import org.dmly.traveller.geography.model.entity.City;
+import org.dmly.traveller.geography.resource.base.BaseResource;
 import org.dmly.traveller.geography.service.GeographicService;
 
 import javax.inject.Inject;

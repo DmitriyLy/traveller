@@ -1,6 +1,6 @@
 package org.dmly.traveller.common.model.transform.impl;
 
-import org.dmly.traveller.app.infra.util.ReflectionUtil;
+import org.dmly.traveller.common.infra.util.ReflectionUtil;
 import org.dmly.traveller.common.infra.cdi.Cached;
 
 import java.util.HashMap;

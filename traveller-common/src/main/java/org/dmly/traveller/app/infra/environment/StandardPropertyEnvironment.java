@@ -4,7 +4,7 @@ import org.dmly.traveller.app.infra.environment.source.EnvironmentPropertySource
 import org.dmly.traveller.app.infra.environment.source.FilePropertySource;
 import org.dmly.traveller.app.infra.environment.source.PropertySource;
 import org.dmly.traveller.app.infra.environment.source.SystemPropertySource;
-import org.dmly.traveller.app.infra.util.Checks;
+import org.dmly.traveller.common.infra.util.Checks;
 
 import java.util.ArrayList;
 import java.util.HashMap;

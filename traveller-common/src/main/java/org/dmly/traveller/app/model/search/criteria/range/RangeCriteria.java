@@ -1,6 +1,6 @@
 package org.dmly.traveller.app.model.search.criteria.range;
 
-import org.dmly.traveller.app.infra.util.Checks;
+import org.dmly.traveller.common.infra.util.Checks;
 
 public class RangeCriteria {
     private final int page;

@@ -1,7 +1,7 @@
 package org.dmly.traveller.ticket.model.entity;
 
 import lombok.Setter;
-import org.dmly.traveller.app.infra.util.Checks;
+import org.dmly.traveller.common.infra.util.Checks;
 import org.dmly.traveller.app.infra.util.generator.text.StringGenerator;
 import org.dmly.traveller.common.model.entity.base.AbstractEntity;
 

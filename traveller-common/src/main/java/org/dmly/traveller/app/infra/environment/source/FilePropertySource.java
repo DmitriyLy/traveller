@@ -2,7 +2,7 @@ package org.dmly.traveller.app.infra.environment.source;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import org.dmly.traveller.app.infra.util.Checks;
+import org.dmly.traveller.common.infra.util.Checks;
 
 import javax.persistence.PersistenceException;
 import java.io.IOException;

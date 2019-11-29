@@ -1,7 +1,7 @@
 package org.dmly.traveller.app.infra.environment.source;
 
 import lombok.extern.slf4j.Slf4j;
-import org.dmly.traveller.app.infra.util.Checks;
+import org.dmly.traveller.common.infra.util.Checks;
 
 import java.util.Map;
 

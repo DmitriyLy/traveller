@@ -3,7 +3,7 @@ package org.dmly.traveller.common.model.transform.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.dmly.traveller.app.infra.util.CommonUtil;
-import org.dmly.traveller.app.infra.util.ReflectionUtil;
+import org.dmly.traveller.common.infra.util.ReflectionUtil;
 import org.dmly.traveller.common.model.entity.base.AbstractEntity;
 import org.dmly.traveller.common.model.transform.Transformable;
 import org.dmly.traveller.common.model.transform.Transformer;

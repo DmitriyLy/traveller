@@ -1,6 +1,6 @@
 package org.dmly.traveller.ticket.service.impl;
 
-import org.dmly.traveller.app.infra.util.Checks;
+import org.dmly.traveller.common.infra.util.Checks;
 import org.dmly.traveller.app.infra.util.generator.text.StringGenerator;
 import org.dmly.traveller.common.infra.cdi.DBSource;
 import org.dmly.traveller.ticket.model.entity.Order;

@@ -2,7 +2,7 @@ package org.dmly.traveller.common.model.transform.impl;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
-import org.dmly.traveller.app.infra.util.ReflectionUtil;
+import org.dmly.traveller.common.infra.util.ReflectionUtil;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package org.dmly.traveller.app.infra.util.generator.text;
 
-import org.dmly.traveller.app.infra.util.Checks;
+import org.dmly.traveller.common.infra.util.Checks;
 import org.dmly.traveller.app.infra.util.generator.NumberGenerator;
 import org.dmly.traveller.app.infra.util.generator.RandomNumberGenerator;
 
