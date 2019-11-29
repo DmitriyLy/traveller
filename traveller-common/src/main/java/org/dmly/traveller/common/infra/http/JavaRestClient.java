@@ -1,6 +1,7 @@
 package org.dmly.traveller.common.infra.http;
 
 import lombok.extern.slf4j.Slf4j;
+import org.dmly.traveller.common.infra.json.JsonClient;
 
 import java.io.IOException;
 import java.net.URI;
@@ -18,14 +19,16 @@ public class JavaRestClient implements RestClient {
 
     private final int timeout;
 
+    private final JsonClient jsonClient;
 
-    public JavaRestClient(int timeout) {
+    public JavaRestClient(int timeout, final JsonClient jsonClient) {
         client = HttpClient.newBuilder().version(HttpClient.Version.HTTP_2).build();
         this.timeout = timeout;
+        this.jsonClient = jsonClient;
     }
 
     @Override
-    public <T> RestResponse<T> get(String url, Class<T> clz) {
+    public <T> RestResponse<T> get(final String url, final Class<T> clz) {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .timeout(Duration.ofSeconds(timeout))
@@ -35,7 +38,7 @@ public class JavaRestClient implements RestClient {
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             String body = response.body();
-            return null;
+            return new RestResponse<T>(response.statusCode(), jsonClient.fromJson(body, clz));
         } catch (IOException | InterruptedException e) {
             log.error(e.getMessage(), e);
             throw new RuntimeException(e);
