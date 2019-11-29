@@ -1,4 +1,10 @@
-version : '3.4'
+version : '3.7'
+x-healthcheck:
+  &health_check
+  interval: 1m
+  timeout: 10s
+  retries: 2
+  start_period: 1m
 services:
   mysql:
     build:
@@ -15,11 +21,8 @@ services:
     env_file:
       - mysql.env
     healthcheck:
+      <<: *health_check
       test: mysql -ugermes -pgermes -e "SELECT version();"
-      interval: 1m
-      timeout: 10s
-      retries: 2
-      start_period: 1m
   admin:
     build:
       context: ./traveller-admin
@@ -32,14 +35,9 @@ services:
       - mysql
     entrypoint: bash -c "sleep 5s && catalina.sh run"
     healthcheck:
-      test: curl -f http://localhost:8080 || exit 1
-      interval: 1m
-      timeout: 10s
-      retries: 2
-      start_period: 1m
-    #environment:
-    #  - JAVA_OPTS=--add-modules java.xml.bind
-  client:
+      <<: *health_check
+        test: curl -f http://localhost:8080 || exit 1
+  geography:
     build:
       context: ./traveller-web
       dockerfile: src/main/resources/docker/client-tomcat.dockerfile
@@ -51,11 +49,22 @@ services:
       - mysql
     entrypoint: bash -c "sleep 5s && catalina.sh run"
     healthcheck:
+      <<: *health_check
       test: curl -f http://localhost:8080 || exit 1
-      interval: 1m
-      timeout: 10s
-      retries: 2
-      start_period: 1m
+  client:
+    build:
+      context: ./traveller-web
+      dockerfile: src/main/resources/docker/client.dockerfile
+    ports:
+      - "8080:80"
+    networks:
+      - network1
+    depends_on:
+      - geography
+    healthcheck:
+      <<: *health_check
+      test: curl -f http://localhost:80 || exit 1
+
     #environment:
     #  - JAVA_OPTS=--add-modules java.xml.bind
 networks:
