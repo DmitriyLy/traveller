@@ -1,6 +1,6 @@
 package org.dmly.traveller.ticket.service.impl;
 
-import org.dmly.traveller.app.infra.exception.flow.InvalidParameterException;
+import org.dmly.traveller.common.infra.exception.flow.InvalidParameterException;
 import org.dmly.traveller.ticket.model.entity.Order;
 import org.dmly.traveller.ticket.model.entity.Ticket;
 import org.dmly.traveller.ticket.persistence.repository.OrderRepository;

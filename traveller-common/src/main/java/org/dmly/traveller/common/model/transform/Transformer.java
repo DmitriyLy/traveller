@@ -1,6 +1,6 @@
 package org.dmly.traveller.common.model.transform;
 
-import org.dmly.traveller.app.infra.exception.flow.ValidationException;
+import org.dmly.traveller.common.infra.exception.flow.ValidationException;
 import org.dmly.traveller.common.infra.util.Checks;
 import org.dmly.traveller.common.infra.util.ReflectionUtil;
 import org.dmly.traveller.common.model.entity.base.AbstractEntity;

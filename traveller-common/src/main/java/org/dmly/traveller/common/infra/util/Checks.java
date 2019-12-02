@@ -1,6 +1,6 @@
 package org.dmly.traveller.common.infra.util;
 
-import org.dmly.traveller.app.infra.exception.flow.InvalidParameterException;
+import org.dmly.traveller.common.infra.exception.flow.InvalidParameterException;
 
 public class Checks {
     private Checks() {

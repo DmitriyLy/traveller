@@ -1,6 +1,6 @@
 package org.dmly.traveller.common.model.transform.impl;
 
-import org.dmly.traveller.app.infra.exception.flow.InvalidParameterException;
+import org.dmly.traveller.common.infra.exception.flow.InvalidParameterException;
 import org.dmly.traveller.common.model.entity.base.AbstractEntity;
 import org.dmly.traveller.common.model.transform.Transformable;
 import org.dmly.traveller.common.model.transform.Transformer;

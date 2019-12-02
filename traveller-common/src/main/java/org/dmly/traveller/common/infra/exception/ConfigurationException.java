@@ -1,6 +1,6 @@
 package org.dmly.traveller.common.infra.exception;
 
-import org.dmly.traveller.app.infra.exception.base.AppException;
+import org.dmly.traveller.common.infra.exception.base.AppException;
 
 public class ConfigurationException extends AppException {
     public ConfigurationException(String message, Throwable cause) {

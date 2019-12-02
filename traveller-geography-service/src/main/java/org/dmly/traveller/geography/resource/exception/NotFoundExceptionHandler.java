@@ -1,6 +1,6 @@
 package org.dmly.traveller.geography.resource.exception;
 
-import org.dmly.traveller.app.infra.exception.flow.InvalidParameterException;
+import org.dmly.traveller.common.infra.exception.flow.InvalidParameterException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
