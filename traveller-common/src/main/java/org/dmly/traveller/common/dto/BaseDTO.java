@@ -3,11 +3,10 @@ package org.dmly.traveller.common.dto;
 import lombok.Getter;
 import lombok.Setter;
 import org.dmly.traveller.common.model.entity.base.AbstractEntity;
-import org.dmly.traveller.common.model.transform.Transformable;
 
 @Getter
 @Setter
-public abstract class BaseDTO<T extends AbstractEntity> implements Transformable<T> {
+public abstract class BaseDTO<T extends AbstractEntity> {
     private int id;
 
     public int getId() {

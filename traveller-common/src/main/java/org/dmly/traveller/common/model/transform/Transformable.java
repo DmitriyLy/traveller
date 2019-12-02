@@ -1,8 +1,12 @@
 package org.dmly.traveller.common.model.transform;
 
-public interface Transformable<P> {
+public interface Transformable<T, P> {
 
-    void transform(P p);
+    default P transform(T t, P p) {
+        return p;
+    }
 
-    P untransform(P p);
+    default T untransform(P p, T t) {
+        return t;
+    }
 }

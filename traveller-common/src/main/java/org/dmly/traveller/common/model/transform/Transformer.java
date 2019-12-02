@@ -6,7 +6,7 @@ import org.dmly.traveller.common.infra.util.ReflectionUtil;
 import org.dmly.traveller.common.model.entity.base.AbstractEntity;
 
 public interface Transformer {
-    default <T extends AbstractEntity, P extends Transformable<T>> P transform(T entity, Class<P> clz) {
+    default <T extends AbstractEntity, P> P transform(T entity, Class<P> clz) {
         checkParams(entity, clz);
 
         P destination = ReflectionUtil.createInstance(clz);
@@ -23,11 +23,11 @@ public interface Transformer {
         Checks.checkParameter(param != null, errorMessage);
     }
 
-    <T extends AbstractEntity, P extends Transformable<T>> P transform(T entity, P destination);
+    <T extends AbstractEntity, P> P transform(T entity, P destination);
 
-    <T extends AbstractEntity, P extends Transformable<T>> T untransform(P dto, T entity);
+    <T extends AbstractEntity, P> T untransform(P dto, T entity);
 
-    default <T extends AbstractEntity, P extends Transformable<T>> T untransform(P dto, Class<T> clz) {
+    default <T extends AbstractEntity, P> T untransform(P dto, Class<T> clz) {
         checkParams(dto, clz);
 
         T entity = ReflectionUtil.createInstance(clz);

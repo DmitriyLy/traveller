@@ -3,7 +3,7 @@ package org.dmly.traveller.common.model.transform.impl;
 import org.dmly.traveller.app.model.transform.annotation.DomainProperty;
 import org.dmly.traveller.common.model.entity.base.AbstractEntity;
 import org.dmly.traveller.common.model.entity.loader.EntityLoader;
-import org.dmly.traveller.common.model.transform.Transformable;
+import org.dmly.traveller.common.model.transform.TransformableProvider;
 import org.dmly.traveller.common.model.transform.Transformer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,8 +11,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -23,10 +26,14 @@ public class EntityReferenceTransformerTest {
     @Mock
     private EntityLoader entityLoader;
 
+    @Mock
+    private TransformableProvider transformableProvider;
+
     @BeforeEach
     void setup() {
-        entityReferenceTransformer = new EntityReferenceTransformer(entityLoader,
-                new CachedFieldProvider());
+        entityReferenceTransformer = new EntityReferenceTransformer(entityLoader, new CachedFieldProvider(),
+                transformableProvider);
+        when(transformableProvider.find(any())).thenReturn(Optional.empty());
     }
 
     @Test
@@ -62,21 +69,8 @@ public class EntityReferenceTransformerTest {
     public static class ParentEntity extends AbstractEntity {
     }
 
-    public static class SourceDTO implements Transformable<SourceEntity> {
+    public static class SourceDTO {
         @DomainProperty("parent")
         int parentId;
-
-        @Override
-        public void transform(SourceEntity p) {
-
-        }
-
-        @Override
-        public SourceEntity untransform(SourceEntity p) {
-            return p;
-        }
-
     }
-
-
 }

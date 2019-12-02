@@ -1,14 +1,15 @@
 package org.dmly.traveller.geography.binding;
 
-
 import org.dmly.traveller.app.infra.environment.Environment;
 import org.dmly.traveller.app.infra.environment.StandardPropertyEnvironment;
 import org.dmly.traveller.app.persistence.hibernate.SessionFactoryBuilder;
 import org.dmly.traveller.common.model.entity.loader.EntityLoader;
+import org.dmly.traveller.common.model.transform.TransformableProvider;
 import org.dmly.traveller.common.model.transform.Transformer;
 import org.dmly.traveller.common.model.transform.impl.CachedFieldProvider;
 import org.dmly.traveller.common.model.transform.impl.EntityReferenceTransformer;
 import org.dmly.traveller.common.model.transform.impl.FieldProvider;
+import org.dmly.traveller.geography.dto.transformable.DefaultTransformableProvider;
 import org.dmly.traveller.geography.infra.cdi.CachedInstance;
 import org.dmly.traveller.geography.infra.cdi.DBSourceInstance;
 import org.dmly.traveller.geography.persistence.hibernate.loader.SessionEntityLoader;
@@ -33,5 +34,6 @@ public class ComponentBinder extends AbstractBinder {
         bind(GeographicServiceImpl.class).to(GeographicService.class).in(Singleton.class);
         bind(SessionFactoryBuilder.class).to(SessionFactoryBuilder.class).in(Singleton.class);
         bind(StandardPropertyEnvironment.class).to(Environment.class).in(Singleton.class);
+        bind(DefaultTransformableProvider.class).to(TransformableProvider.class).in(Singleton.class);
     }
 }

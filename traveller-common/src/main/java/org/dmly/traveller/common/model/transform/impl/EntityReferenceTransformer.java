@@ -8,6 +8,7 @@ import org.dmly.traveller.common.infra.cdi.DBSource;
 import org.dmly.traveller.common.model.entity.base.AbstractEntity;
 import org.dmly.traveller.common.model.entity.loader.EntityLoader;
 import org.dmly.traveller.common.model.transform.Transformable;
+import org.dmly.traveller.common.model.transform.TransformableProvider;
 import org.dmly.traveller.common.model.transform.Transformer;
 
 import javax.inject.Inject;
@@ -25,14 +26,15 @@ public class EntityReferenceTransformer implements Transformer {
     private final Transformer delegate;
 
     @Inject
-    public EntityReferenceTransformer(@DBSource EntityLoader entityLoader, @Cached FieldProvider fieldProvider) {
+    public EntityReferenceTransformer(@DBSource EntityLoader entityLoader, @Cached FieldProvider fieldProvider,
+                                      TransformableProvider transformableProvider) {
         this.entityLoader = entityLoader;
         this.fieldProvider = fieldProvider;
-        this.delegate = new SimpleDTOTransformer(fieldProvider);
+        this.delegate = new SimpleDTOTransformer(fieldProvider, transformableProvider);
     }
 
     @Override
-    public <T extends AbstractEntity, P extends Transformable<T>> P transform(T entity, Class<P> clz) {
+    public <T extends AbstractEntity, P> P transform(T entity, Class<P> clz) {
         P dto = ReflectionUtil.createInstance(clz);
         transform(entity, dto);
 
@@ -40,7 +42,7 @@ public class EntityReferenceTransformer implements Transformer {
     }
 
     @Override
-    public <T extends AbstractEntity, P extends Transformable<T>> P transform(final T entity, final P destination) {
+    public <T extends AbstractEntity, P> P transform(final T entity, final P destination) {
         List<String> markedFields = fieldProvider.getDomainProperties(destination.getClass());
         for (String name : markedFields) {
             String domainProperty = ReflectionUtil.getField(destination.getClass(), name).getAnnotation(DomainProperty.class)
@@ -59,7 +61,7 @@ public class EntityReferenceTransformer implements Transformer {
     }
 
     @Override
-    public <T extends AbstractEntity, P extends Transformable<T>> T untransform(final P dto, final T entity) {
+    public <T extends AbstractEntity, P> T untransform(final P dto, final T entity) {
 
         List<String> markedFields = fieldProvider.getDomainProperties(dto.getClass());
         for (String name : markedFields) {
