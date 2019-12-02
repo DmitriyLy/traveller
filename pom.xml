@@ -17,6 +17,7 @@
         <module>traveller-trip-service</module>
         <module>traveller-user-service</module>
         <module>traveller-geography-service</module>
+        <module>traveller-geography-service-client</module>
     </modules>
     <packaging>pom</packaging>
 
