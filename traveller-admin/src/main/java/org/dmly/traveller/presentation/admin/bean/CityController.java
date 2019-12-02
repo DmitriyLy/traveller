@@ -7,6 +7,7 @@ import org.dmly.traveller.app.model.entity.geography.City;
 import org.dmly.traveller.app.monitoring.MetricsManager;
 import org.dmly.traveller.app.service.GeographicService;
 import org.dmly.traveller.app.service.transform.Transformer;
+import org.dmly.traveller.common.infra.http.RestClient;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -27,6 +28,8 @@ public class CityController {
 
     private final MetricsManager metricsManager;
 
+    private final RestClient restClient;
+
     private Counter savedCitiesCounter;
 
     @Inject
@@ -34,10 +37,12 @@ public class CityController {
     private PushContext cityChannel;
 
     @Inject
-    public CityController(GeographicService geographicService, Transformer transformer, MetricsManager metricsManager) {
+    public CityController(GeographicService geographicService, Transformer transformer, MetricsManager metricsManager,
+                          RestClient restClient) {
         this.geographicService = geographicService;
         this.transformer = transformer;
         this.metricsManager = metricsManager;
+        this.restClient = restClient;
     }
 
     public List<City> getCities() {
