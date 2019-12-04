@@ -3,6 +3,7 @@ package org.dmly.traveller.common.model.transform.impl;
 import org.dmly.traveller.common.infra.util.ReflectionUtil;
 import org.dmly.traveller.common.infra.cdi.Cached;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,5 +37,11 @@ public class CachedFieldProvider extends FieldProvider {
     public List<String> getDomainProperties(Class<?> clz) {
         String key = clz.getSimpleName();
         return domainFields.computeIfAbsent(key, item -> super.getDomainProperties(clz));
+    }
+
+    @Override
+    public List<String> getFieldNames(Class<?> source, Class<?> dest, List<Field> ignoredFields) {
+        String key = source.getSimpleName() + dest.getSimpleName();
+        return cache.computeIfAbsent(key, item -> ReflectionUtil.findSimilarFields(source, dest, ignoredFields));
     }
 }

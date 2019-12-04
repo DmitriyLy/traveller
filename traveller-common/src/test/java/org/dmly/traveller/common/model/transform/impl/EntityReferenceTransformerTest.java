@@ -1,8 +1,8 @@
 package org.dmly.traveller.common.model.transform.impl;
 
-import org.dmly.traveller.app.model.transform.annotation.DomainProperty;
 import org.dmly.traveller.common.model.entity.base.AbstractEntity;
 import org.dmly.traveller.common.model.entity.loader.EntityLoader;
+import org.dmly.traveller.common.model.transform.Transformable;
 import org.dmly.traveller.common.model.transform.TransformableProvider;
 import org.dmly.traveller.common.model.transform.Transformer;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -38,6 +39,8 @@ public class EntityReferenceTransformerTest {
 
     @Test
     void transform_validEntity_referenceFieldsCopied() {
+        when(transformableProvider.find(any())).thenReturn((Optional)Optional.of(new SourceTransformable()));
+
         ParentEntity parent = new ParentEntity();
         parent.setId(1);
         SourceEntity source = new SourceEntity();
@@ -50,6 +53,8 @@ public class EntityReferenceTransformerTest {
 
     @Test
     void untransform_validDTO_referenceFieldsCopied() {
+        when(transformableProvider.find(any())).thenReturn((Optional)Optional.of(new SourceTransformable()));
+
         SourceDTO sourceDTO = new SourceDTO();
         sourceDTO.parentId = 1;
 
@@ -70,7 +75,15 @@ public class EntityReferenceTransformerTest {
     }
 
     public static class SourceDTO {
-        @DomainProperty("parent")
         int parentId;
+    }
+
+    private static class SourceTransformable implements Transformable<SourceEntity, SourceDTO> {
+
+        @Override
+        public Map<String, String> getSourceMapping() {
+            return Map.of("parentId", "parent");
+        }
+
     }
 }

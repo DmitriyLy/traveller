@@ -4,6 +4,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import org.dmly.traveller.common.infra.util.ReflectionUtil;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 public class GuavaCachedFieldProvider extends FieldProvider {
@@ -20,6 +21,19 @@ public class GuavaCachedFieldProvider extends FieldProvider {
         List<String> fields = cache.get(key);
         if (fields == null) {
             fields = ReflectionUtil.findSimilarFields(source, destination);
+            cache.putAll(key, fields);
+        }
+
+        return fields;
+    }
+
+    @Override
+    public List<String> getFieldNames(Class<?> source, Class<?> dest, List<Field> ignoredFields) {
+        String key = source.getSimpleName() + dest.getSimpleName();
+
+        List<String> fields = cache.get(key);
+        if (fields == null) {
+            fields = ReflectionUtil.findSimilarFields(source, dest, ignoredFields);
             cache.putAll(key, fields);
         }
 

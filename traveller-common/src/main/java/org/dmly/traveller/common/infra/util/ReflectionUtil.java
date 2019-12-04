@@ -17,14 +17,6 @@ public class ReflectionUtil {
     private ReflectionUtil() {
     }
 
-    /**
-     * Creates an instance of the specified class. This method throws unchecked
-     * exception if creation fails
-     *
-     * @param clz
-     * @return
-     * @throws ConfigurationException
-     */
     public static <T> T createInstance(Class<T> clz) throws ConfigurationException {
         try {
             return clz.getDeclaredConstructor().newInstance();
@@ -35,10 +27,23 @@ public class ReflectionUtil {
 
     public static List<String> findSimilarFields(Class<?> clz1, Class<?> clz2) throws ConfigurationException {
         try {
-            Predicate<Field> ignoreField = field -> !field.isAnnotationPresent(Ignore.class);
-            List<String> targetFields = getFields(clz2, List.of(ignoreField));
+            Predicate<Field> ignoreAbsent = field -> !field.isAnnotationPresent(Ignore.class);
+            List<String> targetFields = getFields(clz2, List.of(ignoreAbsent));
 
-            return getFields(clz1, List.of(ignoreField,
+            return getFields(clz1, List.of(ignoreAbsent,
+                    field -> !Modifier.isStatic(field.getModifiers()) && !Modifier.isFinal(field.getModifiers()),
+                    field -> targetFields.contains(field.getName())));
+        } catch (SecurityException ex) {
+            throw new ConfigurationException(ex);
+        }
+    }
+
+    public static List<String> findSimilarFields(Class<?> clz1, Class<?> clz2, List<Field> ignoredFields) throws ConfigurationException {
+        try {
+            Predicate<Field> ignoreAbsent = field -> !ignoredFields.contains(field);
+            List<String> targetFields = getFields(clz2, List.of(ignoreAbsent));
+
+            return getFields(clz1, List.of(ignoreAbsent,
                     field -> !Modifier.isStatic(field.getModifiers()) && !Modifier.isFinal(field.getModifiers()),
                     field -> targetFields.contains(field.getName())));
         } catch (SecurityException ex) {
@@ -125,4 +130,5 @@ public class ReflectionUtil {
             throw new ConfigurationException(ex);
         }
     }
+
 }

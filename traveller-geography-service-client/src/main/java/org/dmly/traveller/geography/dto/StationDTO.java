@@ -5,9 +5,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class StationDTO {}/*extends BaseDTO<Station> {
+public class StationDTO  {
+    private int id;
 
-    @DomainProperty("city")
     private int cityId;
 
     private String zipCode;
@@ -24,40 +24,5 @@ public class StationDTO {}/*extends BaseDTO<Station> {
 
     private double y;
 
-    @Ignore
     private String transportType;
-
-    @Override
-    public void transform(Station station) {
-        super.transform(station);
-        zipCode = station.getAddress().getZipCode();
-        street = station.getAddress().getStreet();
-        apartment = station.getAddress().getApartment();
-        houseNo = station.getAddress().getHouseNo();
-        x = station.getCoordinate().getX();
-        y = station.getCoordinate().getY();
-        transportType = station.getTransportType().name();
-    }
-
-    @Override
-    public Station untransform(Station station) {
-        if (station.getAddress() == null) {
-            station.setAddress(new Address());
-        }
-
-        station.getAddress().setApartment(apartment);
-        station.getAddress().setHouseNo(houseNo);
-        station.getAddress().setStreet(street);
-        station.getAddress().setZipCode(zipCode);
-
-        if (station.getCoordinate() == null) {
-            station.setCoordinate(new Coordinate());
-        }
-
-        station.getCoordinate().setX(x);
-        station.getCoordinate().setY(y);
-        station.setTransportType(TransportType.valueOf(transportType.toUpperCase()));
-
-        return super.untransform(station);
-    }
-}*/
+}
