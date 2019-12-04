@@ -34,9 +34,9 @@ public class StationDTO extends BaseDTO<Station> {
     @Ignore
     private String transportType;
 
-    @Override
-    public void transform(Station station) {
-        super.transform(station);
+    //@Override
+    /*public void transform(Station station) {
+        //super.transform(station);
         zipCode = station.getAddress().getZipCode();
         street = station.getAddress().getStreet();
         apartment = station.getAddress().getApartment();
@@ -44,10 +44,10 @@ public class StationDTO extends BaseDTO<Station> {
         x = station.getCoordinate().getX();
         y = station.getCoordinate().getY();
         transportType = station.getTransportType().name();
-    }
+    }*/
 
-    @Override
-    public Station untransform(Station station) {
+    //@Override
+    /*public Station untransform(Station station) {
         if (station.getAddress() == null) {
             station.setAddress(new Address());
         }
@@ -65,6 +65,6 @@ public class StationDTO extends BaseDTO<Station> {
         station.getCoordinate().setY(y);
         station.setTransportType(TransportType.valueOf(transportType.toUpperCase()));
 
-        return super.untransform(station);
-    }
+        //return super.untransform(station);
+    }*/
 }
