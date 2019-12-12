@@ -57,7 +57,7 @@ public class EntityReferenceTransformer implements Transformer {
     }
 
     @Override
-    public <T extends AbstractEntity, P> T untransform(final P dto, final T entity) {
+    public <T, P> T untransform(final P dto, final T entity) {
         Class<T> clz = (Class<T>) entity.getClass();
         Map<String, String> mapping = transformableProvider.find(clz).map(t -> t.getSourceMapping()).orElse(Map.of());
 

@@ -23,7 +23,7 @@ public class SimpleDTOTransformer implements Transformer {
     private final TransformableProvider transformableProvider;
 
     @Override
-    public <T extends AbstractEntity, P> T untransform(final P dto, final T entity) {
+    public <T, P> T untransform(final P dto, final T entity) {
         Class<T> clz = (Class<T>) entity.getClass();
 
         ReflectionUtil.copyFields(dto, entity,
@@ -38,7 +38,7 @@ public class SimpleDTOTransformer implements Transformer {
         return entity;
     }
 
-    private <T extends AbstractEntity, P> List<Field> getIgnoredFields(Class<T> clz) {
+    private <T, P> List<Field> getIgnoredFields(Class<T> clz) {
         return transformableProvider.find(clz).map(Transformable::getIgnoredFields).orElse(List.of());
     }
 

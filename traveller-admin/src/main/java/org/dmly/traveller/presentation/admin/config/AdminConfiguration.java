@@ -7,6 +7,11 @@ import org.dmly.traveller.common.infra.http.JavaRestClient;
 import org.dmly.traveller.common.infra.http.RestClient;
 import org.dmly.traveller.common.infra.json.GsonJsonClient;
 import org.dmly.traveller.common.infra.json.JsonClient;
+import org.dmly.traveller.common.model.transform.TransformableProvider;
+import org.dmly.traveller.common.model.transform.Transformer;
+import org.dmly.traveller.common.model.transform.impl.CachedFieldProvider;
+import org.dmly.traveller.common.model.transform.impl.FieldProvider;
+import org.dmly.traveller.common.model.transform.impl.SimpleDTOTransformer;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
@@ -27,6 +32,16 @@ public class AdminConfiguration {
     @ApplicationScoped
     public Environment environment() {
         return new StandardPropertyEnvironment();
+    }
+
+    @Produces @ApplicationScoped
+    public Transformer transformer(FieldProvider provider, TransformableProvider transformableProvider) {
+        return new SimpleDTOTransformer(provider, transformableProvider);
+    }
+
+    @Produces @ApplicationScoped
+    public FieldProvider fieldProvider() {
+        return new CachedFieldProvider();
     }
 
 }

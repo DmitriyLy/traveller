@@ -37,8 +37,27 @@ public class JavaRestClient implements RestClient {
 
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
             String body = response.body();
             return new RestResponse<T>(response.statusCode(), jsonClient.fromJson(body, clz));
+        } catch (IOException | InterruptedException e) {
+            log.error(e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public <T> RestResponse<T> post(String url, Class<T> clz, T entity) {
+        String json = jsonClient.toJson(entity);
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
+                .timeout(Duration.ofSeconds(timeout))
+                .header("Accept", CONTENT_TYPE_JSON)
+                .header("Content-Type",  CONTENT_TYPE_JSON)
+                .build();
+
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            return new RestResponse<T>(response.statusCode(), null);
         } catch (IOException | InterruptedException e) {
             log.error(e.getMessage(), e);
             throw new RuntimeException(e);

@@ -6,8 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.dmly.traveller.app.model.entity.geography.City;
 import org.dmly.traveller.app.monitoring.MetricsManager;
 import org.dmly.traveller.app.service.GeographicService;
-import org.dmly.traveller.app.service.transform.Transformer;
-import org.dmly.traveller.common.infra.http.RestClient;
+import org.dmly.traveller.common.model.transform.Transformer;
+import org.dmly.traveller.geography.dto.CityDTO;
+import org.dmly.traveller.presentation.admin.client.CityClient;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -28,7 +29,7 @@ public class CityController {
 
     private final MetricsManager metricsManager;
 
-    private final RestClient restClient;
+    private final CityClient cityClient;
 
     private Counter savedCitiesCounter;
 
@@ -38,11 +39,11 @@ public class CityController {
 
     @Inject
     public CityController(GeographicService geographicService, Transformer transformer, MetricsManager metricsManager,
-                          RestClient restClient) {
+                          CityClient cityClient) {
         this.geographicService = geographicService;
         this.transformer = transformer;
         this.metricsManager = metricsManager;
-        this.restClient = restClient;
+        this.cityClient = cityClient;
     }
 
     public List<City> getCities() {
@@ -50,19 +51,19 @@ public class CityController {
     }
 
     public void saveCity(CityBean cityBean) {
-        City city = transformer.untransform(cityBean, City.class);
-        geographicService.saveCity(city);
+        CityDTO cityDTO = transformer.untransform(cityBean, CityDTO.class);
+        cityClient.create(cityDTO);
 
         savedCitiesCounter.inc();
         log.info("Saved a city {}", cityBean);
     }
 
     public void update(City city, CityBean cityBean) {
-        transformer.transform(city, cityBean);
+        //transformer.transform(city, cityBean);
     }
 
     public void delete(int cityId) {
-        geographicService.deleteCity(cityId);
+        //geographicService.deleteCity(cityId);
     }
 
     @PostConstruct

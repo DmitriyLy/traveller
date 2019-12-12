@@ -25,9 +25,9 @@ public interface Transformer {
 
     <T extends AbstractEntity, P> P transform(T entity, P destination);
 
-    <T extends AbstractEntity, P> T untransform(P dto, T entity);
+    <T, P> T untransform(P dto, T entity);
 
-    default <T extends AbstractEntity, P> T untransform(P dto, Class<T> clz) {
+    default <T, P> T untransform(P dto, Class<T> clz) {
         checkParams(dto, clz);
 
         T entity = ReflectionUtil.createInstance(clz);
